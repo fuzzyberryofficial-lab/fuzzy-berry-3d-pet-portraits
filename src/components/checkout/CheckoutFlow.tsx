@@ -98,7 +98,7 @@ export default function CheckoutFlow() {
     const sessionId = params.get("session_id");
     if (stripeStatus === "success" && sessionId) {
       setIsVerifying(true);
-      fetch(`/api/checkout?session_id=${encodeURIComponent(sessionId)}`)
+      fetch(`/api/orders?session_id=${encodeURIComponent(sessionId)}`)
         .then((res) => res.json())
         .then((data: { paid?: boolean; customerName?: string | null; customerEmail?: string | null }) => {
           if (data.paid) {
@@ -168,7 +168,7 @@ export default function CheckoutFlow() {
     window.sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot));
 
     try {
-      const res = await fetch("/api/checkout", {
+      const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

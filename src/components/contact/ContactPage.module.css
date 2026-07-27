@@ -1,0 +1,73 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  padding: 64px 8vw 100px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.title {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 800;
+  margin: 0 0 20px;
+  font-size: 40px;
+}
+
+.emailLine {
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+
+.emailLink {
+  color: var(--berry);
+}
+
+.socialRow {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.storesLine {
+  opacity: 0.85;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.submitBtn {
+  justify-content: center;
+}
+
+.thanksBox {
+  background: var(--mint);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+  text-align: center;
+}
+
+.thanksTitle {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.thanksBody {
+  margin: 0;
+  opacity: 0.85;
+}

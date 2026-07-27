@@ -1,0 +1,36 @@
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 6vw 100px;
+}
+
+.section {
+  margin-bottom: 56px;
+  background: var(--surface);
+  border: 3px solid var(--ink);
+  border-radius: 24px;
+  padding: 36px;
+}
+
+.legal {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--berry);
+  margin: 0 0 10px;
+}
+
+.title {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 800;
+  margin: 0 0 20px;
+  font-size: 32px;
+}
+
+.paragraph {
+  opacity: 0.85;
+}
+
+.link {
+  color: var(--berry);
+}

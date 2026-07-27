@@ -3,7 +3,7 @@ import type { Lang, NavTranslation } from "../site/navTypes";
 export interface AboutTranslation extends NavTranslation {
   kicker: string;
   title: string;
-  dropCoco: string;
+  cocoAlt: string;
   p1: string;
   p2: string;
   p3: string;
@@ -23,7 +23,7 @@ export const TR: Record<Lang, AboutTranslation> = {
     startPortrait: "Start Your Portrait",
     kicker: "Our Story",
     title: "The Story Behind Fuzzy Berry",
-    dropCoco: "Drop a photo of Coco",
+    cocoAlt: "Coco, the pet who started it all",
     p1: "Every pet leaves an indelible mark on our hearts.",
     p2: "Fuzzy Berry began with Coco, my 16 years old companion. Wanting to freeze time and preserve his loving expression, I began experimenting with multi-layered hand-painting on clear acrylic.",
     p3: "What started as a personal homage turned into our studio's passion: transforming your favorite pet memories into 3D dimensional fine art.",
@@ -41,7 +41,7 @@ export const TR: Record<Lang, AboutTranslation> = {
     startPortrait: "Porträt starten",
     kicker: "Unsere Geschichte",
     title: "Die Geschichte von Fuzzy Berry",
-    dropCoco: "Foto von Coco hierher ziehen",
+    cocoAlt: "Coco, das Haustier, mit dem alles begann",
     p1: "Jedes Haustier hinterlässt eine unauslöschliche Spur in unseren Herzen.",
     p2: "Fuzzy Berry begann mit Coco, meinem 16 Jahre alten Begleiter. Um die Zeit einzufrieren und seinen liebevollen Ausdruck zu bewahren, begann ich mit mehrschichtigem Handmalen auf klarem Acryl zu experimentieren.",
     p3: "Was als persönliche Hommage begann, wurde zur Leidenschaft unseres Studios: Ihre liebsten Tiererinnerungen in dreidimensionale Kunstwerke zu verwandeln.",

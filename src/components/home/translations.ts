@@ -8,17 +8,14 @@ export interface HomeTranslation extends NavTranslation {
   heroSticker: string;
   tagSingle: string;
   tagMulti: string;
-  dropHero: string;
   styleKicker: string;
   styleTitle: string;
   styleSub: string;
   craftKicker: string;
   craftTitle: string;
   craftBody: string;
-  dropCraftVideo: string;
   boxKicker: string;
   boxTitle: string;
-  dropBox: string;
   privacy: string;
   returns: string;
   navAbout: string;
@@ -41,17 +38,14 @@ export const TR: Record<Lang, HomeTranslation> = {
     heroSticker: "100% Hand-Painted",
     tagSingle: "Single Pet — from €179",
     tagMulti: "Multi Pet — from €279",
-    dropHero: "Drop a horizontal cutout photo of your pet (no background)",
     styleKicker: "If you love them, we can craft them",
     styleTitle: "Choose Your Style",
     styleSub: "Cats, dogs, and every beloved pet.",
     craftKicker: "Crafting the Magic",
     craftTitle: "Art You Can Feel",
     craftBody: "Hand-painted layer by layer — every fur stroke, every sparkle, brought to life.",
-    dropCraftVideo: "Click to upload a video of the crafting process",
     boxKicker: "Unboxing",
     boxTitle: "What's Inside Your Box",
-    dropBox: "Drop an unboxing photo",
     privacy: "Privacy Policy",
     returns: "Return Policy",
   },
@@ -69,17 +63,14 @@ export const TR: Record<Lang, HomeTranslation> = {
     heroSticker: "100% handgemalt",
     tagSingle: "Einzeltier — ab €179",
     tagMulti: "Mehrere Tiere — ab €279",
-    dropHero: "Horizontales Freisteller-Foto Ihres Haustiers hierher ziehen (ohne Hintergrund)",
     styleKicker: "Wenn Sie sie lieben, gestalten wir sie",
     styleTitle: "Wählen Sie Ihren Stil",
     styleSub: "Katzen, Hunde und jedes geliebte Haustier.",
     craftKicker: "Die Magie entsteht",
     craftTitle: "Kunst, die man fühlt",
     craftBody: "Schicht für Schicht handgemalt — jede Fellsträhne, jedes Glitzern lebendig gemacht.",
-    dropCraftVideo: "Klicken, um ein Video vom Herstellungsprozess hochzuladen",
     boxKicker: "Auspacken",
     boxTitle: "Das ist in Ihrer Box",
-    dropBox: "Auspack-Foto hierher ziehen",
     privacy: "Datenschutz",
     returns: "Rückgaberecht",
   },

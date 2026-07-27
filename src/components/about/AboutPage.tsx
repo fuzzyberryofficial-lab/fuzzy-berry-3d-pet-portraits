@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { Baloo_2, Poppins } from "next/font/google";
 import siteStyles from "../site/site.module.css";
 import styles from "./AboutPage.module.css";
 import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
-import ImageUploadSlot from "../site/ImageUploadSlot";
+import SiteImage from "../site/SiteImage";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
 
@@ -15,7 +14,6 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 
 export default function AboutPage() {
   const [lang, setLang] = useLang();
-  const [cocoPhoto, setCocoPhoto] = useState<File | null>(null);
   const t = TR[lang];
 
   return (
@@ -23,7 +21,7 @@ export default function AboutPage() {
       <SiteNav t={t} lang={lang} onLangChange={setLang} current="about" />
 
       <section className={styles.hero}>
-        <ImageUploadSlot placeholder={t.dropCoco} file={cocoPhoto} onChange={setCocoPhoto} className={styles.photo} />
+        <SiteImage src="/images/The Story Behind Fuzzy Berry.JPG" alt={t.cocoAlt} className={styles.photo} priority />
         <div>
           <p className={siteStyles.kicker}>{t.kicker}</p>
           <h1 className={styles.title}>{t.title}</h1>

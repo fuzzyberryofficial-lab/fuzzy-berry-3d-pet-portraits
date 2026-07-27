@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Baloo_2, Poppins } from "next/font/google";
 import Link from "next/link";
 import siteStyles from "../site/site.module.css";
@@ -8,35 +7,20 @@ import styles from "./CollectionPage.module.css";
 import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
 import Reveal from "../site/Reveal";
-import ImageUploadSlot from "../site/ImageUploadSlot";
+import SiteImage from "../site/SiteImage";
 import { useLang } from "../site/useLang";
-import { GALLERY_ROTATIONS, MULTI_GALLERY_NAMES, MULTI_PET_ROWS, SINGLE_GALLERY_NAMES, SINGLE_PET_ROWS, TR } from "./translations";
+import { GALLERY_ROTATIONS, MULTI_GALLERY_ITEMS, MULTI_PET_ROWS, SINGLE_GALLERY_ITEMS, SINGLE_PET_ROWS, TR, type GalleryItem } from "./translations";
 
 const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
 
-function Gallery({
-  names,
-  photos,
-  onChange,
-  placeholder,
-}: {
-  names: string[];
-  photos: (File | null)[];
-  onChange: (index: number, file: File | null) => void;
-  placeholder: string;
-}) {
+function Gallery({ items }: { items: GalleryItem[] }) {
   return (
     <div className={styles.gallery}>
-      {names.map((name, i) => (
-        <div key={i} className={styles.galleryItem} style={{ transform: `rotate(${GALLERY_ROTATIONS[i]}deg)` }}>
-          <ImageUploadSlot
-            placeholder={placeholder}
-            file={photos[i]}
-            onChange={(f) => onChange(i, f)}
-            className={styles.galleryImage}
-          />
-          <span className={styles.galleryLabel}>{name}</span>
+      {items.map((item, i) => (
+        <div key={item.src} className={styles.galleryItem} style={{ transform: `rotate(${GALLERY_ROTATIONS[i]}deg)` }}>
+          <SiteImage src={item.src} alt={item.name} className={styles.galleryImage} />
+          <span className={styles.galleryLabel}>{item.name}</span>
         </div>
       ))}
     </div>
@@ -45,13 +29,10 @@ function Gallery({
 
 export default function CollectionPage() {
   const [lang, setLang] = useLang();
-  const [singlePhotos, setSinglePhotos] = useState<(File | null)[]>([null, null, null, null]);
-  const [multiPhotos, setMultiPhotos] = useState<(File | null)[]>([null, null, null, null]);
 
   const t = TR[lang];
   const singleRows = SINGLE_PET_ROWS[lang];
   const multiRows = MULTI_PET_ROWS[lang];
-  const galleryPlaceholder = lang === "en" ? "Drop an example photo" : "Beispielfoto hierher ziehen";
 
   return (
     <div className={`${siteStyles.page} ${baloo.variable} ${poppins.variable}`}>
@@ -69,12 +50,7 @@ export default function CollectionPage() {
         <section id="single-pet" className={`${styles.section} ${styles.sectionNoTop}`}>
           <h2 className={styles.sectionTitle}>{t.singleTitle}</h2>
           <p className={styles.sectionSub}>{t.singleSub}</p>
-          <Gallery
-            names={SINGLE_GALLERY_NAMES}
-            photos={singlePhotos}
-            placeholder={galleryPlaceholder}
-            onChange={(i, f) => setSinglePhotos((prev) => prev.map((p, idx) => (idx === i ? f : p)))}
-          />
+          <Gallery items={SINGLE_GALLERY_ITEMS} />
           <table className={siteStyles.table}>
             <thead>
               <tr>
@@ -106,12 +82,7 @@ export default function CollectionPage() {
         <section id="multi-pet" className={styles.section}>
           <h2 className={styles.sectionTitle}>{t.multiTitle}</h2>
           <p className={styles.sectionSub}>{t.multiSub}</p>
-          <Gallery
-            names={MULTI_GALLERY_NAMES}
-            photos={multiPhotos}
-            placeholder={galleryPlaceholder}
-            onChange={(i, f) => setMultiPhotos((prev) => prev.map((p, idx) => (idx === i ? f : p)))}
-          />
+          <Gallery items={MULTI_GALLERY_ITEMS} />
           <table className={siteStyles.table}>
             <thead>
               <tr>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { Baloo_2, Poppins } from "next/font/google";
 import Link from "next/link";
 import siteStyles from "../site/site.module.css";
@@ -8,7 +7,7 @@ import styles from "./HomePage.module.css";
 import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
 import Reveal from "../site/Reveal";
-import ImageUploadSlot from "../site/ImageUploadSlot";
+import SiteImage from "../site/SiteImage";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
 
@@ -17,21 +16,9 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 
 export default function HomePage() {
   const [lang, setLang] = useLang();
-  const [heroPhoto, setHeroPhoto] = useState<File | null>(null);
-  const [singlePhoto, setSinglePhoto] = useState<File | null>(null);
-  const [multiPhoto, setMultiPhoto] = useState<File | null>(null);
-  const [unboxPhoto, setUnboxPhoto] = useState<File | null>(null);
-  const [craftVideo, setCraftVideo] = useState<File | null>(null);
 
   const t = TR[lang];
   const isEn = lang === "en";
-
-  const craftVideoUrl = useMemo(() => (craftVideo ? URL.createObjectURL(craftVideo) : null), [craftVideo]);
-  useEffect(() => {
-    return () => {
-      if (craftVideoUrl) URL.revokeObjectURL(craftVideoUrl);
-    };
-  }, [craftVideoUrl]);
 
   const styleCards = [
     {
@@ -41,12 +28,11 @@ export default function HomePage() {
       body: isEn ? "One companion, in focus." : "Ein Begleiter, im Fokus.",
       cta: isEn ? "View collection" : "Zur Kollektion",
       href: "/collection#single-pet",
-      placeholder: isEn ? "Drop a single pet photo" : "Einzeltier-Foto hierher ziehen",
+      alt: isEn ? "Single pet portrait example" : "Beispiel eines Einzeltier-Porträts",
+      src: "/images/Choose Your Style-single pet.png",
       accent: "var(--berry)",
       shadowColor: "var(--berry)",
       rotate: -1,
-      photo: singlePhoto,
-      setPhoto: setSinglePhoto,
     },
     {
       key: "multi",
@@ -55,12 +41,11 @@ export default function HomePage() {
       body: isEn ? "Your whole crew together." : "Ihre ganze Truppe zusammen.",
       cta: isEn ? "View collection" : "Zur Kollektion",
       href: "/collection#multi-pet",
-      placeholder: isEn ? "Drop a multi pet photo" : "Mehrtier-Foto hierher ziehen",
+      alt: isEn ? "Multi pet portrait example" : "Beispiel eines Mehrtier-Porträts",
+      src: "/images/Choose Your Style-multi pet.jpg",
       accent: "var(--plum)",
       shadowColor: "var(--plum)",
       rotate: 1,
-      photo: multiPhoto,
-      setPhoto: setMultiPhoto,
     },
   ];
 
@@ -101,11 +86,11 @@ export default function HomePage() {
 
       <section className={styles.heroImageSection}>
         <div className={styles.heroImageWrap}>
-          <ImageUploadSlot
-            placeholder={t.dropHero}
-            file={heroPhoto}
-            onChange={setHeroPhoto}
+          <SiteImage
+            src="/images/home-hero.jpg"
+            alt={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
             style={{ width: "100%", height: 420, borderWidth: 4 }}
+            priority
           />
           <div className={styles.heroSticker}>{t.heroSticker}</div>
         </div>
@@ -127,13 +112,7 @@ export default function HomePage() {
                 className={siteStyles.card}
                 style={{ boxShadow: `6px 6px 0 ${card.shadowColor}`, transform: `rotate(${card.rotate}deg)` }}
               >
-                <ImageUploadSlot
-                  placeholder={card.placeholder}
-                  file={card.photo}
-                  onChange={card.setPhoto}
-                  className={styles.cardImage}
-                  style={{ borderWidth: 2.5 }}
-                />
+                <SiteImage src={card.src} alt={card.alt} className={styles.cardImage} style={{ borderWidth: 2.5 }} />
                 <p className={styles.cardKicker} style={{ color: card.accent }}>
                   {card.kicker}
                 </p>
@@ -152,20 +131,7 @@ export default function HomePage() {
         <section className={`${styles.section} ${styles.mintSection}`}>
           <div className={styles.splitGrid}>
             <div className={styles.craftMedia}>
-              {craftVideoUrl ? (
-                <video src={craftVideoUrl} controls autoPlay loop muted playsInline className={styles.craftVideo} />
-              ) : (
-                <label className={styles.craftUploadLabel}>
-                  <span>🎬</span>
-                  <span>{t.dropCraftVideo}</span>
-                  <input
-                    type="file"
-                    accept="video/*"
-                    hidden
-                    onChange={(e) => setCraftVideo(e.target.files?.[0] ?? null)}
-                  />
-                </label>
-              )}
+              <video src="/video/Art You Can Feel.MP4" controls autoPlay loop muted playsInline className={styles.craftVideo} />
             </div>
             <div>
               <p className={siteStyles.kicker}>{t.craftKicker}</p>
@@ -195,7 +161,11 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-            <ImageUploadSlot placeholder={t.dropBox} file={unboxPhoto} onChange={setUnboxPhoto} className={styles.unboxImage} />
+            <SiteImage
+              src="/images/Unboxing.png"
+              alt={isEn ? "Unboxing a Fuzzy Berry portrait" : "Auspacken eines Fuzzy-Berry-Porträts"}
+              className={styles.unboxImage}
+            />
           </div>
         </section>
       </Reveal>

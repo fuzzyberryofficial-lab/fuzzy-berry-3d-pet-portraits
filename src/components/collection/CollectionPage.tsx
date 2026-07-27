@@ -19,7 +19,15 @@ function Gallery({ items }: { items: GalleryItem[] }) {
     <div className={styles.gallery}>
       {items.map((item, i) => (
         <div key={item.src} className={styles.galleryItem} style={{ transform: `rotate(${GALLERY_ROTATIONS[i]}deg)` }}>
-          <SiteImage src={item.src} alt={item.name} className={styles.galleryImage} />
+          <SiteImage
+            src={item.src}
+            alt={item.name}
+            className={styles.galleryImage}
+            objectPosition={item.objectPosition}
+            imageStyle={
+              item.transform ? { transform: item.transform } : item.scale ? { transform: `scale(${item.scale})` } : undefined
+            }
+          />
           <span className={styles.galleryLabel}>{item.name}</span>
         </div>
       ))}

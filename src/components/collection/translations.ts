@@ -102,11 +102,14 @@ export const MULTI_PET_ROWS: Record<Lang, { type: string; size: string; price: n
 export interface GalleryItem {
   name: string;
   src: string;
+  objectPosition?: string;
+  scale?: number;
+  transform?: string;
 }
 
 export const SINGLE_GALLERY_ITEMS: GalleryItem[] = [
   { name: "20×20 cm", src: "/images/Single Pet Collection-20x20cm.jpg" },
-  { name: "20×30 cm", src: "/images/Single Pet Collection-20x30cm.jpg" },
+  { name: "20×30 cm", src: "/images/Single Pet Collection-20x30cm.jpg", scale: 1.25 },
   { name: "25×25 cm", src: "/images/Single Pet Collection-25x25cm.png" },
   { name: "30×30 cm", src: "/images/Single Pet Collection-30x30cm.png" },
 ];
@@ -114,8 +117,8 @@ export const SINGLE_GALLERY_ITEMS: GalleryItem[] = [
 export const MULTI_GALLERY_ITEMS: GalleryItem[] = [
   { name: "20×30 cm", src: "/images/Multi Pet Collection-20x30cm-1.jpg" },
   { name: "20×30 cm", src: "/images/Multi Pet Collection-20x30cm-2.jpg" },
-  { name: "20×40 cm", src: "/images/Multi Pet Collection-20x40cm-1.png" },
-  { name: "20×40 cm", src: "/images/Multi Pet Collection-20x40cm-2.jpg" },
+  { name: "20×40 cm", src: "/images/Multi Pet Collection-20x40cm-1.png", transform: "scale(1.25) translateX(-8%)" },
+  { name: "20×40 cm", src: "/images/Multi Pet Collection-20x40cm-2.jpg", scale: 1.25 },
 ];
 
 export const GALLERY_ROTATIONS = [-2, 1, -1, 2];

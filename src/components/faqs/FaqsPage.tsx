@@ -7,6 +7,7 @@ import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
 import { useLang } from "../site/useLang";
 import { FAQ_DE, FAQ_EN, TR } from "./translations";
+import ProcessSteps from "./ProcessSteps";
 
 const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
@@ -29,7 +30,16 @@ export default function FaqsPage() {
             {group.items.map((qa) => (
               <details key={qa.q} className={styles.item}>
                 <summary>{qa.q}</summary>
-                <p className={styles.answer}>{qa.a}</p>
+                <p className={styles.answerSummary}>{qa.summary}</p>
+                {qa.process ? (
+                  <ProcessSteps steps={qa.process} />
+                ) : (
+                  <ul className={styles.answerBullets}>
+                    {qa.bullets.map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+                )}
               </details>
             ))}
           </div>

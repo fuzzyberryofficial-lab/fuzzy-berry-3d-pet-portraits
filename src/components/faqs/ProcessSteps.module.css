@@ -1,0 +1,78 @@
+.timeline {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  max-width: 64ch;
+}
+
+.step {
+  display: flex;
+  gap: 14px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.step::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--ink) 0 4px,
+    transparent 4px 8px
+  );
+  opacity: 0.35;
+}
+
+.step:last-child {
+  padding-bottom: 0;
+}
+
+.step:last-child::before {
+  display: none;
+}
+
+.badge {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2.5px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  color: var(--ink);
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 6px;
+}
+
+.stepTitle {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.stepCaption {
+  opacity: 0.8;
+  font-size: 14.5px;
+}

@@ -52,15 +52,6 @@ export const FAQ_EN: FaqGroup[] = [
     title: "About the Artwork & Process",
     items: [
       {
-        q: "How do I choose the best photo for my custom portrait?",
-        summary: "Bright, clear, close-up photos work best!",
-        bullets: [
-          "Natural light & sharp focus: Crisp details in their eyes and fur.",
-          "Eye-level angle: Captures their true expression and 3D depth.",
-          "Unsure? Send 2–3 favorites — we'll help you pick!",
-        ],
-      },
-      {
         q: "How does the custom portrait process work?",
         summary: "We confirm everything with you before painting starts.",
         bullets: [],
@@ -90,6 +81,15 @@ export const FAQ_EN: FaqGroup[] = [
             caption: "Unbox your one-of-a-kind portrait and enjoy!",
             icon: "enjoy",
           },
+        ],
+      },
+      {
+        q: "How do I choose the best photo for my custom portrait?",
+        summary: "Bright, clear, close-up photos work best!",
+        bullets: [
+          "Natural light & sharp focus: Crisp details in their eyes and fur.",
+          "Eye-level angle: Captures their true expression and 3D depth.",
+          "Unsure? Send 2–3 favorites — we'll help you pick!",
         ],
       },
       {
@@ -183,15 +183,6 @@ export const FAQ_DE: FaqGroup[] = [
     title: "Kunstwerk & Prozess",
     items: [
       {
-        q: "Wie wähle ich das beste Foto für mein individuelles Porträt aus?",
-        summary: "Helle, klare Nahaufnahmen wirken am besten!",
-        bullets: [
-          "Natürliches Licht & scharfer Fokus: Klare Details bei Augen und Fell.",
-          "Augenhöhe: Fängt den echten Ausdruck und die 3D-Tiefe ein.",
-          "Unsicher? Senden Sie uns 2–3 Favoriten — wir helfen bei der Auswahl!",
-        ],
-      },
-      {
         q: "Wie läuft der individuelle Porträtprozess ab?",
         summary: "Wir bestätigen alles mit Ihnen, bevor wir malen.",
         bullets: [],
@@ -221,6 +212,15 @@ export const FAQ_DE: FaqGroup[] = [
             caption: "Packen Sie Ihr einzigartiges Porträt aus und genießen Sie es!",
             icon: "enjoy",
           },
+        ],
+      },
+      {
+        q: "Wie wähle ich das beste Foto für mein individuelles Porträt aus?",
+        summary: "Helle, klare Nahaufnahmen wirken am besten!",
+        bullets: [
+          "Natürliches Licht & scharfer Fokus: Klare Details bei Augen und Fell.",
+          "Augenhöhe: Fängt den echten Ausdruck und die 3D-Tiefe ein.",
+          "Unsicher? Senden Sie uns 2–3 Favoriten — wir helfen bei der Auswahl!",
         ],
       },
       {

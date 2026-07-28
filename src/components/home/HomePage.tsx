@@ -51,14 +51,44 @@ export default function HomePage() {
 
   const boxItems = isEn
     ? [
-        { n: "1", text: "Six layers of 3D acrylic artwork", color: "var(--sun)" },
-        { n: "2", text: "A wooden or acrylic display stand", color: "var(--mint)" },
-        { n: "3", text: "A thank-you card", color: "var(--berry)" },
+        {
+          n: "1",
+          title: "Custom 3D Acrylic Portrait",
+          text: "Hand-painted in 6 distinct layers for vivid depth and detail.",
+          color: "var(--sun)",
+        },
+        {
+          n: "2",
+          title: "Premium Display Stand",
+          text: "A wooden or acrylic easel designed for instant display.",
+          color: "var(--mint)",
+        },
+        {
+          n: "3",
+          title: "Thank-You Card & Gift Packaging",
+          text: "Warm Fuzzy Berry card carefully packed in gift-ready protection.",
+          color: "var(--berry)",
+        },
       ]
     : [
-        { n: "1", text: "Sechs Schichten 3D-Acrylkunst", color: "var(--sun)" },
-        { n: "2", text: "Ein Holz- oder Acryl-Ständer", color: "var(--mint)" },
-        { n: "3", text: "Eine Dankeskarte", color: "var(--berry)" },
+        {
+          n: "1",
+          title: "Individuelles 3D-Acrylporträt",
+          text: "Handgemalt in 6 einzelnen Schichten für lebendige Tiefe und Detailtreue.",
+          color: "var(--sun)",
+        },
+        {
+          n: "2",
+          title: "Hochwertiger Display-Ständer",
+          text: "Ein Holz- oder Acryl-Ständer, sofort einsatzbereit zur Präsentation.",
+          color: "var(--mint)",
+        },
+        {
+          n: "3",
+          title: "Dankeskarte & Geschenkverpackung",
+          text: "Herzliche Fuzzy-Berry-Karte, sorgfältig in geschenkfertiger Verpackung.",
+          color: "var(--berry)",
+        },
       ];
 
   return (
@@ -150,13 +180,17 @@ export default function HomePage() {
             <div>
               <p className={siteStyles.kicker}>{t.boxKicker}</p>
               <h2 className={styles.boxTitle}>{t.boxTitle}</h2>
+              <p className={styles.boxSub}>{t.boxSub}</p>
               <div className={styles.boxItems}>
                 {boxItems.map((item) => (
                   <div key={item.n} className={styles.boxItem}>
                     <span className={styles.boxItemNumber} style={{ background: item.color }}>
                       {item.n}
                     </span>
-                    <p className={styles.boxItemText}>{item.text}</p>
+                    <div>
+                      <p className={styles.boxItemTitle}>{item.title}</p>
+                      <p className={styles.boxItemText}>{item.text}</p>
+                    </div>
                   </div>
                 ))}
               </div>

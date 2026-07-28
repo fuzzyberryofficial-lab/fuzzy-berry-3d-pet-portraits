@@ -16,6 +16,7 @@ export interface HomeTranslation extends NavTranslation {
   craftBody: string;
   boxKicker: string;
   boxTitle: string;
+  boxSub: string;
   privacy: string;
   returns: string;
   navAbout: string;
@@ -46,6 +47,7 @@ export const TR: Record<Lang, HomeTranslation> = {
     craftBody: "Hand-painted layer by layer — every fur stroke, every sparkle, brought to life.",
     boxKicker: "Unboxing",
     boxTitle: "What's Inside Your Box",
+    boxSub: "Everything you need to display or gift your artwork right out of the box.",
     privacy: "Privacy Policy",
     returns: "Return Policy",
   },
@@ -71,6 +73,7 @@ export const TR: Record<Lang, HomeTranslation> = {
     craftBody: "Schicht für Schicht handgemalt — jede Fellsträhne, jedes Glitzern lebendig gemacht.",
     boxKicker: "Auspacken",
     boxTitle: "Das ist in Ihrer Box",
+    boxSub: "Alles, was Sie brauchen, um Ihr Kunstwerk direkt aus der Box zu präsentieren oder zu verschenken.",
     privacy: "Datenschutz",
     returns: "Rückgaberecht",
   },

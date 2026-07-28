@@ -31,4 +31,10 @@
   opacity: 0.85;
   max-width: 56ch;
   font-size: 17px;
+  line-height: 1.625;
+  margin: 0 0 24px;
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
 }

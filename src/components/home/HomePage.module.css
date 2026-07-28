@@ -40,14 +40,17 @@
   position: absolute;
   top: -18px;
   right: 6%;
-  background: var(--sun);
-  border: 3px solid var(--ink);
-  border-radius: 999px;
-  padding: 10px 22px;
+  background: var(--mint);
+  color: var(--ink);
+  padding: 12px 30px;
   transform: rotate(6deg);
   font-family: var(--font-baloo), sans-serif;
   font-weight: 700;
-  box-shadow: 4px 4px 0 var(--ink);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+  filter: drop-shadow(4px 4px 0 var(--ink));
 }
 
 .section {

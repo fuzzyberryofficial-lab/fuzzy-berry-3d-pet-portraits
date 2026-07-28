@@ -81,6 +81,7 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card", "paypal", "klarna", "eps"],
+      allow_promotion_codes: true,
       line_items: lineItems,
       customer_email: body.ship.email,
       success_url: `${origin}/checkout?stripe=success&session_id={CHECKOUT_SESSION_ID}`,

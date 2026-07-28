@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { COLLECTIONS_BASE, type CollectionKey } from "@/components/checkout/catalog";
+import { getCountryLabel, getShippingRate, getShippingZone, getShippingZoneLabel } from "@/components/checkout/countries";
 
 const FRAME_PRICE = 20;
 const CURRENCY = "eur";
@@ -74,6 +75,19 @@ export async function POST(request: Request) {
     });
   }
 
+  const shippingZone = getShippingZone(body.ship.country);
+  const shippingRate = getShippingRate(body.ship.country);
+  lineItems.push({
+    price_data: {
+      currency: CURRENCY,
+      product_data: {
+        name: `Shipping (${getShippingZoneLabel(shippingZone)})`,
+      },
+      unit_amount: shippingRate * 100,
+    },
+    quantity: 1,
+  });
+
   const origin = new URL(request.url).origin;
 
   try {
@@ -88,7 +102,7 @@ export async function POST(request: Request) {
       cancel_url: `${origin}/checkout?stripe=cancel`,
       metadata: {
         customerName: body.ship.name,
-        shippingAddress: `${body.ship.address}, ${body.ship.city} ${body.ship.postal}, ${body.ship.country}`,
+        shippingAddress: `${body.ship.address}, ${body.ship.city} ${body.ship.postal}, ${getCountryLabel(body.ship.country)}`,
         artistNotes: body.artistNotes || "",
         collection: body.collectionKey,
         type: body.typeKey,

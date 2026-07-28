@@ -6,6 +6,7 @@ import { Baloo_2, Poppins } from "next/font/google";
 import styles from "./CheckoutFlow.module.css";
 import ImageUploadSlot from "./ImageUploadSlot";
 import { COLLECTIONS_BASE, FRAME_SWATCHES, type CollectionKey, type FrameColorKey } from "./catalog";
+import { COUNTRIES, getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 
 const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
@@ -134,7 +135,8 @@ export default function CheckoutFlow() {
   const typeBase = collectionBase && typeKey ? collectionBase.types[typeKey] : null;
   const size = typeBase ? typeBase.sizes[sizeIndex] : null;
   const portraitPrice = size ? size.price : 0;
-  const total = portraitPrice + (addFrame ? 20 : 0);
+  const shippingCost = ship.country ? getShippingRate(ship.country) : 0;
+  const total = portraitPrice + (addFrame ? 20 : 0) + shippingCost;
 
   const currentIdx = STEP_ORDER.indexOf(step);
   const canContinueStyle = !!(collectionBase && typeBase && size);
@@ -440,7 +442,18 @@ export default function CheckoutFlow() {
               </div>
               <div className={styles.field}>
                 <label className={styles.fbFieldLabel}>{t.country}</label>
-                <input className={styles.fbInput} type="text" value={ship.country} onChange={(e) => updateShip("country", e.target.value)} />
+                <select
+                  className={styles.fbInput}
+                  value={ship.country}
+                  onChange={(e) => updateShip("country", e.target.value)}
+                >
+                  <option value="">{t.selectCountry}</option>
+                  {COUNTRIES.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className={styles.actions}>
@@ -508,6 +521,10 @@ export default function CheckoutFlow() {
                   <span>€20</span>
                 </div>
               )}
+              <div className={styles.summaryLine}>
+                <span>{t.shippingLine}</span>
+                <span>€{shippingCost}</span>
+              </div>
               <div className={styles.summaryDivider} />
               <div className={styles.summarySidebarTotal}>
                 <span>{t.total}</span>

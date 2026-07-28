@@ -31,6 +31,7 @@ export interface Translation {
   city: string;
   postal: string;
   country: string;
+  selectCountry: string;
   continuePayment: string;
   paymentTitle: string;
   stripeNote: string;
@@ -42,6 +43,7 @@ export interface Translation {
   orderSummary: string;
   portrait: string;
   frameLine: string;
+  shippingLine: string;
   total: string;
   orderConfirmed: string;
   thankYou: string;
@@ -84,6 +86,7 @@ export const TR: Record<Lang, Translation> = {
     city: "City",
     postal: "Postal code",
     country: "Country",
+    selectCountry: "Select country",
     continuePayment: "Continue to Payment",
     paymentTitle: "Payment",
     stripeNote: "You'll be redirected to Stripe to complete payment securely. Test mode — no real charge.",
@@ -95,6 +98,7 @@ export const TR: Record<Lang, Translation> = {
     orderSummary: "Order Summary",
     portrait: "Portrait",
     frameLine: "Frame",
+    shippingLine: "Shipping",
     total: "Total",
     orderConfirmed: "Order Confirmed",
     thankYou: "Thank you,",
@@ -144,6 +148,7 @@ export const TR: Record<Lang, Translation> = {
     city: "Stadt",
     postal: "Postleitzahl",
     country: "Land",
+    selectCountry: "Land auswählen",
     continuePayment: "Weiter zur Zahlung",
     paymentTitle: "Zahlung",
     stripeNote: "Sie werden zu Stripe weitergeleitet, um sicher zu bezahlen. Testmodus — es wird nichts belastet.",
@@ -155,6 +160,7 @@ export const TR: Record<Lang, Translation> = {
     orderSummary: "Bestellübersicht",
     portrait: "Porträt",
     frameLine: "Rahmen",
+    shippingLine: "Versand",
     total: "Gesamt",
     orderConfirmed: "Bestellung bestätigt",
     thankYou: "Danke,",

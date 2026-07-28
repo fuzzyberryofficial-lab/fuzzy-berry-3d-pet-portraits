@@ -76,7 +76,6 @@
 
 .brand {
   text-decoration: none;
-  color: var(--berry);
   font-family: var(--font-baloo), sans-serif;
   font-weight: 800;
   font-size: 36px;
@@ -84,6 +83,14 @@
   display: inline-block;
   white-space: nowrap;
   flex: none;
+}
+
+.brandFuzzy {
+  color: #2436a3;
+}
+
+.brandBerry {
+  color: #b23b2c;
 }
 
 .brand:hover {

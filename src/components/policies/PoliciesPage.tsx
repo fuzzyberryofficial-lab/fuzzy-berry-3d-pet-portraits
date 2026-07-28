@@ -19,7 +19,7 @@ export default function PoliciesPage() {
     <div className={`${siteStyles.page} ${baloo.variable} ${poppins.variable}`}>
       <nav className={siteStyles.navStatic}>
         <Link href="/" className={siteStyles.brand} style={{ fontSize: 32 }}>
-          Fuzzy Berry
+          <span className={siteStyles.brandFuzzy}>Fuzzy</span> <span className={siteStyles.brandBerry}>Berry</span>
         </Link>
         <div style={{ marginLeft: "auto" }}>
           <LangSwitch lang={lang} onChange={setLang} />

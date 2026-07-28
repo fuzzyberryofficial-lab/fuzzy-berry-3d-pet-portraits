@@ -24,7 +24,7 @@ export default function SiteNav({ t, lang, onLangChange, current }: SiteNavProps
   return (
     <nav className={styles.nav}>
       <Link href="/" className={styles.brand}>
-        Fuzzy Berry
+        <span className={styles.brandFuzzy}>Fuzzy</span> <span className={styles.brandBerry}>Berry</span>
       </Link>
       <div className={styles.navLinks}>
         {LINKS.map((link) => (

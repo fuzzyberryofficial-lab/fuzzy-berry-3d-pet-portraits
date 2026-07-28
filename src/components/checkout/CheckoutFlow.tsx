@@ -210,7 +210,7 @@ export default function CheckoutFlow() {
     <div className={`${styles.page} ${baloo.variable} ${poppins.variable}`}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.brand}>
-          Fuzzy Berry
+          <span className={styles.brandFuzzy}>Fuzzy</span> <span className={styles.brandBerry}>Berry</span>
         </Link>
         <div className={styles.langSwitch}>
           <button

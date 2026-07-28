@@ -53,11 +53,11 @@ export const FAQ_EN: FaqGroup[] = [
     items: [
       {
         q: "How do I choose the best photo for my custom portrait?",
-        summary: "Bright, clear, close-up photos work best.",
+        summary: "Bright, clear, close-up photos work best!",
         bullets: [
-          "Good natural light, in focus",
-          "Eyes and fur clearly visible",
-          "Not sure? Send 2–3 photos — we'll help you pick",
+          "Natural light & sharp focus: Crisp details in their eyes and fur.",
+          "Eye-level angle: Captures their true expression and 3D depth.",
+          "Unsure? Send 2–3 favorites — we'll help you pick!",
         ],
       },
       {
@@ -67,17 +67,17 @@ export const FAQ_EN: FaqGroup[] = [
         process: [
           {
             title: "Place your order",
-            caption: "Pick your style and size, and upload your favorite photo.",
+            caption: "Pick your style and size, and upload your favorite photos.",
             icon: "order",
           },
           {
             title: "We confirm with you",
-            caption: "We reach out to confirm the photo and your pet's placement.",
+            caption: "We reach out to confirm the photo and your pet's position.",
             icon: "confirm",
           },
           {
             title: "Hand-painted, layer by layer",
-            caption: "Once you approve, painting begins — about 3 weeks, since each layer needs time to dry.",
+            caption: "Once approved, painting begins! Each custom portrait takes about 3 weeks, allowing each layer of acrylic time to dry and cure for fine 3D detail.",
             icon: "paint",
           },
           {
@@ -94,19 +94,19 @@ export const FAQ_EN: FaqGroup[] = [
       },
       {
         q: "What makes Fuzzy Berry's acrylic portraits unique?",
-        summary: "Hand-painted in layers on clear acrylic for real 3D depth.",
+        summary: "100% hand-painted in multi-layered acrylic for real 3D depth.",
         bullets: [
-          "Not a print — every layer is hand-painted",
-          "Creates a shimmering 3D effect",
-          "A sleek, modern look for your home",
+          "True hand-painted fine art: No prints — every single layer is painted by hand onto clear acrylic",
+          "Luminous 3D effect: Light passes through the layers to bring your pet's eyes and fur to life",
+          "Modern keepsake: A sleek, timeless art piece designed to elevate any room",
         ],
       },
       {
         q: "Can you create a portrait of a pet who has passed away?",
-        summary: "Yes — made with love, to honor their memory.",
+        summary: "Yes, absolutely — made with extra care to honor their memory.",
         bullets: [
-          "Just let us know when you order",
-          "We give these portraits extra gentle, loving care",
+          "Simply let us know when ordering or sending your photos",
+          "We take special heart in capturing their spirit and creating a meaningful tribute for you",
         ],
       },
     ],
@@ -137,27 +137,19 @@ export const FAQ_EN: FaqGroup[] = [
     title: "Orders & Modifications",
     items: [
       {
-        q: "How long does it take to create and receive my portrait?",
-        summary: "About 2–3 weeks to paint, plus shipping time.",
-        bullets: [
-          "Each piece is hand-painted with care",
-          "Add standard shipping time on top",
-        ],
-      },
-      {
         q: "What if I want to cancel my order after placing it?",
-        summary: "Only possible before painting begins.",
+        summary: "Cancellations are accepted before painting begins.",
         bullets: [
-          "We confirm all details with you first",
-          "No refunds once painting has started",
+          "Before painting: You can cancel for a full refund before you confirm final details with us",
+          "Once painting starts: Because each portrait is custom-made, refunds are no longer possible once hand-painting has begun",
         ],
       },
       {
         q: "Is it possible to rush my order?",
-        summary: "Rush orders aren't available, but we'll try our best.",
+        summary: "While we don't offer standard rush shipping, we'll always try our best to help!",
         bullets: [
-          "Every layer takes time to hand-paint",
-          "Message us about your deadline and we'll help if we can",
+          "Hand-painted precision: Every layer requires specific drying and curing time",
+          "Need it by a specific date? Drop us a message before ordering — if our studio schedule allows, we'll do our absolute best to accommodate you",
         ],
       },
     ],
@@ -167,18 +159,19 @@ export const FAQ_EN: FaqGroup[] = [
     items: [
       {
         q: "Is a Fuzzy Berry portrait a good gift? Can you ship it directly to someone else?",
-        summary: "Yes — a popular gift, shipped straight to them.",
+        summary: "Yes — it's one of our most popular gifts, and we can ship directly to them!",
         bullets: [
-          "We ship directly to the recipient",
-          "Add a handwritten note on request",
+          "Direct shipping: Simply enter the recipient's address at checkout",
+          "Special requests? Let us know in the order notes or send us a message — we'll gladly see what we can do for you!",
         ],
       },
       {
         q: "How do I clean and care for my acrylic portrait?",
-        summary: "Just a soft, dry cloth.",
+        summary: "Care is simple! Just a few gentle steps to keep it glowing:",
         bullets: [
-          "Avoid harsh chemicals",
-          "Keep out of direct sunlight",
+          "Dust gently: Wipe softly with a dry, lint-free microfiber cloth",
+          "Avoid chemicals: Skip harsh cleaners, alcohol, or glass sprays on the clear acrylic",
+          "Display with care: Keep out of direct, intense sunlight to protect the artwork over time",
         ],
       },
     ],
@@ -191,11 +184,11 @@ export const FAQ_DE: FaqGroup[] = [
     items: [
       {
         q: "Wie wähle ich das beste Foto für mein individuelles Porträt aus?",
-        summary: "Helle, klare Nahaufnahmen wirken am besten.",
+        summary: "Helle, klare Nahaufnahmen wirken am besten!",
         bullets: [
-          "Gutes natürliches Licht, scharf fokussiert",
-          "Augen und Fell gut erkennbar",
-          "Unsicher? Senden Sie uns 2–3 Fotos — wir helfen bei der Auswahl",
+          "Natürliches Licht & scharfer Fokus: Klare Details bei Augen und Fell.",
+          "Augenhöhe: Fängt den echten Ausdruck und die 3D-Tiefe ein.",
+          "Unsicher? Senden Sie uns 2–3 Favoriten — wir helfen bei der Auswahl!",
         ],
       },
       {
@@ -205,17 +198,17 @@ export const FAQ_DE: FaqGroup[] = [
         process: [
           {
             title: "Bestellung aufgeben",
-            caption: "Wählen Sie Stil und Größe und laden Sie Ihr Lieblingsfoto hoch.",
+            caption: "Wählen Sie Stil und Größe und laden Sie Ihre Lieblingsfotos hoch.",
             icon: "order",
           },
           {
             title: "Wir bestätigen mit Ihnen",
-            caption: "Wir melden uns, um Foto und Platzierung Ihres Haustiers zu bestätigen.",
+            caption: "Wir melden uns, um Foto und Position Ihres Haustiers zu bestätigen.",
             icon: "confirm",
           },
           {
             title: "Schicht für Schicht handgemalt",
-            caption: "Nach Ihrer Freigabe beginnt das Malen — etwa 3 Wochen, da jede Schicht Zeit zum Trocknen braucht.",
+            caption: "Nach der Freigabe beginnt das Malen! Jedes individuelle Porträt braucht etwa 3 Wochen, damit jede Acrylschicht Zeit zum Trocknen und Aushärten hat — für feine 3D-Details.",
             icon: "paint",
           },
           {
@@ -232,19 +225,19 @@ export const FAQ_DE: FaqGroup[] = [
       },
       {
         q: "Was macht die Acrylporträts von Fuzzy Berry einzigartig?",
-        summary: "Schicht für Schicht handgemalt auf klarem Acryl — für echte 3D-Tiefe.",
+        summary: "100 % handgemalt in mehrschichtigem Acryl — für echte 3D-Tiefe.",
         bullets: [
-          "Kein Druck — jede Schicht ist handgemalt",
-          "Erzeugt einen schimmernden 3D-Effekt",
-          "Modern und elegant für Ihr Zuhause",
+          "Echte handgemalte Kunst: Kein Druck — jede einzelne Schicht wird von Hand auf klares Acryl gemalt",
+          "Leuchtender 3D-Effekt: Licht durchdringt die Schichten und lässt Augen und Fell lebendig wirken",
+          "Modernes Andenken: Ein elegantes, zeitloses Kunstwerk für jeden Raum",
         ],
       },
       {
         q: "Können Sie ein Porträt eines verstorbenen Haustiers anfertigen?",
-        summary: "Ja — mit Liebe gestaltet, um ihre Erinnerung zu ehren.",
+        summary: "Ja, selbstverständlich — mit besonderer Sorgfalt, um ihre Erinnerung zu ehren.",
         bullets: [
-          "Sagen Sie es uns einfach bei der Bestellung",
-          "Wir schenken diesen Porträts besondere, liebevolle Sorgfalt",
+          "Sagen Sie es uns einfach bei der Bestellung oder beim Einsenden Ihrer Fotos",
+          "Es liegt uns besonders am Herzen, ihren Charakter einzufangen und ein bedeutungsvolles Andenken für Sie zu schaffen",
         ],
       },
     ],
@@ -275,27 +268,19 @@ export const FAQ_DE: FaqGroup[] = [
     title: "Bestellungen & Änderungen",
     items: [
       {
-        q: "Wie lange dauert es, mein Porträt zu erstellen und zu erhalten?",
-        summary: "Etwa 2–3 Wochen Malzeit, plus Versand.",
-        bullets: [
-          "Jedes Stück wird sorgfältig handgemalt",
-          "Dazu kommt die übliche Versandzeit",
-        ],
-      },
-      {
         q: "Was, wenn ich meine Bestellung nach der Aufgabe stornieren möchte?",
-        summary: "Nur vor Malbeginn möglich.",
+        summary: "Stornierungen sind vor Malbeginn möglich.",
         bullets: [
-          "Wir bestätigen zuerst alle Details mit Ihnen",
-          "Keine Rückerstattung nach Malbeginn",
+          "Vor dem Malen: Sie können stornieren und erhalten eine volle Rückerstattung, bevor die finalen Details bestätigt werden",
+          "Nach Malbeginn: Da jedes Porträt individuell angefertigt wird, ist eine Rückerstattung nach Beginn des Handmalens nicht mehr möglich",
         ],
       },
       {
         q: "Kann ich meine Bestellung beschleunigen lassen?",
-        summary: "Express ist nicht möglich, aber wir tun unser Bestes.",
+        summary: "Express-Versand bieten wir standardmäßig nicht an, aber wir tun immer unser Bestes!",
         bullets: [
-          "Jede Schicht braucht Zeit zum Malen",
-          "Schreiben Sie uns Ihren Wunschtermin",
+          "Handgemalte Präzision: Jede Schicht braucht ihre eigene Trocken- und Aushärtezeit",
+          "Brauchen Sie es bis zu einem bestimmten Datum? Schreiben Sie uns vor der Bestellung — wenn es unser Zeitplan zulässt, tun wir unser Möglichstes",
         ],
       },
     ],
@@ -305,18 +290,19 @@ export const FAQ_DE: FaqGroup[] = [
     items: [
       {
         q: "Ist ein Fuzzy-Berry-Porträt ein gutes Geschenk? Können Sie direkt an eine andere Adresse versenden?",
-        summary: "Ja — ein beliebtes Geschenk, direkt verschickt.",
+        summary: "Ja — es ist eines unserer beliebtesten Geschenke, und wir versenden gerne direkt an sie!",
         bullets: [
-          "Wir versenden direkt an die beschenkte Person",
-          "Auf Wunsch mit handgeschriebener Karte",
+          "Direktversand: Geben Sie einfach die Adresse der beschenkten Person beim Checkout an",
+          "Besondere Wünsche? Teilen Sie es uns in den Bestellhinweisen mit oder schreiben Sie uns — wir schauen gerne, was wir für Sie tun können!",
         ],
       },
       {
         q: "Wie reinige und pflege ich mein Acrylporträt?",
-        summary: "Nur ein weiches, trockenes Tuch.",
+        summary: "Die Pflege ist einfach! Nur ein paar sanfte Schritte, damit es weiter strahlt:",
         bullets: [
-          "Keine scharfen Reinigungsmittel",
-          "Vor direkter Sonne schützen",
+          "Sanft abstauben: Vorsichtig mit einem trockenen, fusselfreien Mikrofasertuch abwischen",
+          "Chemikalien vermeiden: Keine scharfen Reiniger, Alkohol oder Glasreiniger auf dem klaren Acryl",
+          "Achtsam aufstellen: Vor direkter, intensiver Sonneneinstrahlung schützen, um das Kunstwerk dauerhaft zu bewahren",
         ],
       },
     ],

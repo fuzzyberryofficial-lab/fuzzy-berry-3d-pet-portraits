@@ -8,6 +8,9 @@ const baloo = Baloo_2({ subsets: ["latin"], weight: ["700"], variable: "--font-b
 
 const DISMISS_KEY = "fb_announcement_dismissed";
 
+// Flip to true to show the bar again.
+const SHOW_ANNOUNCEMENT_BAR = false;
+
 export default function AnnouncementBar() {
   const [visible, setVisible] = useState(true);
 
@@ -28,7 +31,7 @@ export default function AnnouncementBar() {
     setVisible(false);
   };
 
-  if (!visible) return null;
+  if (!SHOW_ANNOUNCEMENT_BAR || !visible) return null;
 
   return (
     <div className={`${styles.bar} ${baloo.variable}`}>

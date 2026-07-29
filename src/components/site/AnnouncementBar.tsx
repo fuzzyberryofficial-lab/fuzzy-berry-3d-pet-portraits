@@ -9,7 +9,7 @@ const baloo = Baloo_2({ subsets: ["latin"], weight: ["700"], variable: "--font-b
 const DISMISS_KEY = "fb_announcement_dismissed";
 
 // Flip to true to show the bar again.
-const SHOW_ANNOUNCEMENT_BAR = false;
+const SHOW_ANNOUNCEMENT_BAR = true;
 
 export default function AnnouncementBar() {
   const [visible, setVisible] = useState(true);

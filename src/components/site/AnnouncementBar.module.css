@@ -1,0 +1,46 @@
+.bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #241534;
+  color: #ffc94d;
+  padding: 10px 44px;
+  border-bottom: 3px solid #241534;
+  font-family: var(--font-baloo-announce), sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
+.text {
+  margin: 0;
+}
+
+.close {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  opacity: 0.75;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .bar {
+    padding: 10px 36px;
+    font-size: 12.5px;
+  }
+}

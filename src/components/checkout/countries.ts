@@ -283,6 +283,10 @@ const SHIPPING_RATES: Record<ShippingZone, number> = {
   row: 39,
 };
 
+// Promotional override: free shipping worldwide, limited time only.
+// Flip to false to restore the normal zone-based rates above.
+const FREE_SHIPPING_PROMO = true;
+
 export function getShippingZone(code: string): ShippingZone {
   if (code === DOMESTIC_COUNTRY_CODE) return "domestic";
   if (EU_COUNTRY_CODES.has(code)) return "eu";
@@ -290,6 +294,7 @@ export function getShippingZone(code: string): ShippingZone {
 }
 
 export function getShippingRate(code: string): number {
+  if (FREE_SHIPPING_PROMO) return 0;
   return SHIPPING_RATES[getShippingZone(code)];
 }
 

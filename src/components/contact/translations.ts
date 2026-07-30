@@ -8,6 +8,8 @@ export interface ContactTranslation extends NavTranslation {
   email: string;
   message: string;
   submit: string;
+  sending: string;
+  errorMsg: string;
   thanksTitle: string;
   thanksBody: string;
   privacy: string;
@@ -29,6 +31,8 @@ export const TR: Record<Lang, ContactTranslation> = {
     email: "Email address",
     message: "Leave a message",
     submit: "Submit",
+    sending: "Sending…",
+    errorMsg: "Something went wrong. Please try again or email us directly.",
     thanksTitle: "Thanks for reaching out!",
     thanksBody: "We'll get back to you at the email you left.",
     privacy: "Privacy Policy",
@@ -48,6 +52,8 @@ export const TR: Record<Lang, ContactTranslation> = {
     email: "E-Mail-Adresse",
     message: "Nachricht",
     submit: "Absenden",
+    sending: "Wird gesendet…",
+    errorMsg: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt per E-Mail.",
     thanksTitle: "Danke für Ihre Nachricht!",
     thanksBody: "Wir melden uns bei der angegebenen E-Mail-Adresse.",
     privacy: "Datenschutz",

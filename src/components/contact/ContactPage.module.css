@@ -71,3 +71,9 @@
   margin: 0;
   opacity: 0.85;
 }
+
+.errorMsg {
+  color: var(--berry-dark);
+  margin: 0;
+  font-size: 14px;
+}

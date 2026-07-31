@@ -104,7 +104,7 @@ export const TR: Record<Lang, Translation> = {
     thankYou: "Thank you,",
     backToFuzzy: "Back to Fuzzy Berry",
     doneBody:
-      "We'll personally reach out to confirm your pet's photo before our artist begins. Your piece takes 2–3 weeks to hand-paint, plus shipping.",
+      "We'll personally reach out to confirm your pet's photo before our artist begins. Your piece takes 2–3 weeks to hand-paint, plus shipping. We can't wait to help you celebrate the one who means so much to you.",
     confirmationSent: "Confirmation sent to",
     single: { kicker: "Single Pet", title: "Single Pet Portrait", body: "One companion, front and center." },
     multi: { kicker: "Multi Pet", title: "Multi Pet Portrait", body: "The whole crew together." },
@@ -166,7 +166,7 @@ export const TR: Record<Lang, Translation> = {
     thankYou: "Danke,",
     backToFuzzy: "Zurück zu Fuzzy Berry",
     doneBody:
-      "Wir melden uns persönlich, um das Foto zu bestätigen, bevor unser Künstler beginnt. Ihr Werk benötigt 2–3 Wochen Handmalerei, plus Versand.",
+      "Wir melden uns persönlich, um das Foto zu bestätigen, bevor unser Künstler beginnt. Ihr Werk benötigt 2–3 Wochen Handmalerei, plus Versand. Wir freuen uns schon sehr darauf, mit Ihnen den zu feiern, der Ihnen so viel bedeutet.",
     confirmationSent: "Bestätigung gesendet an",
     single: { kicker: "Einzeltier", title: "Einzeltier-Porträt", body: "Ein Begleiter, im Mittelpunkt." },
     multi: { kicker: "Mehrere Tiere", title: "Mehrtier-Porträt", body: "Ihre ganze Truppe zusammen." },

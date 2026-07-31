@@ -1,10 +1,10 @@
 "use client";
 
 import { Baloo_2, Poppins } from "next/font/google";
-import Link from "next/link";
 import siteStyles from "../site/site.module.css";
 import styles from "./ShowroomPage.module.css";
-import LangSwitch from "../site/LangSwitch";
+import SiteNav from "../site/SiteNav";
+import SiteFooter from "../site/SiteFooter";
 import ProcessSteps from "../site/ProcessSteps";
 import { useLang } from "../site/useLang";
 import { GOOGLE_MAPS_URL, SHOWROOM_ADDRESS, TR } from "./translations";
@@ -26,17 +26,7 @@ export default function ShowroomPage() {
 
   return (
     <div className={`${siteStyles.page} ${baloo.variable} ${poppins.variable}`}>
-      <nav className={siteStyles.navStatic}>
-        <Link href="/" className={siteStyles.brand} style={{ fontSize: 32 }}>
-          <span className={siteStyles.brandFuzzy}>Fuzzy</span> <span className={siteStyles.brandBerry}>Berry</span>
-        </Link>
-        <div style={{ marginLeft: "auto" }}>
-          <LangSwitch lang={lang} onChange={setLang} />
-        </div>
-        <Link href="/contact" className={siteStyles.backLink}>
-          {t.backToSite}
-        </Link>
-      </nav>
+      <SiteNav t={t} lang={lang} onLangChange={setLang} current="showroom" />
 
       <div className={styles.wrap}>
         <div className={styles.hero}>
@@ -103,6 +93,15 @@ export default function ShowroomPage() {
           <ProcessSteps steps={steps} />
         </div>
       </div>
+
+      <SiteFooter
+        links={[
+          { href: "/faqs", label: t.navFaqs },
+          { href: "/contact", label: t.navContact },
+          { href: "/policies#privacy", label: t.privacy },
+          { href: "/policies#returns", label: t.returns },
+        ]}
+      />
     </div>
   );
 }

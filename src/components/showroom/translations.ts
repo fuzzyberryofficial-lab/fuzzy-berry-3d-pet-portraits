@@ -1,7 +1,9 @@
-import type { Lang } from "../site/navTypes";
+import type { Lang, NavTranslation } from "../site/navTypes";
 
-export interface ShowroomTranslation {
+export interface ShowroomTranslation extends NavTranslation {
   backToSite: string;
+  privacy: string;
+  returns: string;
   kicker: string;
   title: string;
   intro: string;
@@ -26,7 +28,16 @@ export interface ShowroomTranslation {
 
 export const TR: Record<Lang, ShowroomTranslation> = {
   en: {
+    navHome: "Home",
+    navCollection: "Collection",
+    navAbout: "About Us",
+    navFaqs: "FAQs",
+    navContact: "Contact us",
+    navShowroom: "Visit Us",
+    startPortrait: "Start Your Portrait",
     backToSite: "← Back to site",
+    privacy: "Privacy Policy",
+    returns: "Return Policy",
     kicker: "Vienna Showroom",
     title: "Visit Our Vienna Showroom & Pickup Point",
     intro:
@@ -50,7 +61,16 @@ export const TR: Record<Lang, ShowroomTranslation> = {
     step3Text: "We'll email you when it's ready — just stop by 's Fachl Wien during opening hours to collect your artwork!",
   },
   de: {
+    navHome: "Startseite",
+    navCollection: "Kollektion",
+    navAbout: "Über uns",
+    navFaqs: "FAQs",
+    navContact: "Kontakt",
+    navShowroom: "Showroom",
+    startPortrait: "Porträt starten",
     backToSite: "← Zurück zur Seite",
+    privacy: "Datenschutz",
+    returns: "Rückgaberecht",
     kicker: "Showroom Wien",
     title: "Besuchen Sie unseren Showroom & Abholpunkt in Wien",
     intro:

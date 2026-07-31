@@ -18,6 +18,7 @@ const LINKS: { key: NavPage; href: string; label: keyof NavTranslation }[] = [
   { key: "about", href: "/about", label: "navAbout" },
   { key: "faqs", href: "/faqs", label: "navFaqs" },
   { key: "contact", href: "/contact", label: "navContact" },
+  { key: "showroom", href: "/showroom", label: "navShowroom" },
 ];
 
 export default function SiteNav({ t, lang, onLangChange, current }: SiteNavProps) {

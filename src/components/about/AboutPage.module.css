@@ -29,10 +29,14 @@
 
 .paragraph {
   opacity: 0.85;
-  max-width: 56ch;
+  max-width: 48ch;
   font-size: 17px;
   line-height: 1.625;
   margin: 0 0 24px;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .paragraph:last-child {

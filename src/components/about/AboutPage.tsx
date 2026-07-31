@@ -22,7 +22,7 @@ export default function AboutPage() {
 
       <section className={styles.hero}>
         <SiteImage src="/images/The Story Behind Fuzzy Berry.JPG" alt={t.cocoAlt} className={styles.photo} priority />
-        <div>
+        <div lang={lang}>
           <p className={siteStyles.kicker}>{t.kicker}</p>
           <h1 className={styles.title}>{t.title}</h1>
           <p className={styles.paragraph}>{t.p1}</p>

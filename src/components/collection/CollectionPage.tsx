@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Baloo_2, Poppins } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 import siteStyles from "../site/site.module.css";
 import styles from "./CollectionPage.module.css";
 import SiteNav from "../site/SiteNav";
@@ -37,10 +39,20 @@ function Gallery({ items }: { items: GalleryItem[] }) {
 
 export default function CollectionPage() {
   const [lang, setLang] = useLang();
+  const [showFrameGuide, setShowFrameGuide] = useState(false);
 
   const t = TR[lang];
   const singleRows = SINGLE_PET_ROWS[lang];
   const multiRows = MULTI_PET_ROWS[lang];
+
+  useEffect(() => {
+    if (!showFrameGuide) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowFrameGuide(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showFrameGuide]);
 
   return (
     <div className={`${siteStyles.page} ${baloo.variable} ${poppins.variable}`}>
@@ -78,6 +90,9 @@ export default function CollectionPage() {
               <tr>
                 <td colSpan={2} style={{ textAlign: "left", fontStyle: "italic", opacity: 0.8 }}>
                   + {t.frameAddon}
+                  <button type="button" className={styles.frameGuideLink} onClick={() => setShowFrameGuide(true)}>
+                    🖼️ {t.frameGuideLink}
+                  </button>
                 </td>
                 <td style={{ color: "var(--berry-dark)" }}>€20</td>
               </tr>
@@ -110,6 +125,9 @@ export default function CollectionPage() {
               <tr>
                 <td colSpan={2} style={{ textAlign: "left", fontStyle: "italic", opacity: 0.8 }}>
                   + {t.frameAddon}
+                  <button type="button" className={styles.frameGuideLink} onClick={() => setShowFrameGuide(true)}>
+                    🖼️ {t.frameGuideLink}
+                  </button>
                 </td>
                 <td style={{ color: "var(--berry-dark)" }}>€20</td>
               </tr>
@@ -135,6 +153,28 @@ export default function CollectionPage() {
           { href: "/policies#returns", label: t.returns },
         ]}
       />
+
+      {showFrameGuide && (
+        <div className={styles.frameGuideOverlay} onClick={() => setShowFrameGuide(false)}>
+          <button
+            type="button"
+            className={styles.frameGuideCloseBtn}
+            onClick={() => setShowFrameGuide(false)}
+            aria-label={t.frameGuideClose}
+          >
+            ×
+          </button>
+          <div className={styles.frameGuideImageWrap} onClick={(e) => e.stopPropagation()}>
+            <Image
+              src="/images/frame-color-guide.jpg"
+              alt={t.frameGuideTitle}
+              fill
+              sizes="100vw"
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

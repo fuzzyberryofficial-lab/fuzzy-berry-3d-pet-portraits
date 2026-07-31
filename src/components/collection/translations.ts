@@ -12,6 +12,9 @@ export interface CollectionTranslation extends NavTranslation {
   thSize: string;
   thPrice: string;
   frameAddon: string;
+  frameGuideLink: string;
+  frameGuideTitle: string;
+  frameGuideClose: string;
   ctaTitle: string;
   ctaSub: string;
   privacy: string;
@@ -38,6 +41,9 @@ export const TR: Record<Lang, CollectionTranslation> = {
     thSize: "Size",
     thPrice: "Price €",
     frameAddon: "Add a frame (optional)",
+    frameGuideLink: "View Frame Color Guide",
+    frameGuideTitle: "Frame Color Guide",
+    frameGuideClose: "Close",
     ctaTitle: "Ready to begin?",
     ctaSub: "Upload a photo and we'll take it from there.",
     privacy: "Privacy Policy",
@@ -62,6 +68,9 @@ export const TR: Record<Lang, CollectionTranslation> = {
     thSize: "Größe",
     thPrice: "Preis €",
     frameAddon: "Rahmen hinzufügen (optional)",
+    frameGuideLink: "Rahmenfarben-Leitfaden ansehen",
+    frameGuideTitle: "Rahmenfarben-Leitfaden",
+    frameGuideClose: "Schließen",
     ctaTitle: "Bereit anzufangen?",
     ctaSub: "Laden Sie ein Foto hoch — wir übernehmen den Rest.",
     privacy: "Datenschutz",

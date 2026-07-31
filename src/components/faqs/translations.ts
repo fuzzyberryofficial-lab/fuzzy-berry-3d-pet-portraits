@@ -1,5 +1,5 @@
 import type { Lang, NavTranslation } from "../site/navTypes";
-import type { ProcessStepItem } from "./ProcessSteps";
+import type { ProcessStepItem } from "../site/ProcessSteps";
 
 export interface FaqsTranslation extends NavTranslation {
   kicker: string;

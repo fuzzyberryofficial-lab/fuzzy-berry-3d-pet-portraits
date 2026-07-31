@@ -36,6 +36,12 @@
 
 .storesLine {
   opacity: 0.85;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.storesLine:hover {
+  color: var(--berry-dark) !important;
 }
 
 .form {

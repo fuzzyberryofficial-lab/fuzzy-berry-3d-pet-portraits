@@ -7,7 +7,7 @@ import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
 import { useLang } from "../site/useLang";
 import { FAQ_DE, FAQ_EN, TR } from "./translations";
-import ProcessSteps from "./ProcessSteps";
+import ProcessSteps from "../site/ProcessSteps";
 
 const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Baloo_2, Poppins } from "next/font/google";
 import siteStyles from "../site/site.module.css";
 import styles from "./ContactPage.module.css";
@@ -98,7 +99,9 @@ export default function ContactPage() {
               </svg>
             </a>
           </div>
-          <p className={styles.storesLine}>{t.stores}</p>
+          <Link href="/showroom" className={styles.storesLine} style={{ color: "var(--berry)" }}>
+            {t.stores}
+          </Link>
         </div>
 
         {submitted ? (

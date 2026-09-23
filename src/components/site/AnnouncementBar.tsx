@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Baloo_2 } from "next/font/google";
 import styles from "./AnnouncementBar.module.css";
 
@@ -12,6 +13,7 @@ const DISMISS_KEY = "fb_announcement_dismissed";
 const SHOW_ANNOUNCEMENT_BAR = true;
 
 export default function AnnouncementBar() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function AnnouncementBar() {
     setVisible(false);
   };
 
-  if (!SHOW_ANNOUNCEMENT_BAR || !visible) return null;
+  if (!SHOW_ANNOUNCEMENT_BAR || !visible || pathname?.startsWith("/admin")) return null;
 
   return (
     <div className={`${styles.bar} ${baloo.variable}`}>

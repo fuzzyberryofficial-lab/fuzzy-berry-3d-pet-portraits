@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
+import { getSupabaseAdmin, ORDER_PHOTOS_BUCKET } from "@/lib/supabase";
 import { COLLECTIONS_BASE, type CollectionKey } from "@/components/checkout/catalog";
 import { getCountryLabel, getShippingRate, getShippingZone, getShippingZoneLabel } from "@/components/checkout/countries";
 
@@ -30,8 +31,15 @@ interface CheckoutRequestBody {
 
 export async function POST(request: Request) {
   let body: CheckoutRequestBody;
+  let photos: File[] = [];
   try {
-    body = await request.json();
+    const formData = await request.formData();
+    const payload = formData.get("payload");
+    if (typeof payload !== "string") throw new Error("Missing payload.");
+    body = JSON.parse(payload);
+    photos = [0, 1, 2]
+      .map((i) => formData.get(`photo${i}`))
+      .filter((f): f is File => f instanceof File && f.size > 0);
   } catch {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
@@ -110,6 +118,60 @@ export async function POST(request: Request) {
         frame: body.addFrame ? body.displayNames.frameColorLabel : "none",
       },
     });
+
+    // Best-effort: record the order + upload photos to our own backend so the
+    // owner can browse order history and uploaded pet photos later. None of
+    // this can block or fail the checkout — Stripe already has the session.
+    try {
+      const supabase = getSupabaseAdmin();
+
+      const { data: customer, error: customerError } = await supabase
+        .from("customers")
+        .upsert({ email: body.ship.email, name: body.ship.name }, { onConflict: "email" })
+        .select("id")
+        .single();
+      if (customerError) throw customerError;
+
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          customer_id: customer.id,
+          stripe_session_id: session.id,
+          status: "pending",
+          collection_key: body.collectionKey,
+          type_key: body.typeKey,
+          size_label: size.label,
+          frame_color: body.addFrame ? body.displayNames.frameColorLabel : null,
+          artist_notes: body.artistNotes || null,
+          shipping_name: body.ship.name,
+          shipping_address: body.ship.address,
+          shipping_city: body.ship.city,
+          shipping_postal: body.ship.postal,
+          shipping_country: getCountryLabel(body.ship.country),
+          amount_total: lineItems.reduce((sum, item) => sum + (item.price_data?.unit_amount ?? 0), 0),
+          currency: CURRENCY,
+        })
+        .select("id")
+        .single();
+      if (orderError) throw orderError;
+
+      for (let i = 0; i < photos.length; i++) {
+        const photo = photos[i];
+        const safeName = photo.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        const path = `orders/${order.id}/${i}-${safeName}`;
+        const { error: uploadError } = await supabase.storage
+          .from(ORDER_PHOTOS_BUCKET)
+          .upload(path, photo, { contentType: photo.type || "application/octet-stream" });
+        if (uploadError) throw uploadError;
+
+        const { error: photoRowError } = await supabase
+          .from("order_photos")
+          .insert({ order_id: order.id, storage_path: path });
+        if (photoRowError) throw photoRowError;
+      }
+    } catch (err) {
+      console.error("Failed to record order in Supabase:", err);
+    }
 
     return NextResponse.json({ url: session.url });
   } catch (err) {

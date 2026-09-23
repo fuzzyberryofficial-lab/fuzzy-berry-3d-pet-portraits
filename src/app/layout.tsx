@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import AnnouncementBar from "@/components/site/AnnouncementBar";
 import "./globals.css";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body>
         <AnnouncementBar />
         {children}
+        <Analytics />
       </body>
     </html>
   );

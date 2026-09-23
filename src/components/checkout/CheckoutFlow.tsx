@@ -170,10 +170,10 @@ export default function CheckoutFlow() {
     window.sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot));
 
     try {
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const formData = new FormData();
+      formData.set(
+        "payload",
+        JSON.stringify({
           collectionKey,
           typeKey,
           sizeIndex,
@@ -186,6 +186,14 @@ export default function CheckoutFlow() {
           ship,
           artistNotes,
         }),
+      );
+      photos.forEach((photo, i) => {
+        if (photo) formData.set(`photo${i}`, photo);
+      });
+
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        body: formData,
       });
       const data: { url?: string; error?: string } = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error || "start-error");

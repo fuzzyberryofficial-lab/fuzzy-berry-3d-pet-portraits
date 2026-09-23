@@ -5,7 +5,6 @@ import siteStyles from "../site/site.module.css";
 import styles from "./ShowroomPage.module.css";
 import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
-import ProcessSteps from "../site/ProcessSteps";
 import { useLang } from "../site/useLang";
 import { GOOGLE_MAPS_URL, SHOWROOM_ADDRESS, TR } from "./translations";
 
@@ -17,12 +16,6 @@ export default function ShowroomPage() {
   const t = TR[lang];
 
   const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SHOWROOM_ADDRESS)}&output=embed`;
-
-  const steps = [
-    { title: t.step1Title, caption: t.step1Text, icon: "order" as const },
-    { title: t.step2Title, caption: t.step2Text, icon: "paint" as const },
-    { title: t.step3Title, caption: t.step3Text, icon: "enjoy" as const },
-  ];
 
   return (
     <div className={`${siteStyles.page} ${baloo.variable} ${poppins.variable}`}>
@@ -52,16 +45,7 @@ export default function ShowroomPage() {
               <div>
                 <p className={styles.infoLabel}>{t.hoursLabel}</p>
                 <p className={styles.infoText}>{t.hoursWeekday}</p>
-                <p className={styles.infoText}>{t.hoursSaturday}</p>
                 <p className={styles.infoTextMuted}>{t.hoursClosed}</p>
-              </div>
-            </div>
-
-            <div className={styles.infoRow}>
-              <span className={styles.infoIcon}>✨</span>
-              <div>
-                <p className={styles.infoLabel}>{t.featuresLabel}</p>
-                <p className={styles.infoText}>{t.featuresText}</p>
               </div>
             </div>
 
@@ -86,11 +70,6 @@ export default function ShowroomPage() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        </div>
-
-        <div className={styles.guideSection}>
-          <h2 className={styles.guideTitle}>{t.guideTitle}</h2>
-          <ProcessSteps steps={steps} />
         </div>
       </div>
 

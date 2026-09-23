@@ -200,6 +200,7 @@ export default function HomePage() {
               alt={isEn ? "Unboxing a Fuzzy Berry portrait" : "Auspacken eines Fuzzy-Berry-Porträts"}
               className={styles.unboxImage}
               objectPosition="50% 42%"
+              imageStyle={{ transform: "translateY(1cm)" }}
             />
           </div>
         </section>

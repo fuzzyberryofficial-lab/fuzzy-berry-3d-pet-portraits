@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { listCustomers, formatMoney } from "@/lib/adminData";
+import DeleteButton from "@/components/admin/DeleteButton";
+import { deleteCustomer } from "./actions";
 import tableStyles from "@/components/admin/AdminTable.module.css";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +23,7 @@ export default async function AdminCustomersPage() {
               <th>Orders</th>
               <th>Lifetime spend</th>
               <th>First seen</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -35,6 +38,13 @@ export default async function AdminCustomersPage() {
                 <td>{customer.order_count}</td>
                 <td>{formatMoney(customer.lifetime_spend, "eur")}</td>
                 <td>{new Date(customer.created_at).toLocaleDateString()}</td>
+                <td>
+                  <DeleteButton
+                    id={customer.id}
+                    action={deleteCustomer}
+                    confirmText={`Delete ${customer.name} and all ${customer.order_count} of their order(s)? This can't be undone.`}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

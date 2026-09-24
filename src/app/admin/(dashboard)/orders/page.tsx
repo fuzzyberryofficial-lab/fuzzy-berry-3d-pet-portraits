@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { listOrders, formatMoney } from "@/lib/adminData";
 import StatusBadge from "@/components/admin/StatusBadge";
+import DeleteButton from "@/components/admin/DeleteButton";
+import { deleteOrder } from "./actions";
 import tableStyles from "@/components/admin/AdminTable.module.css";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +44,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
                 <th>Amount</th>
                 <th>Status</th>
                 <th>Date</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -62,6 +65,9 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
                     <StatusBadge status={order.status} />
                   </td>
                   <td>{new Date(order.created_at).toLocaleDateString()}</td>
+                  <td>
+                    <DeleteButton id={order.id} action={deleteOrder} confirmText="Delete this order? This can't be undone." />
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCustomerById, getOrdersByCustomerId, formatMoney } from "@/lib/adminData";
 import StatusBadge from "@/components/admin/StatusBadge";
+import DeleteButton from "@/components/admin/DeleteButton";
+import { deleteCustomer } from "../actions";
 import tableStyles from "@/components/admin/AdminTable.module.css";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +26,17 @@ export default async function AdminCustomerDetailPage({ params }: PageProps) {
       </Link>
 
       <div className={tableStyles.section}>
-        <h2 className={tableStyles.sectionTitle}>{customer.name}</h2>
+        <h2 className={tableStyles.sectionTitle} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {customer.name}
+          <span style={{ marginLeft: "auto" }}>
+            <DeleteButton
+              id={customer.id}
+              action={deleteCustomer}
+              confirmText={`Delete ${customer.name} and all ${customer.order_count} of their order(s)? This can't be undone.`}
+              redirectTo="/admin/customers"
+            />
+          </span>
+        </h2>
         <div className={tableStyles.detailGrid}>
           <div>
             <p className={tableStyles.detailLabel}>Email</p>

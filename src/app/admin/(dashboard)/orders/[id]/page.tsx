@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOrderById, getOrderPhotos, formatMoney } from "@/lib/adminData";
 import StatusBadge from "@/components/admin/StatusBadge";
+import DeleteButton from "@/components/admin/DeleteButton";
+import { deleteOrder } from "../actions";
 import tableStyles from "@/components/admin/AdminTable.module.css";
 
 export const dynamic = "force-dynamic";
@@ -24,8 +26,16 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
       </Link>
 
       <div className={tableStyles.section}>
-        <h2 className={tableStyles.sectionTitle}>
+        <h2 className={tableStyles.sectionTitle} style={{ display: "flex", alignItems: "center", gap: 12 }}>
           Order for {order.customers?.name ?? order.shipping_name} <StatusBadge status={order.status} />
+          <span style={{ marginLeft: "auto" }}>
+            <DeleteButton
+              id={order.id}
+              action={deleteOrder}
+              confirmText="Delete this order? This can't be undone."
+              redirectTo="/admin/orders"
+            />
+          </span>
         </h2>
 
         <div className={tableStyles.detailGrid}>

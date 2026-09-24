@@ -114,15 +114,16 @@ export interface GalleryItem {
   name: string;
   src: string;
   objectPosition?: string;
+  objectFit?: "cover" | "contain";
   scale?: number;
   transform?: string;
 }
 
 export const SINGLE_GALLERY_ITEMS: GalleryItem[] = [
-  { name: "20×20 cm", src: "/images/Single Pet Collection-20x20cm.jpg" },
-  { name: "20×30 cm", src: "/images/Single Pet Collection-20x30cm.jpg", scale: 1.25 },
-  { name: "25×25 cm", src: "/images/Single Pet Collection-25x25cm.png" },
-  { name: "30×30 cm", src: "/images/Single Pet Collection-30x30cm.png" },
+  { name: "20×20 cm", src: "/images/Single Pet Collection-20x20cm.jpg", scale: 1.05 },
+  { name: "20×30 cm", src: "/images/Single Pet Collection-20x30cm.jpg", scale: 1.365 },
+  { name: "25×25 cm", src: "/images/Single Pet Collection-25x25cm-v2.png", scale: 1.06 },
+  { name: "30×30 cm", src: "/images/Single Pet Collection-30x30cm.png", objectPosition: "50% 0%" },
 ];
 
 export const MULTI_GALLERY_ITEMS: GalleryItem[] = [

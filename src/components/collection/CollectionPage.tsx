@@ -26,6 +26,7 @@ function Gallery({ items }: { items: GalleryItem[] }) {
             alt={item.name}
             className={styles.galleryImage}
             objectPosition={item.objectPosition}
+            objectFit={item.objectFit}
             imageStyle={
               item.transform ? { transform: item.transform } : item.scale ? { transform: `scale(${item.scale})` } : undefined
             }

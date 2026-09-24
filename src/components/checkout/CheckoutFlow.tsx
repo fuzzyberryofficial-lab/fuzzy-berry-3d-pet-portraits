@@ -202,6 +202,7 @@ export default function CheckoutFlow() {
       window.sessionStorage.removeItem(SNAPSHOT_KEY);
       setPaymentError("start-error");
       setIsRedirecting(false);
+      setStep("payment");
     }
   };
 
@@ -476,6 +477,7 @@ export default function CheckoutFlow() {
                 </select>
               </div>
             </div>
+            <p className={styles.paymentNote}>{t.stripeNote}</p>
             <div className={styles.actions}>
               <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("upload")}>
                 {t.back}
@@ -483,10 +485,10 @@ export default function CheckoutFlow() {
               <button
                 type="button"
                 className={`${styles.fbBtn} ${styles.fbBtnPrimary}`}
-                disabled={!shipValid}
-                onClick={() => setStep("payment")}
+                disabled={!canPay || isRedirecting}
+                onClick={handlePayWithStripe}
               >
-                {t.continuePayment} →
+                {isRedirecting ? "…" : `${t.payWithStripe} — €${total}`}
               </button>
             </div>
           </>

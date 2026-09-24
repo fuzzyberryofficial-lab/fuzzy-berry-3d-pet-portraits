@@ -39,6 +39,15 @@
   white-space: nowrap;
 }
 
+.sortableHeader {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortableHeader:hover {
+  color: #1a1a2e;
+}
+
 .table td {
   padding: 10px;
   border-bottom: 1px solid #eceef1;
@@ -105,6 +114,20 @@
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filterGroupLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b6b76;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .empty {

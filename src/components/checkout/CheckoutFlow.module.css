@@ -510,6 +510,12 @@
   margin-bottom: 20px;
 }
 
+.promoNote {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 6px 0 0;
+}
+
 .banner {
   border: 1.5px solid var(--ink);
   border-radius: 14px;

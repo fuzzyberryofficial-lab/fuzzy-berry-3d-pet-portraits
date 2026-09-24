@@ -23,6 +23,7 @@ export interface OrderRow {
   shipping_country: string;
   amount_total: number;
   currency: string;
+  promo_code: string | null;
   created_at: string;
   paid_at: string | null;
   customers: OrderCustomer | null;
@@ -180,6 +181,65 @@ export async function getOrdersByCustomerId(customerId: string): Promise<OrderRo
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data as OrderRow[]) ?? [];
+}
+
+export interface PromoStat {
+  code: string;
+  totalUses: number;
+  paidUses: number;
+  lastUsedAt: string | null;
+}
+
+export interface PromoFilters {
+  code?: string;
+  from?: string;
+  to?: string;
+}
+
+export async function listPromoRedemptions(filters: PromoFilters = {}): Promise<OrderRow[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = getSupabaseAdmin();
+  let query = supabase.from("orders").select(ORDER_SELECT).not("promo_code", "is", null);
+
+  if (filters.code) {
+    query = query.ilike("promo_code", `%${filters.code}%`);
+  }
+  // "from"/"to" come from <input type="month"> values ("YYYY-MM", a bare
+  // month with no day or time) — Postgres can't parse that directly, and a
+  // raw month is ambiguous as a boundary anyway. Convert each to a real
+  // instant: "from" is the start of that month, "to" is the start of the
+  // *next* month so the whole month is included (inclusive upper bound).
+  if (filters.from) {
+    const fromDate = new Date(`${filters.from}-01T00:00:00.000Z`);
+    query = query.gte("created_at", fromDate.toISOString());
+  }
+  if (filters.to) {
+    const toDate = new Date(`${filters.to}-01T00:00:00.000Z`);
+    toDate.setUTCMonth(toDate.getUTCMonth() + 1);
+    query = query.lt("created_at", toDate.toISOString());
+  }
+
+  const { data, error } = await query.order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data as OrderRow[]) ?? [];
+}
+
+export function summarizePromoStats(redemptions: OrderRow[]): PromoStat[] {
+  const byCode = new Map<string, PromoStat>();
+  for (const row of redemptions) {
+    if (!row.promo_code) continue;
+    const existing = byCode.get(row.promo_code) ?? {
+      code: row.promo_code,
+      totalUses: 0,
+      paidUses: 0,
+      lastUsedAt: null,
+    };
+    existing.totalUses += 1;
+    if (row.status === "paid") existing.paidUses += 1;
+    if (!existing.lastUsedAt || row.created_at > existing.lastUsedAt) existing.lastUsedAt = row.created_at;
+    byCode.set(row.promo_code, existing);
+  }
+  return Array.from(byCode.values()).sort((a, b) => b.totalUses - a.totalUses);
 }
 
 export function formatMoney(cents: number, currency: string): string {

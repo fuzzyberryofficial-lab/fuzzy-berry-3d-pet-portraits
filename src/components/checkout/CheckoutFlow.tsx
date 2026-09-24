@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Fraunces, Poppins } from "next/font/google";
 import styles from "./CheckoutFlow.module.css";
 import ImageUploadSlot from "./ImageUploadSlot";
-import { COLLECTIONS_BASE, FRAME_SWATCHES, type CollectionKey, type FrameColorKey } from "./catalog";
+import { COLLECTIONS_BASE, FRAME_SWATCHES, PROMO_CODES, type CollectionKey, type FrameColorKey } from "./catalog";
 import { COUNTRIES, getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 
@@ -30,6 +30,7 @@ interface CheckoutSnapshot {
   frameColor: FrameColorKey;
   artistNotes: string;
   ship: ShipInfo;
+  promoCode: string;
 }
 
 const SNAPSHOT_KEY = "fb_checkout_snapshot";
@@ -59,6 +60,8 @@ export default function CheckoutFlow() {
   const [paymentError, setPaymentError] = useState<"start-error" | "failed" | "verify-error" | null>(null);
   const [paymentCancelled, setPaymentCancelled] = useState(false);
   const [showFrameGuide, setShowFrameGuide] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoFromLink, setPromoFromLink] = useState(false);
 
   useEffect(() => {
     if (!showFrameGuide) return;
@@ -68,6 +71,17 @@ export default function CheckoutFlow() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [showFrameGuide]);
+
+  useEffect(() => {
+    // Lets an in-store QR code / flyer link straight to ?promo=CODE and have
+    // it pre-filled, rather than making someone type it in by hand.
+    const promo = new URLSearchParams(window.location.search).get("promo");
+    if (promo) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPromoCode(promo.toUpperCase());
+      setPromoFromLink(true);
+    }
+  }, []);
 
   useEffect(() => {
     // One-time correction after hydration: the server always renders "en"
@@ -103,6 +117,7 @@ export default function CheckoutFlow() {
         setFrameColor(snapshot.frameColor);
         setArtistNotes(snapshot.artistNotes);
         setShip(snapshot.ship);
+        setPromoCode(snapshot.promoCode ?? "");
       } catch {}
     }
     setStep("payment");
@@ -147,7 +162,12 @@ export default function CheckoutFlow() {
   const size = typeBase ? typeBase.sizes[sizeIndex] : null;
   const portraitPrice = size ? size.price : 0;
   const shippingCost = ship.country ? getShippingRate(ship.country) : 0;
-  const total = portraitPrice + (addFrame ? 20 : 0) + shippingCost;
+
+  const normalizedPromo = promoCode.trim().toUpperCase();
+  const promoConfig = normalizedPromo ? PROMO_CODES[normalizedPromo] : undefined;
+  const promoRedeemed = !!(promoConfig?.freeFrame && addFrame);
+  const frameCost = addFrame ? (promoRedeemed ? 0 : 20) : 0;
+  const total = portraitPrice + frameCost + shippingCost;
 
   const currentIdx = STEP_ORDER.indexOf(step);
   const canContinueStyle = !!(collectionBase && typeBase && size);
@@ -177,7 +197,16 @@ export default function CheckoutFlow() {
     setPaymentCancelled(false);
     setIsRedirecting(true);
 
-    const snapshot: CheckoutSnapshot = { collectionKey, typeKey, sizeIndex, addFrame, frameColor, artistNotes, ship };
+    const snapshot: CheckoutSnapshot = {
+      collectionKey,
+      typeKey,
+      sizeIndex,
+      addFrame,
+      frameColor,
+      artistNotes,
+      ship,
+      promoCode: normalizedPromo,
+    };
     window.sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot));
 
     try {
@@ -189,6 +218,7 @@ export default function CheckoutFlow() {
           typeKey,
           sizeIndex,
           addFrame,
+          promoCode: normalizedPromo,
           displayNames: {
             collectionTitle: selectedCollectionTitle,
             typeLabel: selectedType.label,
@@ -268,6 +298,11 @@ export default function CheckoutFlow() {
       <div className={styles.main}>
         {step === "style" && (
           <>
+            {promoFromLink && (
+              <div className={`${styles.banner} ${styles.bannerNotice}`} style={{ marginBottom: 20 }}>
+                {t.promoBannerMsg}
+              </div>
+            )}
             <h2 className={styles.h2}>{t.chooseCollection}</h2>
             <p className={styles.sub}>{t.chooseCollectionSub}</p>
 
@@ -362,6 +397,30 @@ export default function CheckoutFlow() {
                   </div>
                 </div>
 
+                <div className={styles.field}>
+                  <label className={styles.fbFieldLabel} htmlFor="promo-code">
+                    {t.promoLabel}
+                  </label>
+                  <input
+                    id="promo-code"
+                    className={styles.fbInput}
+                    style={{ maxWidth: 220 }}
+                    type="text"
+                    value={promoCode}
+                    placeholder={t.promoPlaceholder}
+                    onChange={(e) => {
+                      setPromoCode(e.target.value.toUpperCase());
+                      setPromoFromLink(false);
+                    }}
+                  />
+                  {normalizedPromo && promoConfig && (
+                    <p className={styles.promoNote} style={{ color: promoRedeemed ? "var(--berry-dark)" : "var(--ink)" }}>
+                      {promoRedeemed ? t.promoAppliedMsg : t.promoNeedsFrameMsg}
+                    </p>
+                  )}
+                  {normalizedPromo && !promoConfig && <p className={styles.promoNote}>{t.promoInvalidMsg}</p>}
+                </div>
+
                 {addFrame && (
                   <div className={styles.field} style={{ marginBottom: 24 }}>
                     <label className={styles.fbFieldLabel}>
@@ -400,6 +459,14 @@ export default function CheckoutFlow() {
                       {t.frameLine} ({selectedFrameColor.label})
                     </span>
                     <span>€20</span>
+                  </div>
+                )}
+                {promoRedeemed && (
+                  <div className={styles.summaryLine} style={{ color: "var(--berry-dark)" }}>
+                    <span>
+                      {t.discountLine} ({normalizedPromo})
+                    </span>
+                    <span>−€20</span>
                   </div>
                 )}
                 <div className={styles.summaryDivider} />
@@ -557,6 +624,14 @@ export default function CheckoutFlow() {
                     {t.frameLine} ({selectedFrameColor.label})
                   </span>
                   <span>€20</span>
+                </div>
+              )}
+              {promoRedeemed && (
+                <div className={styles.summaryLine} style={{ color: "var(--berry-dark)" }}>
+                  <span>
+                    {t.discountLine} ({normalizedPromo})
+                  </span>
+                  <span>−€20</span>
                 </div>
               )}
               <div className={styles.summaryLine}>

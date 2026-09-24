@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin, ORDER_PHOTOS_BUCKET } from "@/lib/supabase";
-import { COLLECTIONS_BASE, type CollectionKey } from "@/components/checkout/catalog";
+import { COLLECTIONS_BASE, PROMO_CODES, type CollectionKey } from "@/components/checkout/catalog";
 import { getCountryLabel, getShippingRate, getShippingZone, getShippingZoneLabel } from "@/components/checkout/countries";
 
 const FRAME_PRICE = 20;
@@ -13,6 +13,7 @@ interface CheckoutRequestBody {
   typeKey: string;
   sizeIndex: number;
   addFrame: boolean;
+  promoCode?: string;
   displayNames: {
     collectionTitle: string;
     typeLabel: string;
@@ -57,6 +58,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing shipping details." }, { status: 400 });
   }
 
+  // Recompute the promo discount server-side too — never trust the client's
+  // own math. "Free frame" codes only have an effect when a frame was
+  // actually added; they're not a general discount.
+  const normalizedPromo = (body.promoCode || "").trim().toUpperCase();
+  const promoValid = !!(PROMO_CODES[normalizedPromo]?.freeFrame && body.addFrame);
+
   const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
     {
       price_data: {
@@ -75,9 +82,11 @@ export async function POST(request: Request) {
       price_data: {
         currency: CURRENCY,
         product_data: {
-          name: `Frame (${body.displayNames.frameColorLabel})`,
+          name: promoValid
+            ? `Frame (${body.displayNames.frameColorLabel}) — free with code ${normalizedPromo}`
+            : `Frame (${body.displayNames.frameColorLabel})`,
         },
-        unit_amount: FRAME_PRICE * 100,
+        unit_amount: promoValid ? 0 : FRAME_PRICE * 100,
       },
       quantity: 1,
     });
@@ -103,7 +112,12 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card", "paypal", "klarna", "eps"],
-      allow_promotion_codes: true,
+      // Promo codes (e.g. the in-store "FRANKFURT" QR code) are validated and
+      // applied on our own site before we ever create this session — showing
+      // Stripe's own native promo-code box here would just be a second,
+      // confusing field that doesn't do anything for codes we handle
+      // ourselves.
+      allow_promotion_codes: false,
       line_items: lineItems,
       customer_email: body.ship.email,
       success_url: `${origin}/checkout?stripe=success&session_id={CHECKOUT_SESSION_ID}`,
@@ -116,6 +130,7 @@ export async function POST(request: Request) {
         type: body.typeKey,
         size: size.label,
         frame: body.addFrame ? body.displayNames.frameColorLabel : "none",
+        promoCode: promoValid ? normalizedPromo : "none",
       },
     });
 
@@ -150,6 +165,7 @@ export async function POST(request: Request) {
           shipping_country: getCountryLabel(body.ship.country),
           amount_total: lineItems.reduce((sum, item) => sum + (item.price_data?.unit_amount ?? 0), 0),
           currency: CURRENCY,
+          promo_code: promoValid ? normalizedPromo : null,
         })
         .select("id")
         .single();

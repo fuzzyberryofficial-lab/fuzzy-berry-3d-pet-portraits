@@ -47,7 +47,14 @@ export interface Translation {
   portrait: string;
   frameLine: string;
   shippingLine: string;
+  discountLine: string;
   total: string;
+  promoLabel: string;
+  promoPlaceholder: string;
+  promoAppliedMsg: string;
+  promoNeedsFrameMsg: string;
+  promoInvalidMsg: string;
+  promoBannerMsg: string;
   orderConfirmed: string;
   thankYou: string;
   backToFuzzy: string;
@@ -105,7 +112,14 @@ export const TR: Record<Lang, Translation> = {
     portrait: "Portrait",
     frameLine: "Frame",
     shippingLine: "Shipping",
+    discountLine: "Promo discount",
     total: "Total",
+    promoLabel: "Promo code",
+    promoPlaceholder: "Enter code",
+    promoAppliedMsg: "🎉 Free frame applied!",
+    promoNeedsFrameMsg: "Select \"Add a frame\" above to redeem this code.",
+    promoInvalidMsg: "That code isn't valid.",
+    promoBannerMsg: "🎉 Free frame code applied — select \"Add a frame\" below to redeem it.",
     orderConfirmed: "Order Confirmed",
     thankYou: "Thank you,",
     backToFuzzy: "Back to Fuzzy Berry",
@@ -170,7 +184,14 @@ export const TR: Record<Lang, Translation> = {
     portrait: "Porträt",
     frameLine: "Rahmen",
     shippingLine: "Versand",
+    discountLine: "Rabattcode",
     total: "Gesamt",
+    promoLabel: "Rabattcode",
+    promoPlaceholder: "Code eingeben",
+    promoAppliedMsg: "🎉 Kostenloser Rahmen aktiviert!",
+    promoNeedsFrameMsg: "Wählen Sie oben \"Rahmen hinzufügen\", um diesen Code einzulösen.",
+    promoInvalidMsg: "Dieser Code ist ungültig.",
+    promoBannerMsg: "🎉 Code für kostenlosen Rahmen aktiviert — wählen Sie unten \"Rahmen hinzufügen\", um ihn einzulösen.",
     orderConfirmed: "Bestellung bestätigt",
     thankYou: "Danke,",
     backToFuzzy: "Zurück zu Fuzzy Berry",

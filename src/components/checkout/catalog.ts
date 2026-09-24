@@ -67,6 +67,12 @@ export const COLLECTIONS_BASE: Record<CollectionKey, CollectionInfo> = {
   },
 };
 
+// In-store QR / flyer promo codes. Redeeming one only has an effect once the
+// customer has also chosen "Add a frame" — it isn't a general discount.
+export const PROMO_CODES: Record<string, { freeFrame: boolean }> = {
+  FRANKFURT: { freeFrame: true },
+};
+
 export const FRAME_SWATCHES: Record<FrameColorKey, string> = {
   purpleGold:
     "linear-gradient(120deg, transparent 30%, rgba(255,255,255,.55) 48%, transparent 66%), repeating-linear-gradient(95deg, #B4888C 0px, #E8C7C7 1px, #9C7377 2px, #F2DEDE 3px, #A8797E 4px, #DDB8B8 5px)",

@@ -676,7 +676,7 @@ export default function CheckoutFlow() {
           </button>
           <div className={styles.frameGuideImageWrap} onClick={(e) => e.stopPropagation()}>
             <Image
-              src="/images/frame-color-guide.jpg"
+              src={lang === "de" ? "/images/frame-color-guide-de.webp" : "/images/frame-color-guide.jpg"}
               alt={t.frameGuideTitle}
               fill
               sizes="100vw"

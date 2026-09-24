@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import styles from "./site.module.css";
 import LangSwitch from "./LangSwitch";
@@ -22,11 +23,24 @@ const LINKS: { key: NavPage; href: string; label: keyof NavTranslation }[] = [
 ];
 
 export default function SiteNav({ t, lang, onLangChange, current }: SiteNavProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <nav className={styles.nav}>
       <Link href="/" className={styles.brand}>
         <span className={styles.brandFuzzy}>Fuzzy</span> <span className={styles.brandBerry}>Berry</span>
       </Link>
+      <button
+        type="button"
+        className={`${styles.menuToggle} ${menuOpen ? styles.menuToggleOpen : ""}`}
+        aria-label="Toggle menu"
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((v) => !v)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
       <div className={styles.navLinks}>
         {LINKS.map((link) => (
           <Link
@@ -43,6 +57,21 @@ export default function SiteNav({ t, lang, onLangChange, current }: SiteNavProps
       <Link href="/checkout" className={`${styles.btn} ${styles.btnPrimary}`}>
         {t.startPortrait}
       </Link>
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          {LINKS.map((link) => (
+            <Link
+              key={link.key}
+              href={link.href}
+              aria-current={link.key === current ? "page" : undefined}
+              className={link.key === current ? styles.mobileMenuLinkCurrent : styles.mobileMenuLink}
+              onClick={() => setMenuOpen(false)}
+            >
+              {t[link.label]}
+            </Link>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }

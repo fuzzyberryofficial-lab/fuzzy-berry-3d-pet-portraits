@@ -16,19 +16,26 @@ export default function AnnouncementBarClient({ settings }: { settings: Announce
   const [lang] = useLang();
   const [visible, setVisible] = useState(true);
 
+  // A fingerprint of the current announcement's content. Dismissal is
+  // recorded against this exact fingerprint (not just "1"), so editing the
+  // announcement in the admin panel — new text, new colors — automatically
+  // un-dismisses it for everyone, instead of it staying hidden forever for
+  // anyone who closed a previous (possibly unrelated) announcement.
+  const fingerprint = `${settings.textEn}|${settings.textDe}|${settings.bgColor}|${settings.textColor}`;
+
   useEffect(() => {
     // One-time correction after hydration: localStorage isn't available on
     // the server, so a previous dismissal can only be applied client-side.
     const dismissed = window.localStorage.getItem(DISMISS_KEY);
-    if (dismissed === "1") {
+    if (dismissed === fingerprint) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(false);
     }
-  }, []);
+  }, [fingerprint]);
 
   const dismiss = () => {
     try {
-      window.localStorage.setItem(DISMISS_KEY, "1");
+      window.localStorage.setItem(DISMISS_KEY, fingerprint);
     } catch {}
     setVisible(false);
   };

@@ -43,15 +43,23 @@ const ICONS: Record<ProcessStepItem["icon"], React.ReactNode> = {
   ),
 };
 
-const BADGE_COLORS = ["var(--sun)", "var(--mint)", "var(--berry)", "var(--plum)", "var(--sun)"];
+const BADGE_COLORS = [
+  { bg: "var(--sun)", fg: "var(--ink)" },
+  { bg: "var(--berry)", fg: "#fff" },
+  { bg: "var(--plum-badge)", fg: "#fff" },
+  { bg: "var(--sun)", fg: "var(--ink)" },
+  { bg: "var(--berry)", fg: "#fff" },
+];
 
 export default function ProcessSteps({ steps }: { steps: ProcessStepItem[] }) {
   return (
     <ol className={styles.timeline}>
       {steps.map((step, i) => (
         <li key={step.title} className={styles.step}>
-          <span className={styles.badge} style={{ background: BADGE_COLORS[i % BADGE_COLORS.length] }}>
-            <span className={styles.icon}>{ICONS[step.icon]}</span>
+          <span className={styles.badge} style={{ background: BADGE_COLORS[i % BADGE_COLORS.length].bg }}>
+            <span className={styles.icon} style={{ color: BADGE_COLORS[i % BADGE_COLORS.length].fg }}>
+              {ICONS[step.icon]}
+            </span>
           </span>
           <span className={styles.content}>
             <span className={styles.stepTitle}>

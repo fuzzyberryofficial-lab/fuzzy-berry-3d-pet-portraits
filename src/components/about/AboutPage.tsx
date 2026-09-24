@@ -1,6 +1,6 @@
 "use client";
 
-import { Baloo_2, Poppins } from "next/font/google";
+import { Fraunces, Poppins } from "next/font/google";
 import siteStyles from "../site/site.module.css";
 import styles from "./AboutPage.module.css";
 import SiteNav from "../site/SiteNav";
@@ -9,7 +9,7 @@ import SiteImage from "../site/SiteImage";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
 
-const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
+const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
 
 export default function AboutPage() {

@@ -4,10 +4,10 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: #241534;
-  color: #ffc94d;
+  background: #332f2a;
+  color: #ffe9a3;
   padding: 10px 44px;
-  border-bottom: 3px solid #241534;
+  border-bottom: 1.5px solid #332f2a;
   font-family: var(--font-baloo-announce), sans-serif;
   font-weight: 700;
   font-size: 14px;

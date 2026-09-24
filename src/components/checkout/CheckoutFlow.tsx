@@ -2,14 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Baloo_2, Poppins } from "next/font/google";
+import { Fraunces, Poppins } from "next/font/google";
 import styles from "./CheckoutFlow.module.css";
 import ImageUploadSlot from "./ImageUploadSlot";
 import { COLLECTIONS_BASE, FRAME_SWATCHES, type CollectionKey, type FrameColorKey } from "./catalog";
 import { COUNTRIES, getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 
-const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
+const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
 
 interface ShipInfo {
@@ -327,11 +327,23 @@ export default function CheckoutFlow() {
                 <div className={styles.field}>
                   <label className={styles.fbFieldLabel}>{t.frameLabel}</label>
                   <div className={styles.fbSeg}>
-                    <label className={styles.fbSegOpt} style={{ background: addFrame ? "var(--berry)" : "var(--surface)" }}>
+                    <label
+                      className={styles.fbSegOpt}
+                      style={{
+                        background: addFrame ? "var(--berry)" : "var(--surface)",
+                        color: addFrame ? "#fff" : "var(--ink)",
+                      }}
+                    >
                       <input type="radio" name="frame" checked={addFrame} onChange={() => setAddFrame(true)} />
                       {t.yes}
                     </label>
-                    <label className={styles.fbSegOpt} style={{ background: !addFrame ? "var(--berry)" : "var(--surface)" }}>
+                    <label
+                      className={styles.fbSegOpt}
+                      style={{
+                        background: !addFrame ? "var(--berry)" : "var(--surface)",
+                        color: !addFrame ? "#fff" : "var(--ink)",
+                      }}
+                    >
                       <input type="radio" name="frame" checked={!addFrame} onChange={() => setAddFrame(false)} />
                       {t.no}
                     </label>

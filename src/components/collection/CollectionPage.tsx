@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Baloo_2, Poppins } from "next/font/google";
+import { Fraunces, Poppins } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
 import siteStyles from "../site/site.module.css";
@@ -13,7 +13,7 @@ import SiteImage from "../site/SiteImage";
 import { useLang } from "../site/useLang";
 import { GALLERY_ROTATIONS, MULTI_GALLERY_ITEMS, MULTI_PET_ROWS, SINGLE_GALLERY_ITEMS, SINGLE_PET_ROWS, TR, type GalleryItem } from "./translations";
 
-const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
+const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
 
 function Gallery({ items }: { items: GalleryItem[] }) {

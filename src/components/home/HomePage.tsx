@@ -1,6 +1,6 @@
 "use client";
 
-import { Baloo_2, Poppins } from "next/font/google";
+import { Fraunces, Poppins } from "next/font/google";
 import Link from "next/link";
 import siteStyles from "../site/site.module.css";
 import styles from "./HomePage.module.css";
@@ -11,7 +11,7 @@ import SiteImage from "../site/SiteImage";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
 
-const baloo = Baloo_2({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
+const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
 
 export default function HomePage() {
@@ -55,19 +55,22 @@ export default function HomePage() {
           n: "1",
           title: "Custom 3D Acrylic Portrait",
           text: "Hand-painted in 6 distinct layers for vivid depth and detail.",
-          color: "var(--sun)",
+          color: "var(--plum)",
+          numColor: "#fff",
         },
         {
           n: "2",
           title: "Premium Display Stand",
           text: "A wooden or acrylic easel designed for instant display.",
-          color: "var(--mint)",
+          color: "var(--plum-badge)",
+          numColor: "#fff",
         },
         {
           n: "3",
           title: "Thank-You Card & Gift Packaging",
           text: "Warm Fuzzy Berry card carefully packed in gift-ready protection.",
           color: "var(--berry)",
+          numColor: "#fff",
         },
       ]
     : [
@@ -75,19 +78,22 @@ export default function HomePage() {
           n: "1",
           title: "Individuelles 3D-Acrylporträt",
           text: "Handgemalt in 6 einzelnen Schichten für lebendige Tiefe und Detailtreue.",
-          color: "var(--sun)",
+          color: "var(--plum)",
+          numColor: "#fff",
         },
         {
           n: "2",
           title: "Hochwertiger Display-Ständer",
           text: "Ein Holz- oder Acryl-Ständer, sofort einsatzbereit zur Präsentation.",
-          color: "var(--mint)",
+          color: "var(--plum-badge)",
+          numColor: "#fff",
         },
         {
           n: "3",
           title: "Dankeskarte & Geschenkverpackung",
           text: "Herzliche Fuzzy-Berry-Karte, sorgfältig in geschenkfertiger Verpackung.",
           color: "var(--berry)",
+          numColor: "#fff",
         },
       ];
 
@@ -129,6 +135,21 @@ export default function HomePage() {
       <div className={siteStyles.stripe} />
 
       <Reveal>
+        <section className={`${styles.section} ${styles.mintSection}`}>
+          <div className={styles.splitGrid}>
+            <div className={styles.craftMedia}>
+              <video src="/video/Art You Can Feel.MP4" controls autoPlay loop muted playsInline className={styles.craftVideo} />
+            </div>
+            <div>
+              <p className={siteStyles.kicker}>{t.craftKicker}</p>
+              <h2 className={styles.craftTitle}>{t.craftTitle}</h2>
+              <p className={styles.craftBody}>{t.craftBody}</p>
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
         <section className={styles.section}>
           <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
             {t.styleKicker}
@@ -140,7 +161,10 @@ export default function HomePage() {
               <div
                 key={card.key}
                 className={siteStyles.card}
-                style={{ boxShadow: `6px 6px 0 ${card.shadowColor}`, transform: `rotate(${card.rotate}deg)` }}
+                style={{
+                  boxShadow: `0 6px 18px color-mix(in srgb, ${card.shadowColor} 30%, transparent)`,
+                  transform: `rotate(${card.rotate}deg)`,
+                }}
               >
                 <SiteImage src={card.src} alt={card.alt} className={styles.cardImage} style={{ borderWidth: 2.5 }} />
                 <p className={styles.cardKicker} style={{ color: card.accent }}>
@@ -157,21 +181,6 @@ export default function HomePage() {
         </section>
       </Reveal>
 
-      <Reveal>
-        <section className={`${styles.section} ${styles.mintSection}`}>
-          <div className={styles.splitGrid}>
-            <div className={styles.craftMedia}>
-              <video src="/video/Art You Can Feel.MP4" controls autoPlay loop muted playsInline className={styles.craftVideo} />
-            </div>
-            <div>
-              <p className={siteStyles.kicker}>{t.craftKicker}</p>
-              <h2 className={styles.craftTitle}>{t.craftTitle}</h2>
-              <p className={styles.craftBody}>{t.craftBody}</p>
-            </div>
-          </div>
-        </section>
-      </Reveal>
-
       <div className={siteStyles.stripe} />
 
       <Reveal>
@@ -184,7 +193,10 @@ export default function HomePage() {
               <div className={styles.boxItems}>
                 {boxItems.map((item) => (
                   <div key={item.n} className={styles.boxItem}>
-                    <span className={styles.boxItemNumber} style={{ background: item.color }}>
+                    <span
+                      className={styles.boxItemNumber}
+                      style={{ background: item.color, color: item.numColor ?? "var(--ink)" }}
+                    >
                       {item.n}
                     </span>
                     <div>
@@ -196,11 +208,11 @@ export default function HomePage() {
               </div>
             </div>
             <SiteImage
-              src="/images/Unboxing.png"
+              src="/images/Unboxing-v2.png"
               alt={isEn ? "Unboxing a Fuzzy Berry portrait" : "Auspacken eines Fuzzy-Berry-Porträts"}
               className={styles.unboxImage}
-              objectPosition="50% 42%"
-              imageStyle={{ transform: "translateY(1cm)" }}
+              objectPosition="50% 61%"
+              imageStyle={{ transform: "scale(1.02)" }}
             />
           </div>
         </section>

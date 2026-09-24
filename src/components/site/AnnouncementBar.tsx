@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Baloo_2 } from "next/font/google";
+import { Fraunces } from "next/font/google";
 import styles from "./AnnouncementBar.module.css";
 
-const baloo = Baloo_2({ subsets: ["latin"], weight: ["700"], variable: "--font-baloo-announce" });
+const baloo = Fraunces({ subsets: ["latin"], weight: ["700"], variable: "--font-baloo-announce" });
 
 const DISMISS_KEY = "fb_announcement_dismissed";
 

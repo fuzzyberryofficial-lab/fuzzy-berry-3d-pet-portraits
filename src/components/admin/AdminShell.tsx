@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/customers", label: "Customers" },
+  { href: "/admin/announcement", label: "Announcement" },
 ];
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {

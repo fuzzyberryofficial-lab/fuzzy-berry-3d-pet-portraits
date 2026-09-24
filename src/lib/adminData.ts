@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { getSupabaseAdmin, isSupabaseConfigured, ORDER_PHOTOS_BUCKET } from "./supabase";
 
 export interface OrderCustomer {
@@ -183,4 +184,54 @@ export async function getOrdersByCustomerId(customerId: string): Promise<OrderRo
 
 export function formatMoney(cents: number, currency: string): string {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: currency.toUpperCase() }).format(cents / 100);
+}
+
+export interface AnnouncementSettings {
+  enabled: boolean;
+  textEn: string;
+  textDe: string;
+  bgColor: string;
+  textColor: string;
+}
+
+export const DEFAULT_ANNOUNCEMENT: AnnouncementSettings = {
+  enabled: true,
+  textEn: "✨ Enjoy Free Worldwide Shipping on All Orders! Limited Time Only. ✨",
+  textDe: "✨ Kostenloser weltweiter Versand auf alle Bestellungen! Nur für kurze Zeit. ✨",
+  bgColor: "#332f2a",
+  textColor: "#ffe9a3",
+};
+
+async function fetchAnnouncementSettings(): Promise<AnnouncementSettings> {
+  if (!isSupabaseConfigured()) return DEFAULT_ANNOUNCEMENT;
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase.from("announcement_settings").select("*").eq("id", "default").maybeSingle();
+  if (error || !data) return DEFAULT_ANNOUNCEMENT;
+  return {
+    enabled: data.enabled,
+    textEn: data.text_en,
+    textDe: data.text_de,
+    bgColor: data.bg_color,
+    textColor: data.text_color,
+  };
+}
+
+export const getAnnouncementSettings = unstable_cache(fetchAnnouncementSettings, ["announcement-settings"], {
+  tags: ["announcement"],
+  revalidate: 60,
+});
+
+export async function updateAnnouncementSettings(input: AnnouncementSettings): Promise<void> {
+  if (!isSupabaseConfigured()) throw new Error("Supabase is not configured.");
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase.from("announcement_settings").upsert({
+    id: "default",
+    enabled: input.enabled,
+    text_en: input.textEn,
+    text_de: input.textDe,
+    bg_color: input.bgColor,
+    text_color: input.textColor,
+    updated_at: new Date().toISOString(),
+  });
+  if (error) throw error;
 }

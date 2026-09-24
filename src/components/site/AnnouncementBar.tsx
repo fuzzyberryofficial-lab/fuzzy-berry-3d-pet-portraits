@@ -1,46 +1,7 @@
-"use client";
+import { getAnnouncementSettings } from "@/lib/adminData";
+import AnnouncementBarClient from "./AnnouncementBarClient";
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { Fraunces } from "next/font/google";
-import styles from "./AnnouncementBar.module.css";
-
-const baloo = Fraunces({ subsets: ["latin"], weight: ["700"], variable: "--font-baloo-announce" });
-
-const DISMISS_KEY = "fb_announcement_dismissed";
-
-// Flip to true to show the bar again.
-const SHOW_ANNOUNCEMENT_BAR = true;
-
-export default function AnnouncementBar() {
-  const pathname = usePathname();
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    // One-time correction after hydration: localStorage isn't available on
-    // the server, so a previous dismissal can only be applied client-side.
-    const dismissed = window.localStorage.getItem(DISMISS_KEY);
-    if (dismissed === "1") {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setVisible(false);
-    }
-  }, []);
-
-  const dismiss = () => {
-    try {
-      window.localStorage.setItem(DISMISS_KEY, "1");
-    } catch {}
-    setVisible(false);
-  };
-
-  if (!SHOW_ANNOUNCEMENT_BAR || !visible || pathname?.startsWith("/admin")) return null;
-
-  return (
-    <div className={`${styles.bar} ${baloo.variable}`}>
-      <p className={styles.text}>✨ Enjoy Free Worldwide Shipping on All Orders! Limited Time Only. ✨</p>
-      <button type="button" className={styles.close} aria-label="Dismiss announcement" onClick={dismiss}>
-        ×
-      </button>
-    </div>
-  );
+export default async function AnnouncementBar() {
+  const settings = await getAnnouncementSettings();
+  return <AnnouncementBarClient settings={settings} />;
 }

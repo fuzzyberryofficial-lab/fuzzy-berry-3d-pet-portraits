@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Fraunces, Poppins } from "next/font/google";
 import styles from "./CheckoutFlow.module.css";
 import ImageUploadSlot from "./ImageUploadSlot";
@@ -57,6 +58,16 @@ export default function CheckoutFlow() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [paymentError, setPaymentError] = useState<"start-error" | "failed" | "verify-error" | null>(null);
   const [paymentCancelled, setPaymentCancelled] = useState(false);
+  const [showFrameGuide, setShowFrameGuide] = useState(false);
+
+  useEffect(() => {
+    if (!showFrameGuide) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowFrameGuide(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showFrameGuide]);
 
   useEffect(() => {
     // One-time correction after hydration: the server always renders "en"
@@ -353,7 +364,12 @@ export default function CheckoutFlow() {
 
                 {addFrame && (
                   <div className={styles.field} style={{ marginBottom: 24 }}>
-                    <label className={styles.fbFieldLabel}>{t.frameColorLabel}</label>
+                    <label className={styles.fbFieldLabel}>
+                      {t.frameColorLabel}
+                      <button type="button" className={styles.frameGuideLink} onClick={() => setShowFrameGuide(true)}>
+                        🖼️ {t.frameGuideLink}
+                      </button>
+                    </label>
                     <div className={styles.frameColorRow}>
                       {(Object.keys(FRAME_SWATCHES) as FrameColorKey[]).map((k) => (
                         <button key={k} type="button" className={styles.frameColorBtn} onClick={() => setFrameColor(k)}>
@@ -572,6 +588,28 @@ export default function CheckoutFlow() {
           </div>
         )}
       </div>
+
+      {showFrameGuide && (
+        <div className={styles.frameGuideOverlay} onClick={() => setShowFrameGuide(false)}>
+          <button
+            type="button"
+            className={styles.frameGuideCloseBtn}
+            onClick={() => setShowFrameGuide(false)}
+            aria-label={t.frameGuideClose}
+          >
+            ×
+          </button>
+          <div className={styles.frameGuideImageWrap} onClick={(e) => e.stopPropagation()}>
+            <Image
+              src="/images/frame-color-guide.jpg"
+              alt={t.frameGuideTitle}
+              fill
+              sizes="100vw"
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

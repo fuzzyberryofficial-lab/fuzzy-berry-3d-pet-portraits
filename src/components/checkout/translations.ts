@@ -12,6 +12,9 @@ export interface Translation {
   sizeLabel: string;
   frameLabel: string;
   frameColorLabel: string;
+  frameGuideLink: string;
+  frameGuideTitle: string;
+  frameGuideClose: string;
   yes: string;
   no: string;
   continueUpload: string;
@@ -67,6 +70,9 @@ export const TR: Record<Lang, Translation> = {
     sizeLabel: "Size",
     frameLabel: "Add a frame — €20",
     frameColorLabel: "Frame color",
+    frameGuideLink: "View Frame Color Guide",
+    frameGuideTitle: "Frame Color Guide",
+    frameGuideClose: "Close",
     yes: "Yes",
     no: "No",
     continueUpload: "Continue to Photo Upload",
@@ -129,6 +135,9 @@ export const TR: Record<Lang, Translation> = {
     sizeLabel: "Größe",
     frameLabel: "Rahmen hinzufügen — €20",
     frameColorLabel: "Rahmenfarbe",
+    frameGuideLink: "Rahmenfarben-Leitfaden ansehen",
+    frameGuideTitle: "Rahmenfarben-Leitfaden",
+    frameGuideClose: "Schließen",
     yes: "Ja",
     no: "Nein",
     continueUpload: "Weiter zum Foto-Upload",

@@ -57,6 +57,9 @@ export async function POST(request: Request) {
   if (!body.ship?.name || !body.ship?.email) {
     return NextResponse.json({ error: "Missing shipping details." }, { status: 400 });
   }
+  if (photos.length === 0) {
+    return NextResponse.json({ error: "At least one pet photo is required." }, { status: 400 });
+  }
 
   // Recompute the promo discount server-side too — never trust the client's
   // own math. "Free frame" codes only have an effect when a frame was

@@ -23,6 +23,7 @@ export interface Translation {
   uploadPh1: string;
   uploadPh2: string;
   uploadPh3: string;
+  photoRequiredNote: string;
   notesLabel: string;
   back: string;
   continueShipping: string;
@@ -88,6 +89,7 @@ export const TR: Record<Lang, Translation> = {
     uploadPh1: "Drop your pet's photo",
     uploadPh2: "Optional second photo",
     uploadPh3: "Optional third photo",
+    photoRequiredNote: "* Please upload at least one photo so we can start your portrait.",
     notesLabel: "Notes for our artist",
     back: "Back",
     continueShipping: "Continue to Shipping",
@@ -160,6 +162,7 @@ export const TR: Record<Lang, Translation> = {
     uploadPh1: "Foto Ihres Haustiers hierher ziehen",
     uploadPh2: "Optionales zweites Foto",
     uploadPh3: "Optionales drittes Foto",
+    photoRequiredNote: "* Bitte laden Sie mindestens ein Foto hoch, damit wir mit Ihrem Porträt beginnen können.",
     notesLabel: "Notizen für unseren Künstler",
     back: "Zurück",
     continueShipping: "Weiter zum Versand",

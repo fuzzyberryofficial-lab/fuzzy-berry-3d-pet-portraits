@@ -172,7 +172,8 @@ export default function CheckoutFlow() {
   const currentIdx = STEP_ORDER.indexOf(step);
   const canContinueStyle = !!(collectionBase && typeBase && size);
   const shipValid = !!(ship.name && ship.email && ship.address && ship.city && ship.postal && ship.country);
-  const canPay = !!(collectionBase && typeBase && size && shipValid);
+  const hasPhoto = photos.some((p) => p !== null);
+  const canPay = !!(collectionBase && typeBase && size && shipValid && hasPhoto);
 
   const selectedType = typeBase ? { label: t.types[typeBase.key] } : null;
   const selectedFrameColor = { label: t.frameColors[frameColor] };
@@ -497,6 +498,11 @@ export default function CheckoutFlow() {
               <ImageUploadSlot placeholder={t.uploadPh2} file={photos[1]} onChange={(f) => setPhoto(1, f)} />
               <ImageUploadSlot placeholder={t.uploadPh3} file={photos[2]} onChange={(f) => setPhoto(2, f)} />
             </div>
+            {!hasPhoto && (
+              <p className={styles.promoNote} style={{ marginBottom: 20 }}>
+                {t.photoRequiredNote}
+              </p>
+            )}
             <div className={styles.field} style={{ marginBottom: 28 }}>
               <label className={styles.fbFieldLabel}>{t.notesLabel}</label>
               <textarea
@@ -510,7 +516,12 @@ export default function CheckoutFlow() {
               <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("style")}>
                 {t.back}
               </button>
-              <button type="button" className={`${styles.fbBtn} ${styles.fbBtnPrimary}`} onClick={() => setStep("shipping")}>
+              <button
+                type="button"
+                className={`${styles.fbBtn} ${styles.fbBtnPrimary}`}
+                disabled={!hasPhoto}
+                onClick={() => setStep("shipping")}
+              >
                 {t.continueShipping} →
               </button>
             </div>

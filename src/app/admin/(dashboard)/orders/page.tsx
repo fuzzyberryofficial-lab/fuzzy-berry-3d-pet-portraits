@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listOrders, formatMoney } from "@/lib/adminData";
+import { listOrders, formatMoney, buildAbandonedCartReminderMailto } from "@/lib/adminData";
 import StatusBadge from "@/components/admin/StatusBadge";
 import DeleteButton from "@/components/admin/DeleteButton";
 import { deleteOrder } from "./actions";
@@ -25,6 +25,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
           <select name="status" defaultValue={params.status ?? ""}>
             <option value="">All statuses</option>
             <option value="pending">Pending</option>
+            <option value="abandoned">Abandoned (24h+ unpaid)</option>
             <option value="paid">Paid</option>
             <option value="cancelled">Cancelled</option>
           </select>
@@ -54,7 +55,7 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
                     <Link href={`/admin/orders/${order.id}`} className={tableStyles.rowLink}>
                       {order.customers?.name ?? order.shipping_name}
                     </Link>
-                    <div>{order.customers?.email}</div>
+                    {order.customers?.email && <a href={`mailto:${order.customers.email}`}>{order.customers.email}</a>}
                   </td>
                   <td>
                     {order.collection_key} · {order.type_key} · {order.size_label}
@@ -62,10 +63,25 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
                   </td>
                   <td>{formatMoney(order.amount_total, order.currency)}</td>
                   <td>
-                    <StatusBadge status={order.status} />
+                    <StatusBadge status={order.status} createdAt={order.created_at} />
                   </td>
                   <td>{new Date(order.created_at).toLocaleDateString()}</td>
-                  <td>
+                  <td style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                    {order.status === "pending" &&
+                      (() => {
+                        const reminderMailto = buildAbandonedCartReminderMailto({
+                          ...order,
+                          customerName: order.customers?.name,
+                          email: order.customers?.email,
+                        });
+                        return (
+                          reminderMailto && (
+                            <a href={reminderMailto} title="Send abandoned-cart reminder email">
+                              ✉️
+                            </a>
+                          )
+                        );
+                      })()}
                     <DeleteButton id={order.id} action={deleteOrder} confirmText="Delete this order? This can't be undone." />
                   </td>
                 </tr>

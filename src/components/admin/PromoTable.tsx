@@ -90,7 +90,7 @@ export default function PromoTable({ redemptions }: { redemptions: OrderRow[] })
               </td>
               <td>{formatMoney(order.amount_total, order.currency)}</td>
               <td>
-                <StatusBadge status={order.status} />
+                <StatusBadge status={order.status} createdAt={order.created_at} />
               </td>
             </tr>
           );

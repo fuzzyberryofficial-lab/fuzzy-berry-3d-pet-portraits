@@ -14,6 +14,7 @@ interface CheckoutRequestBody {
   sizeIndex: number;
   addFrame: boolean;
   promoCode?: string;
+  lang?: string;
   displayNames: {
     collectionTitle: string;
     typeLabel: string;
@@ -169,6 +170,7 @@ export async function POST(request: Request) {
           amount_total: lineItems.reduce((sum, item) => sum + (item.price_data?.unit_amount ?? 0), 0),
           currency: CURRENCY,
           promo_code: promoValid ? normalizedPromo : null,
+          lang: body.lang === "de" ? "de" : "en",
         })
         .select("id")
         .single();

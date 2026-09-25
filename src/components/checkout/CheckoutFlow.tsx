@@ -220,6 +220,7 @@ export default function CheckoutFlow() {
           sizeIndex,
           addFrame,
           promoCode: normalizedPromo,
+          lang,
           displayNames: {
             collectionTitle: selectedCollectionTitle,
             typeLabel: selectedType.label,
@@ -493,6 +494,7 @@ export default function CheckoutFlow() {
           <>
             <h2 className={styles.h2}>{t.uploadTitle}</h2>
             <p className={styles.sub}>{t.uploadSub}</p>
+            <div className={`${styles.banner} ${styles.bannerNotice}`}>{t.photoTipsNote}</div>
             <div className={styles.uploadGrid}>
               <ImageUploadSlot placeholder={t.uploadPh1} file={photos[0]} onChange={(f) => setPhoto(0, f)} />
               <ImageUploadSlot placeholder={t.uploadPh2} file={photos[1]} onChange={(f) => setPhoto(1, f)} />

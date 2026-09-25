@@ -91,6 +91,11 @@
   color: #b02a2a;
 }
 
+.badgeAbandoned {
+  background: #fde3e3;
+  color: #b02a2a;
+}
+
 .filters {
   display: flex;
   gap: 10px;

@@ -81,7 +81,7 @@ export default async function AdminCustomerDetailPage({ params }: PageProps) {
                   </td>
                   <td>{formatMoney(order.amount_total, order.currency)}</td>
                   <td>
-                    <StatusBadge status={order.status} />
+                    <StatusBadge status={order.status} createdAt={order.created_at} />
                   </td>
                   <td>{new Date(order.created_at).toLocaleDateString()}</td>
                 </tr>

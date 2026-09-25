@@ -23,6 +23,7 @@ export interface Translation {
   uploadPh1: string;
   uploadPh2: string;
   uploadPh3: string;
+  photoTipsNote: string;
   photoRequiredNote: string;
   notesLabel: string;
   back: string;
@@ -89,6 +90,7 @@ export const TR: Record<Lang, Translation> = {
     uploadPh1: "Drop your pet's photo",
     uploadPh2: "Optional second photo",
     uploadPh3: "Optional third photo",
+    photoTipsNote: "📸 Tip for the best result: use natural side lighting and have your pet look straight at the camera, so we can capture their eyes and fur detail clearly.",
     photoRequiredNote: "* Please upload at least one photo so we can start your portrait.",
     notesLabel: "Notes for our artist",
     back: "Back",
@@ -162,6 +164,7 @@ export const TR: Record<Lang, Translation> = {
     uploadPh1: "Foto Ihres Haustiers hierher ziehen",
     uploadPh2: "Optionales zweites Foto",
     uploadPh3: "Optionales drittes Foto",
+    photoTipsNote: "📸 Tipp für das beste Ergebnis: natürliches Seitenlicht und Ihr Haustier blickt direkt in die Kamera — so können wir Augen und Fell am besten einfangen.",
     photoRequiredNote: "* Bitte laden Sie mindestens ein Foto hoch, damit wir mit Ihrem Porträt beginnen können.",
     notesLabel: "Notizen für unseren Künstler",
     back: "Zurück",

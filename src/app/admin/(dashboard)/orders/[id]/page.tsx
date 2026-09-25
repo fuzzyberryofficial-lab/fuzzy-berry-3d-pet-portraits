@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getOrderById, getOrderPhotos, formatMoney } from "@/lib/adminData";
+import { getOrderById, getOrderPhotos, formatMoney, buildAbandonedCartReminderMailto } from "@/lib/adminData";
 import StatusBadge from "@/components/admin/StatusBadge";
 import DeleteButton from "@/components/admin/DeleteButton";
 import { deleteOrder } from "../actions";
@@ -19,6 +19,12 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
 
   const photos = await getOrderPhotos(order.id);
 
+  const reminderMailto = buildAbandonedCartReminderMailto({
+    ...order,
+    customerName: order.customers?.name,
+    email: order.customers?.email,
+  });
+
   return (
     <div>
       <Link href="/admin/orders" className={tableStyles.backLink}>
@@ -27,8 +33,13 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
 
       <div className={tableStyles.section}>
         <h2 className={tableStyles.sectionTitle} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          Order for {order.customers?.name ?? order.shipping_name} <StatusBadge status={order.status} />
-          <span style={{ marginLeft: "auto" }}>
+          Order for {order.customers?.name ?? order.shipping_name} <StatusBadge status={order.status} createdAt={order.created_at} />
+          <span style={{ marginLeft: "auto", display: "flex", gap: 10, alignItems: "center" }}>
+            {order.status === "pending" && reminderMailto && (
+              <a href={reminderMailto} className={tableStyles.rowLink}>
+                ✉️ Send reminder email
+              </a>
+            )}
             <DeleteButton
               id={order.id}
               action={deleteOrder}
@@ -41,7 +52,9 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
         <div className={tableStyles.detailGrid}>
           <div>
             <p className={tableStyles.detailLabel}>Email</p>
-            <p className={tableStyles.detailValue}>{order.customers?.email}</p>
+            <p className={tableStyles.detailValue}>
+              {order.customers?.email && <a href={`mailto:${order.customers.email}`}>{order.customers.email}</a>}
+            </p>
           </div>
           <div>
             <p className={tableStyles.detailLabel}>Placed</p>

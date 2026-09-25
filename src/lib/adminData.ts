@@ -24,6 +24,7 @@ export interface OrderRow {
   amount_total: number;
   currency: string;
   promo_code: string | null;
+  lang: "en" | "de";
   created_at: string;
   paid_at: string | null;
   customers: OrderCustomer | null;
@@ -50,23 +51,38 @@ export interface DashboardStats {
   totalRevenue: number;
   ordersThisWeek: number;
   uniqueCustomers: number;
+  abandonedCarts: number;
   recentOrders: OrderRow[];
 }
 
 const ORDER_SELECT = "*, customers(name, email)";
 
+// A "pending" order (Stripe session created, checkout never completed) this
+// old is treated as an abandoned cart rather than someone still mid-payment.
+export const ABANDONED_AFTER_MS = 24 * 60 * 60 * 1000;
+
+export function isAbandonedOrder(status: string, createdAt: string): boolean {
+  return status === "pending" && Date.now() - new Date(createdAt).getTime() > ABANDONED_AFTER_MS;
+}
+
 export async function getDashboardStats(): Promise<DashboardStats> {
   if (!isSupabaseConfigured()) {
-    return { totalOrders: 0, totalRevenue: 0, ordersThisWeek: 0, uniqueCustomers: 0, recentOrders: [] };
+    return { totalOrders: 0, totalRevenue: 0, ordersThisWeek: 0, uniqueCustomers: 0, abandonedCarts: 0, recentOrders: [] };
   }
   const supabase = getSupabaseAdmin();
 
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const abandonedCutoff = new Date(Date.now() - ABANDONED_AFTER_MS).toISOString();
 
-  const [paidOrders, ordersThisWeek, customerCount, recentOrders] = await Promise.all([
+  const [paidOrders, ordersThisWeek, customerCount, abandonedCarts, recentOrders] = await Promise.all([
     supabase.from("orders").select("amount_total", { count: "exact" }).eq("status", "paid"),
     supabase.from("orders").select("id", { count: "exact", head: true }).gte("created_at", weekAgo),
     supabase.from("customers").select("id", { count: "exact", head: true }),
+    supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending")
+      .lt("created_at", abandonedCutoff),
     supabase.from("orders").select(ORDER_SELECT).order("created_at", { ascending: false }).limit(10),
   ]);
 
@@ -77,8 +93,33 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     totalRevenue,
     ordersThisWeek: ordersThisWeek.count ?? 0,
     uniqueCustomers: customerCount.count ?? 0,
+    abandonedCarts: abandonedCarts.count ?? 0,
     recentOrders: (recentOrders.data as OrderRow[]) ?? [],
   };
+}
+
+const REMINDER_COPY: Record<"en" | "de", { subject: string; body: (firstName: string, productLabel: string) => string }> = {
+  en: {
+    subject: "Your Fuzzy Berry pet portrait is waiting for you 🐾",
+    body: (firstName, productLabel) =>
+      `Hi ${firstName},\n\nWe noticed you started creating your ${productLabel} portrait but didn't finish checking out. Your details and photo are still saved — just pick up where you left off whenever you're ready!\n\nIf anything got in the way or you have questions, just reply to this email.\n\n— Fuzzy Berry`,
+  },
+  de: {
+    subject: "Ihr Fuzzy Berry Haustierporträt wartet auf Sie 🐾",
+    body: (firstName, productLabel) =>
+      `Hallo ${firstName},\n\nuns ist aufgefallen, dass Sie Ihr ${productLabel} Porträt begonnen, den Bestellvorgang aber nicht abgeschlossen haben. Ihre Angaben und Ihr Foto sind noch gespeichert — Sie können jederzeit dort weitermachen, wo Sie aufgehört haben!\n\nFalls etwas dazwischengekommen ist oder Sie Fragen haben, antworten Sie einfach auf diese E-Mail.\n\n— Fuzzy Berry`,
+  },
+};
+
+export function buildAbandonedCartReminderMailto(order: Pick<OrderRow, "lang" | "shipping_name" | "collection_key" | "type_key" | "size_label"> & { customerName?: string | null; email?: string | null }): string | null {
+  if (!order.email) return null;
+  const lang = order.lang === "de" ? "de" : "en";
+  const copy = REMINDER_COPY[lang];
+  const firstName = (order.customerName || order.shipping_name).split(" ")[0];
+  const productLabel = `${order.collection_key} · ${order.type_key} · ${order.size_label}`;
+  const subject = copy.subject;
+  const body = copy.body(firstName, productLabel);
+  return `mailto:${order.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 export interface OrderFilters {
@@ -93,7 +134,9 @@ export async function listOrders(filters: OrderFilters): Promise<OrderRow[]> {
   const supabase = getSupabaseAdmin();
   let query = supabase.from("orders").select(ORDER_SELECT).order("created_at", { ascending: false }).limit(200);
 
-  if (filters.status) {
+  if (filters.status === "abandoned") {
+    query = query.eq("status", "pending").lt("created_at", new Date(Date.now() - ABANDONED_AFTER_MS).toISOString());
+  } else if (filters.status) {
     query = query.eq("status", filters.status);
   }
   if (filters.from) {

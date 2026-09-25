@@ -26,7 +26,17 @@ export default async function AdminDashboardPage() {
         <KpiCard label="Paid orders" value={String(stats.totalOrders)} />
         <KpiCard label="Orders this week" value={String(stats.ordersThisWeek)} />
         <KpiCard label="Unique customers" value={String(stats.uniqueCustomers)} />
+        <KpiCard label="Abandoned carts (24h+)" value={String(stats.abandonedCarts)} />
       </div>
+
+      {stats.abandonedCarts > 0 && (
+        <p className={tableStyles.notice}>
+          {stats.abandonedCarts} customer{stats.abandonedCarts === 1 ? "" : "s"} started checkout but never paid.{" "}
+          <Link href="/admin/orders?status=abandoned" className={tableStyles.rowLink}>
+            View abandoned carts →
+          </Link>
+        </p>
+      )}
 
       <div className={tableStyles.section}>
         <h2 className={tableStyles.sectionTitle}>Recent orders</h2>
@@ -51,14 +61,14 @@ export default async function AdminDashboardPage() {
                     <Link href={`/admin/orders/${order.id}`} className={tableStyles.rowLink}>
                       {order.customers?.name ?? order.shipping_name}
                     </Link>
-                    <div>{order.customers?.email}</div>
+                    {order.customers?.email && <a href={`mailto:${order.customers.email}`}>{order.customers.email}</a>}
                   </td>
                   <td>
                     {order.collection_key} · {order.type_key} · {order.size_label}
                   </td>
                   <td>{formatMoney(order.amount_total, order.currency)}</td>
                   <td>
-                    <StatusBadge status={order.status} />
+                    <StatusBadge status={order.status} createdAt={order.created_at} />
                   </td>
                   <td>{new Date(order.created_at).toLocaleDateString()}</td>
                   <td>

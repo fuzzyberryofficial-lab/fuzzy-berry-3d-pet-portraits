@@ -87,7 +87,10 @@ export default function CheckoutFlow() {
     // One-time correction after hydration: the server always renders "en"
     // (localStorage isn't available there), so the stored preference can
     // only be applied once the client has mounted.
-    const stored = window.localStorage.getItem("fb_lang");
+    let stored: string | null = null;
+    try {
+      stored = window.localStorage.getItem("fb_lang");
+    } catch {}
     if (stored === "en" || stored === "de") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setLangState(stored);
@@ -104,8 +107,11 @@ export default function CheckoutFlow() {
     const stripeStatus = params.get("stripe");
     if (!stripeStatus) return;
 
-    const raw = window.sessionStorage.getItem(SNAPSHOT_KEY);
-    window.sessionStorage.removeItem(SNAPSHOT_KEY);
+    let raw: string | null = null;
+    try {
+      raw = window.sessionStorage.getItem(SNAPSHOT_KEY);
+      window.sessionStorage.removeItem(SNAPSHOT_KEY);
+    } catch {}
     if (raw) {
       try {
         const snapshot: CheckoutSnapshot = JSON.parse(raw);
@@ -198,19 +204,25 @@ export default function CheckoutFlow() {
     setPaymentCancelled(false);
     setIsRedirecting(true);
 
-    const snapshot: CheckoutSnapshot = {
-      collectionKey,
-      typeKey,
-      sizeIndex,
-      addFrame,
-      frameColor,
-      artistNotes,
-      ship,
-      promoCode: normalizedPromo,
-    };
-    window.sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot));
-
     try {
+      const snapshot: CheckoutSnapshot = {
+        collectionKey,
+        typeKey,
+        sizeIndex,
+        addFrame,
+        frameColor,
+        artistNotes,
+        ship,
+        promoCode: normalizedPromo,
+      };
+      try {
+        window.sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snapshot));
+      } catch {
+        // Safari private browsing / strict tracking-prevention settings can
+        // block sessionStorage entirely — that only costs us the restored
+        // summary after the Stripe redirect, it must never block checkout.
+      }
+
       const formData = new FormData();
       formData.set(
         "payload",
@@ -242,7 +254,9 @@ export default function CheckoutFlow() {
       if (!res.ok || !data.url) throw new Error(data.error || "start-error");
       window.location.href = data.url;
     } catch {
-      window.sessionStorage.removeItem(SNAPSHOT_KEY);
+      try {
+        window.sessionStorage.removeItem(SNAPSHOT_KEY);
+      } catch {}
       setPaymentError("start-error");
       setIsRedirecting(false);
       setStep("payment");

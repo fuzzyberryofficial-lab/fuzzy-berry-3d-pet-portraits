@@ -50,6 +50,7 @@ export interface DashboardStats {
   totalOrders: number;
   totalRevenue: number;
   ordersThisWeek: number;
+  paidThisWeek: number;
   uniqueCustomers: number;
   abandonedCarts: number;
   recentOrders: OrderRow[];
@@ -67,16 +68,17 @@ export function isAbandonedOrder(status: string, createdAt: string): boolean {
 
 export async function getDashboardStats(): Promise<DashboardStats> {
   if (!isSupabaseConfigured()) {
-    return { totalOrders: 0, totalRevenue: 0, ordersThisWeek: 0, uniqueCustomers: 0, abandonedCarts: 0, recentOrders: [] };
+    return { totalOrders: 0, totalRevenue: 0, ordersThisWeek: 0, paidThisWeek: 0, uniqueCustomers: 0, abandonedCarts: 0, recentOrders: [] };
   }
   const supabase = getSupabaseAdmin();
 
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
   const abandonedCutoff = new Date(Date.now() - ABANDONED_AFTER_MS).toISOString();
 
-  const [paidOrders, ordersThisWeek, customerCount, abandonedCarts, recentOrders] = await Promise.all([
+  const [paidOrders, ordersThisWeek, paidThisWeek, customerCount, abandonedCarts, recentOrders] = await Promise.all([
     supabase.from("orders").select("amount_total", { count: "exact" }).eq("status", "paid"),
     supabase.from("orders").select("id", { count: "exact", head: true }).gte("created_at", weekAgo),
+    supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "paid").gte("created_at", weekAgo),
     supabase.from("customers").select("id", { count: "exact", head: true }),
     supabase
       .from("orders")
@@ -90,6 +92,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 
   return {
     totalOrders: paidOrders.count ?? 0,
+    paidThisWeek: paidThisWeek.count ?? 0,
     totalRevenue,
     ordersThisWeek: ordersThisWeek.count ?? 0,
     uniqueCustomers: customerCount.count ?? 0,

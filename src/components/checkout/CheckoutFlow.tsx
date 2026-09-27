@@ -62,6 +62,10 @@ export default function CheckoutFlow() {
   const [showFrameGuide, setShowFrameGuide] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [promoFromLink, setPromoFromLink] = useState(false);
+  // The promo field is only for in-store QR/flyer codes — showing it to every
+  // online customer invites people to go hunt for a coupon and bounce, so it
+  // only ever appears when the visit itself started from a `?promo=` link.
+  const [promoFieldVisible, setPromoFieldVisible] = useState(false);
 
   useEffect(() => {
     if (!showFrameGuide) return;
@@ -80,6 +84,7 @@ export default function CheckoutFlow() {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setPromoCode(promo.toUpperCase());
       setPromoFromLink(true);
+      setPromoFieldVisible(true);
     }
   }, []);
 
@@ -413,29 +418,31 @@ export default function CheckoutFlow() {
                   </div>
                 </div>
 
-                <div className={styles.field}>
-                  <label className={styles.fbFieldLabel} htmlFor="promo-code">
-                    {t.promoLabel}
-                  </label>
-                  <input
-                    id="promo-code"
-                    className={styles.fbInput}
-                    style={{ maxWidth: 220 }}
-                    type="text"
-                    value={promoCode}
-                    placeholder={t.promoPlaceholder}
-                    onChange={(e) => {
-                      setPromoCode(e.target.value.toUpperCase());
-                      setPromoFromLink(false);
-                    }}
-                  />
-                  {normalizedPromo && promoConfig && (
-                    <p className={styles.promoNote} style={{ color: promoRedeemed ? "var(--berry-dark)" : "var(--ink)" }}>
-                      {promoRedeemed ? t.promoAppliedMsg : t.promoNeedsFrameMsg}
-                    </p>
-                  )}
-                  {normalizedPromo && !promoConfig && <p className={styles.promoNote}>{t.promoInvalidMsg}</p>}
-                </div>
+                {promoFieldVisible && (
+                  <div className={styles.field}>
+                    <label className={styles.fbFieldLabel} htmlFor="promo-code">
+                      {t.promoLabel}
+                    </label>
+                    <input
+                      id="promo-code"
+                      className={styles.fbInput}
+                      style={{ maxWidth: 220 }}
+                      type="text"
+                      value={promoCode}
+                      placeholder={t.promoPlaceholder}
+                      onChange={(e) => {
+                        setPromoCode(e.target.value.toUpperCase());
+                        setPromoFromLink(false);
+                      }}
+                    />
+                    {normalizedPromo && promoConfig && (
+                      <p className={styles.promoNote} style={{ color: promoRedeemed ? "var(--berry-dark)" : "var(--ink)" }}>
+                        {promoRedeemed ? t.promoAppliedMsg : t.promoNeedsFrameMsg}
+                      </p>
+                    )}
+                    {normalizedPromo && !promoConfig && <p className={styles.promoNote}>{t.promoInvalidMsg}</p>}
+                  </div>
+                )}
 
                 {addFrame && (
                   <div className={styles.field} style={{ marginBottom: 24 }}>

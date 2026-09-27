@@ -11,6 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const stats = await getDashboardStats();
+  const conversionRate = stats.ordersThisWeek > 0 ? Math.round((stats.paidThisWeek / stats.ordersThisWeek) * 100) : null;
 
   return (
     <div>
@@ -27,6 +28,15 @@ export default async function AdminDashboardPage() {
         <KpiCard label="Orders this week" value={String(stats.ordersThisWeek)} />
         <KpiCard label="Unique customers" value={String(stats.uniqueCustomers)} />
         <KpiCard label="Abandoned carts (24h+)" value={String(stats.abandonedCarts)} />
+      </div>
+
+      <div className={tableStyles.section}>
+        <h2 className={tableStyles.sectionTitle}>This week&apos;s conversion</h2>
+        <div className={tableStyles.kpiRow}>
+          <KpiCard label="Started checkout (7d)" value={String(stats.ordersThisWeek)} />
+          <KpiCard label="Completed payment (7d)" value={String(stats.paidThisWeek)} />
+          <KpiCard label="Conversion rate (7d)" value={conversionRate === null ? "—" : `${conversionRate}%`} />
+        </div>
       </div>
 
       {stats.abandonedCarts > 0 && (

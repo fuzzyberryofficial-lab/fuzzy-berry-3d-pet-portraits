@@ -28,23 +28,44 @@
 
 @media (max-width: 640px) {
   .hero {
-    padding: 40px 6vw 0;
+    padding: 28px 6vw 0;
   }
 
   .heroTitle {
     font-size: 38px;
     line-height: 1.1;
     max-width: 100%;
+    margin: 0 0 12px;
   }
 
   .heroBody {
     font-size: 16px;
+    margin: 0 0 18px;
+  }
+
+  .heroActions {
+    margin-bottom: 4px;
   }
 }
 
 .heroImageSection {
   padding: 36px 8vw 0;
   position: relative;
+}
+
+.heroImage {
+  width: 100%;
+  height: 420px;
+}
+
+@media (max-width: 640px) {
+  .heroImageSection {
+    padding: 18px 6vw 0;
+  }
+
+  .heroImage {
+    height: 220px;
+  }
 }
 
 .heroImageWrap {

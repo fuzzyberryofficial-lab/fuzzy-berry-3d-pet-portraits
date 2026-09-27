@@ -125,7 +125,8 @@ export default function HomePage() {
           <SiteImage
             src="/images/home-hero.jpg"
             alt={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
-            style={{ width: "100%", height: 420, borderWidth: 4 }}
+            className={styles.heroImage}
+            style={{ borderWidth: 4 }}
             priority
           />
           <div className={styles.heroSticker}>{t.heroSticker}</div>

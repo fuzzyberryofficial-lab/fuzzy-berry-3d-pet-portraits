@@ -1,15 +1,21 @@
-.hero {
-  padding: 64px 8vw 0;
-  position: relative;
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 32px;
+  padding: 56px 8vw 40px;
+}
+
+.heroText {
+  min-width: 0;
 }
 
 .heroTitle {
   font-family: var(--font-baloo), sans-serif;
   font-weight: 800;
-  font-size: 68px;
-  line-height: 1.02;
+  font-size: 56px;
+  line-height: 1.04;
   margin: 0 0 20px;
-  max-width: 18ch;
 }
 
 .heroBody {
@@ -26,15 +32,50 @@
   margin-bottom: 12px;
 }
 
-@media (max-width: 640px) {
-  .hero {
-    padding: 28px 6vw 0;
+.heroVideoCol {
+  position: relative;
+  justify-self: center;
+}
+
+.heroVideoLarge {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 28px;
+  box-shadow: 0 24px 48px -16px rgba(51, 47, 42, 0.35);
+  transform: rotate(-1.5deg);
+}
+
+.heroStickerFloat {
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  background: var(--sun);
+  color: var(--ink);
+  padding: 12px 26px;
+  transform: rotate(-6deg);
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+  filter: drop-shadow(4px 4px 0 var(--ink));
+}
+
+@media (max-width: 900px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    padding: 32px 6vw 32px;
+    gap: 28px;
   }
 
   .heroTitle {
     font-size: 38px;
     line-height: 1.1;
-    max-width: 100%;
     margin: 0 0 12px;
   }
 
@@ -46,48 +87,10 @@
   .heroActions {
     margin-bottom: 4px;
   }
-}
 
-.heroImageSection {
-  padding: 36px 8vw 0;
-  position: relative;
-}
-
-.heroImage {
-  width: 100%;
-  height: 420px;
-}
-
-@media (max-width: 640px) {
-  .heroImageSection {
-    padding: 18px 6vw 0;
+  .heroVideoLarge {
+    max-width: 320px;
   }
-
-  .heroImage {
-    height: 220px;
-  }
-}
-
-.heroImageWrap {
-  position: relative;
-  transform: rotate(-1deg);
-}
-
-.heroSticker {
-  position: absolute;
-  top: -18px;
-  right: 6%;
-  background: var(--sun);
-  color: var(--ink);
-  padding: 12px 30px;
-  transform: rotate(6deg);
-  font-family: var(--font-baloo), sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
-  filter: drop-shadow(4px 4px 0 var(--ink));
 }
 
 .section {

@@ -102,35 +102,37 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     <div className={`${siteStyles.page} ${baloo.variable} ${poppins.variable}`}>
       <SiteNav t={t} lang={lang} onLangChange={setLang} current="home" />
 
-      <section className={styles.hero}>
-        <p className={siteStyles.kicker}>{t.heroKicker}</p>
-        <h1 className={styles.heroTitle}>
-          {t.heroTitleA} <span style={{ color: "var(--berry)" }}>{t.heroTitleB}</span>
-        </h1>
-        <p className={styles.heroBody}>{t.heroBody}</p>
-        <div className={styles.heroActions}>
-          <Link href="/collection#single-pet" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
-            {t.tagSingle}
-          </Link>
-          <Link href="/collection#multi-pet" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
-            {t.tagMulti}
-          </Link>
-          <Link href="/checkout" className={`${siteStyles.btn} ${siteStyles.btnPrimary}`}>
-            {t.startPortrait} →
-          </Link>
+      <section className={styles.heroGrid}>
+        <div className={styles.heroText}>
+          <p className={siteStyles.kicker}>{t.heroKicker}</p>
+          <h1 className={styles.heroTitle}>
+            {t.heroTitleA} <span style={{ color: "var(--berry)" }}>{t.heroTitleB}</span>
+          </h1>
+          <p className={styles.heroBody}>{t.heroBody}</p>
+          <div className={styles.heroActions}>
+            <Link href="/collection#single-pet" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
+              {t.tagSingle}
+            </Link>
+            <Link href="/collection#multi-pet" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
+              {t.tagMulti}
+            </Link>
+            <Link href="/checkout" className={`${siteStyles.btn} ${siteStyles.btnPrimary}`}>
+              {t.startPortrait} →
+            </Link>
+          </div>
         </div>
-      </section>
 
-      <section className={styles.heroImageSection}>
-        <div className={styles.heroImageWrap}>
-          <SiteImage
-            src="/images/home-hero.jpg"
-            alt={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
-            className={styles.heroImage}
-            style={{ borderWidth: 4 }}
-            priority
+        <div className={styles.heroVideoCol}>
+          <video
+            src="/video/cat-hero.mp4"
+            className={styles.heroVideoLarge}
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
           />
-          <div className={styles.heroSticker}>{t.heroSticker}</div>
+          <div className={styles.heroStickerFloat}>{t.heroSticker}</div>
         </div>
       </section>
 

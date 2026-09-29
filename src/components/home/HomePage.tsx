@@ -21,14 +21,34 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
   const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Belt-and-suspenders autoplay: the muted/autoPlay props alone can miss
-    // the browser's autoplay window during hydration, leaving the video
-    // frozen on its first frame instead of animating. Forcing muted + play()
-    // imperatively here guarantees it actually starts.
+    // Belt-and-suspenders autoplay. The muted/autoPlay attributes alone can
+    // still miss the browser's autoplay window (React hydration timing, the
+    // file not yet having enough buffered data the instant this runs, or a
+    // device-level restriction like iOS Low Power Mode that blocks anything
+    // not triggered by a real tap). None of that should ever leave a visible
+    // "tap to play" button on what's meant to be ambient page decoration, so
+    // this retries on every signal that could unblock it: once metadata/data
+    // is ready, and on the very first tap/click anywhere on the page (a
+    // genuine user gesture always satisfies autoplay policies, even Low
+    // Power Mode).
     const video = heroVideoRef.current;
     if (!video) return;
     video.muted = true;
-    video.play().catch(() => {});
+
+    const tryPlay = () => {
+      video.play().catch(() => {});
+    };
+    tryPlay();
+
+    video.addEventListener("loadedmetadata", tryPlay);
+    video.addEventListener("canplay", tryPlay);
+    document.addEventListener("pointerdown", tryPlay, { once: true });
+
+    return () => {
+      video.removeEventListener("loadedmetadata", tryPlay);
+      video.removeEventListener("canplay", tryPlay);
+      document.removeEventListener("pointerdown", tryPlay);
+    };
   }, []);
 
   const t = TR[lang];
@@ -144,6 +164,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             loop
             muted
             playsInline
+            preload="auto"
             aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
           />
           <div className={styles.heroStickerFloat}>{t.heroSticker}</div>

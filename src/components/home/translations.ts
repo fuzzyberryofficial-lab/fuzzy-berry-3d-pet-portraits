@@ -17,6 +17,10 @@ export interface HomeTranslation extends NavTranslation {
   boxKicker: string;
   boxTitle: string;
   boxSub: string;
+  igKicker: string;
+  igTitle: string;
+  igSub: string;
+  igFollowCta: string;
   privacy: string;
   returns: string;
   navAbout: string;
@@ -49,6 +53,10 @@ export const TR: Record<Lang, HomeTranslation> = {
     boxKicker: "Unboxing",
     boxTitle: "What's Inside Your Box",
     boxSub: "Everything you need to display or gift your artwork right out of the box.",
+    igKicker: "Join the Pack",
+    igTitle: "Follow @fuzzyberry.official",
+    igSub: "Fresh portraits, behind-the-scenes painting, and happy customers on Instagram.",
+    igFollowCta: "Follow us on Instagram",
     privacy: "Privacy Policy",
     returns: "Return Policy",
   },
@@ -76,6 +84,10 @@ export const TR: Record<Lang, HomeTranslation> = {
     boxKicker: "Auspacken",
     boxTitle: "Das ist in Ihrer Box",
     boxSub: "Alles, was Sie brauchen, um Ihr Kunstwerk direkt aus der Box zu präsentieren oder zu verschenken.",
+    igKicker: "Werden Sie Teil des Rudels",
+    igTitle: "Folgen Sie @fuzzyberry.official",
+    igSub: "Neue Porträts, Einblicke ins Malen und glückliche Kunden auf Instagram.",
+    igFollowCta: "Folgen Sie uns auf Instagram",
     privacy: "Datenschutz",
     returns: "Rückgaberecht",
   },

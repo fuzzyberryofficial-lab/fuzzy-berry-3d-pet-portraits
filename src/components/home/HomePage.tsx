@@ -8,6 +8,7 @@ import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
 import Reveal from "../site/Reveal";
 import SiteImage from "../site/SiteImage";
+import InstagramEmbedGrid from "./InstagramEmbedGrid";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
 
@@ -215,6 +216,29 @@ export default function HomePage() {
               objectPosition="50% 61%"
               imageStyle={{ transform: "scale(1.02)" }}
             />
+          </div>
+        </section>
+      </Reveal>
+
+      <div className={siteStyles.stripe} />
+
+      <Reveal>
+        <section className={styles.section}>
+          <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
+            {t.igKicker}
+          </p>
+          <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.igTitle}</h2>
+          <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.igSub}</p>
+          <InstagramEmbedGrid />
+          <div className={styles.igFollowWrap}>
+            <a
+              href="https://www.instagram.com/fuzzyberry.official/"
+              target="_blank"
+              rel="noopener"
+              className={`${siteStyles.btn} ${siteStyles.btnOutline}`}
+            >
+              {t.igFollowCta} →
+            </a>
           </div>
         </section>
       </Reveal>

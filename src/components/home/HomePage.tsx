@@ -34,6 +34,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     const video = heroVideoRef.current;
     if (!video) return;
     video.muted = true;
+    video.defaultMuted = true;
 
     const tryPlay = () => {
       video.play().catch(() => {});
@@ -43,11 +44,17 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     video.addEventListener("loadedmetadata", tryPlay);
     video.addEventListener("canplay", tryPlay);
     document.addEventListener("pointerdown", tryPlay, { once: true });
+    // Covers bfcache restores (Safari back/forward) and tabs that were
+    // backgrounded before the video ever got a chance to start.
+    document.addEventListener("visibilitychange", tryPlay);
+    window.addEventListener("pageshow", tryPlay);
 
     return () => {
       video.removeEventListener("loadedmetadata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("pointerdown", tryPlay);
+      document.removeEventListener("visibilitychange", tryPlay);
+      window.removeEventListener("pageshow", tryPlay);
     };
   }, []);
 
@@ -164,7 +171,9 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             loop
             muted
             playsInline
+            webkit-playsinline="true"
             preload="auto"
+            disableRemotePlayback
             aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
           />
           <div className={styles.heroStickerFloat}>{t.heroSticker}</div>

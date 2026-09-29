@@ -184,7 +184,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         <div className={styles.heroVideoCol}>
           <video
             ref={heroVideoRef}
-            src="/video/pet-layers-cropped.mp4"
+            src="/video/pet-layers-wider.mp4"
             className={styles.heroVideoLarge}
             autoPlay
             loop

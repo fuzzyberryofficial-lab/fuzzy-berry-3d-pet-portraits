@@ -385,8 +385,17 @@ export function normalizeInstagramPermalink(input: string): string | null {
 export async function addInstagramPost(permalink: string): Promise<void> {
   if (!isSupabaseConfigured()) throw new Error("Supabase is not configured.");
   const supabase = getSupabaseAdmin();
-  const { count } = await supabase.from("instagram_posts").select("id", { count: "exact", head: true });
-  const { error } = await supabase.from("instagram_posts").insert({ permalink, position: count ?? 0 });
+  // Base the new position on the current max, not the row count — after any
+  // deletes those two diverge and a count-based position can collide with
+  // an existing row's, leaving their relative order to an arbitrary tie-break.
+  const { data: last } = await supabase
+    .from("instagram_posts")
+    .select("position")
+    .order("position", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const nextPosition = (last?.position ?? -1) + 1;
+  const { error } = await supabase.from("instagram_posts").insert({ permalink, position: nextPosition });
   if (error) throw error;
 }
 
@@ -395,4 +404,21 @@ export async function deleteInstagramPost(id: string): Promise<void> {
   const supabase = getSupabaseAdmin();
   const { error } = await supabase.from("instagram_posts").delete().eq("id", id);
   if (error) throw error;
+}
+
+export async function moveInstagramPost(id: string, direction: "up" | "down"): Promise<void> {
+  if (!isSupabaseConfigured()) throw new Error("Supabase is not configured.");
+  const supabase = getSupabaseAdmin();
+  const posts = await fetchInstagramPosts();
+  const index = posts.findIndex((p) => p.id === id);
+  if (index === -1) return;
+  const swapIndex = direction === "up" ? index - 1 : index + 1;
+  if (swapIndex < 0 || swapIndex >= posts.length) return;
+
+  const current = posts[index];
+  const neighbor = posts[swapIndex];
+  const { error: e1 } = await supabase.from("instagram_posts").update({ position: neighbor.position }).eq("id", current.id);
+  if (e1) throw e1;
+  const { error: e2 } = await supabase.from("instagram_posts").update({ position: current.position }).eq("id", neighbor.id);
+  if (e2) throw e2;
 }

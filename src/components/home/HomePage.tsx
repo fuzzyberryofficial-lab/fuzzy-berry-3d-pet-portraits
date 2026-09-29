@@ -15,7 +15,7 @@ import { TR } from "./translations";
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
 
-export default function HomePage() {
+export default function HomePage({ instagramPosts }: { instagramPosts: string[] }) {
   const [lang, setLang] = useLang();
 
   const t = TR[lang];
@@ -220,28 +220,32 @@ export default function HomePage() {
         </section>
       </Reveal>
 
-      <div className={siteStyles.stripe} />
+      {instagramPosts.length > 0 && (
+        <>
+          <div className={siteStyles.stripe} />
 
-      <Reveal>
-        <section className={styles.section}>
-          <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
-            {t.igKicker}
-          </p>
-          <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.igTitle}</h2>
-          <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.igSub}</p>
-          <InstagramEmbedGrid />
-          <div className={styles.igFollowWrap}>
-            <a
-              href="https://www.instagram.com/fuzzyberry.official/"
-              target="_blank"
-              rel="noopener"
-              className={`${siteStyles.btn} ${siteStyles.btnOutline}`}
-            >
-              {t.igFollowCta} →
-            </a>
-          </div>
-        </section>
-      </Reveal>
+          <Reveal>
+            <section className={styles.section}>
+              <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
+                {t.igKicker}
+              </p>
+              <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.igTitle}</h2>
+              <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.igSub}</p>
+              <InstagramEmbedGrid posts={instagramPosts} />
+              <div className={styles.igFollowWrap}>
+                <a
+                  href="https://www.instagram.com/fuzzyberry.official/"
+                  target="_blank"
+                  rel="noopener"
+                  className={`${siteStyles.btn} ${siteStyles.btnOutline}`}
+                >
+                  {t.igFollowCta} →
+                </a>
+              </div>
+            </section>
+          </Reveal>
+        </>
+      )}
 
       <SiteFooter
         social

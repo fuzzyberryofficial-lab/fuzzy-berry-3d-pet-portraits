@@ -341,3 +341,58 @@ export async function updateAnnouncementSettings(input: AnnouncementSettings): P
   });
   if (error) throw error;
 }
+
+export interface InstagramPostRow {
+  id: string;
+  permalink: string;
+  position: number;
+  created_at: string;
+}
+
+async function fetchInstagramPosts(): Promise<InstagramPostRow[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase
+    .from("instagram_posts")
+    .select("*")
+    .order("position", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (error) return [];
+  return data as InstagramPostRow[];
+}
+
+export const getInstagramPosts = unstable_cache(fetchInstagramPosts, ["instagram-posts"], {
+  tags: ["instagram-posts"],
+  revalidate: 60,
+});
+
+// Accepts any post/reel/tv URL a customer's browser produces (share tokens,
+// ?img_index, tracking params) and reduces it to the canonical permalink
+// Instagram's oEmbed script actually needs.
+export function normalizeInstagramPermalink(input: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(input.trim());
+  } catch {
+    return null;
+  }
+  if (!/(^|\.)instagram\.com$/.test(url.hostname)) return null;
+  const match = url.pathname.match(/^\/(p|reel|tv)\/([^/]+)/);
+  if (!match) return null;
+  return `https://www.instagram.com/${match[1]}/${match[2]}/`;
+}
+
+export async function addInstagramPost(permalink: string): Promise<void> {
+  if (!isSupabaseConfigured()) throw new Error("Supabase is not configured.");
+  const supabase = getSupabaseAdmin();
+  const { count } = await supabase.from("instagram_posts").select("id", { count: "exact", head: true });
+  const { error } = await supabase.from("instagram_posts").insert({ permalink, position: count ?? 0 });
+  if (error) throw error;
+}
+
+export async function deleteInstagramPost(id: string): Promise<void> {
+  if (!isSupabaseConfigured()) throw new Error("Supabase is not configured.");
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase.from("instagram_posts").delete().eq("id", id);
+  if (error) throw error;
+}

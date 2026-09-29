@@ -10,16 +10,11 @@ declare global {
   }
 }
 
-const POST_PERMALINKS = [
-  "https://www.instagram.com/reel/DdrY1bEtlz7/",
-  "https://www.instagram.com/reel/DVWhnryjCMj/",
-  "https://www.instagram.com/p/DWZJ4nAiWin/",
-];
-
 const AUTO_ADVANCE_MS = 10000;
 
-export default function InstagramEmbedGrid() {
+export default function InstagramEmbedGrid({ posts }: { posts: string[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const showControls = posts.length > 1;
 
   useEffect(() => {
     // Re-process on every slide change: Instagram's script only scans the
@@ -28,27 +23,32 @@ export default function InstagramEmbedGrid() {
   }, [activeIndex]);
 
   useEffect(() => {
+    if (!showControls) return;
     const timer = setInterval(() => {
-      setActiveIndex((i) => (i + 1) % POST_PERMALINKS.length);
+      setActiveIndex((i) => (i + 1) % posts.length);
     }, AUTO_ADVANCE_MS);
     return () => clearInterval(timer);
-  }, []);
+  }, [posts.length, showControls]);
+
+  if (posts.length === 0) return null;
 
   const goTo = (index: number) => {
-    setActiveIndex((index + POST_PERMALINKS.length) % POST_PERMALINKS.length);
+    setActiveIndex((index + posts.length) % posts.length);
   };
 
   return (
     <>
       <div className={styles.igCarousel}>
-        <button
-          type="button"
-          className={styles.igArrow}
-          aria-label="Previous post"
-          onClick={() => goTo(activeIndex - 1)}
-        >
-          ←
-        </button>
+        {showControls && (
+          <button
+            type="button"
+            className={styles.igArrow}
+            aria-label="Previous post"
+            onClick={() => goTo(activeIndex - 1)}
+          >
+            ←
+          </button>
+        )}
 
         {/* Instagram's script replaces this blockquote with its own iframe
             markup outside of React's control. Keying the wrapper (not the
@@ -57,31 +57,35 @@ export default function InstagramEmbedGrid() {
             Instagram has already swapped out from under it. The min-height
             keeps the slot from collapsing to nothing if Instagram's resize
             handshake with the iframe is ever slow or drops a beat. */}
-        <div key={POST_PERMALINKS[activeIndex]} className={styles.igSlide}>
+        <div key={posts[activeIndex]} className={styles.igSlide}>
           <blockquote
             className="instagram-media"
-            data-instgrm-permalink={POST_PERMALINKS[activeIndex]}
+            data-instgrm-permalink={posts[activeIndex]}
             data-instgrm-version="14"
             style={{ margin: "0 auto", width: "100%" }}
           />
         </div>
 
-        <button type="button" className={styles.igArrow} aria-label="Next post" onClick={() => goTo(activeIndex + 1)}>
-          →
-        </button>
+        {showControls && (
+          <button type="button" className={styles.igArrow} aria-label="Next post" onClick={() => goTo(activeIndex + 1)}>
+            →
+          </button>
+        )}
       </div>
 
-      <div className={styles.igDots}>
-        {POST_PERMALINKS.map((url, i) => (
-          <button
-            key={url}
-            type="button"
-            className={`${styles.igDot} ${i === activeIndex ? styles.igDotActive : ""}`}
-            aria-label={`Go to post ${i + 1}`}
-            onClick={() => goTo(i)}
-          />
-        ))}
-      </div>
+      {showControls && (
+        <div className={styles.igDots}>
+          {posts.map((url, i) => (
+            <button
+              key={url}
+              type="button"
+              className={`${styles.igDot} ${i === activeIndex ? styles.igDotActive : ""}`}
+              aria-label={`Go to post ${i + 1}`}
+              onClick={() => goTo(i)}
+            />
+          ))}
+        </div>
+      )}
 
       <Script
         src="https://www.instagram.com/embed.js"

@@ -44,9 +44,7 @@
   height: auto;
   aspect-ratio: 9 / 16;
   object-fit: cover;
-  border-radius: 28px;
-  box-shadow: 0 24px 48px -16px rgba(51, 47, 42, 0.35);
-  transform: rotate(-1.5deg);
+  pointer-events: none;
 }
 
 .heroStickerFloat {

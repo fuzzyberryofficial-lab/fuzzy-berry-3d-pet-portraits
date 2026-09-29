@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Fraunces, Poppins } from "next/font/google";
 import Link from "next/link";
 import siteStyles from "../site/site.module.css";
@@ -17,6 +18,18 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 
 export default function HomePage({ instagramPosts }: { instagramPosts: string[] }) {
   const [lang, setLang] = useLang();
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Belt-and-suspenders autoplay: the muted/autoPlay props alone can miss
+    // the browser's autoplay window during hydration, leaving the video
+    // frozen on its first frame instead of animating. Forcing muted + play()
+    // imperatively here guarantees it actually starts.
+    const video = heroVideoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  }, []);
 
   const t = TR[lang];
   const isEn = lang === "en";
@@ -124,7 +137,8 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
 
         <div className={styles.heroVideoCol}>
           <video
-            src="/video/cat-hero.mp4"
+            ref={heroVideoRef}
+            src="/video/pet-portrait-layers.mp4"
             className={styles.heroVideoLarge}
             autoPlay
             loop

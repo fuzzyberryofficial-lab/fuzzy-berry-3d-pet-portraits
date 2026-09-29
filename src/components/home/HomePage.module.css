@@ -44,6 +44,7 @@
   height: auto;
   aspect-ratio: 9 / 16;
   object-fit: cover;
+  border: 1.5px solid var(--ink);
   pointer-events: none;
 }
 

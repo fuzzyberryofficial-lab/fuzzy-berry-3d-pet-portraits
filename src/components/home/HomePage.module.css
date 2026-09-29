@@ -286,19 +286,69 @@
   border-width: 2px;
 }
 
-.igGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  margin: 0 auto 32px;
-  max-width: 1100px;
+.igCarousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 0 auto;
+  max-width: 500px;
 }
 
-@media (max-width: 900px) {
-  .igGrid {
-    grid-template-columns: 1fr;
-    max-width: 420px;
+.igSlide {
+  min-width: 0;
+  flex: 1;
+  min-height: 480px;
+}
+
+.igArrow {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--surface);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.igArrow:hover {
+  background: var(--sun);
+}
+
+@media (max-width: 640px) {
+  .igCarousel {
+    gap: 8px;
   }
+
+  .igArrow {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.igDots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0 32px;
+}
+
+.igDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--surface);
+  padding: 0;
+  cursor: pointer;
+}
+
+.igDotActive {
+  background: var(--berry);
 }
 
 .igFollowWrap {

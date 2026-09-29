@@ -35,8 +35,13 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     if (!video) return;
     video.muted = true;
     video.defaultMuted = true;
+    // Force a clean reload of the media pipeline: on some WebKit builds a
+    // <video> adopted from server-rendered HTML doesn't re-evaluate the
+    // muted/autoplay exemption correctly unless the element is reloaded.
+    video.load();
 
     const tryPlay = () => {
+      video.muted = true;
       video.play().catch(() => {});
     };
     tryPlay();
@@ -49,12 +54,26 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     document.addEventListener("visibilitychange", tryPlay);
     window.addEventListener("pageshow", tryPlay);
 
+    // Belt-and-suspenders: keep retrying for a few seconds in case none of
+    // the above events land in the exact window WebKit expects. Stops as
+    // soon as playback actually starts.
+    const interval = window.setInterval(() => {
+      if (!video.paused) {
+        window.clearInterval(interval);
+        return;
+      }
+      tryPlay();
+    }, 300);
+    const stopRetrying = window.setTimeout(() => window.clearInterval(interval), 6000);
+
     return () => {
       video.removeEventListener("loadedmetadata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("pointerdown", tryPlay);
       document.removeEventListener("visibilitychange", tryPlay);
       window.removeEventListener("pageshow", tryPlay);
+      window.clearInterval(interval);
+      window.clearTimeout(stopRetrying);
     };
   }, []);
 
@@ -165,7 +184,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         <div className={styles.heroVideoCol}>
           <video
             ref={heroVideoRef}
-            src="/video/pet-layers-full.mp4"
+            src="/video/pet-layers-full-1.5x.mp4"
             className={styles.heroVideoLarge}
             autoPlay
             loop

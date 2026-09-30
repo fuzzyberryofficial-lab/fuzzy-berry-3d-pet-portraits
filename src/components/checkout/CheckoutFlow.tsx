@@ -9,6 +9,7 @@ import ImageUploadSlot from "./ImageUploadSlot";
 import { COLLECTIONS_BASE, FRAME_SWATCHES, PROMO_CODES, type CollectionKey, type FrameColorKey } from "./catalog";
 import { COUNTRIES, getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
+import { trackPixelEvent } from "@/lib/metaPixel";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
@@ -98,6 +99,10 @@ export default function CheckoutFlow() {
   }, []);
 
   useEffect(() => {
+    trackPixelEvent("InitiateCheckout");
+  }, []);
+
+  useEffect(() => {
     // Stripe Checkout is a real browser redirect away from the app and back,
     // so any in-memory selection is gone by the time the customer returns.
     // We stash a snapshot in sessionStorage right before redirecting and
@@ -133,18 +138,30 @@ export default function CheckoutFlow() {
       setIsVerifying(true);
       fetch(`/api/orders?session_id=${encodeURIComponent(sessionId)}`)
         .then((res) => res.json())
-        .then((data: { paid?: boolean; customerName?: string | null; customerEmail?: string | null }) => {
-          if (data.paid) {
-            setShip((prev) => ({
-              ...prev,
-              name: prev.name || data.customerName || "",
-              email: prev.email || data.customerEmail || "",
-            }));
-            setStep("done");
-          } else {
-            setPaymentError("failed");
-          }
-        })
+        .then(
+          (data: {
+            paid?: boolean;
+            customerName?: string | null;
+            customerEmail?: string | null;
+            amountTotal?: number | null;
+            currency?: string | null;
+          }) => {
+            if (data.paid) {
+              setShip((prev) => ({
+                ...prev,
+                name: prev.name || data.customerName || "",
+                email: prev.email || data.customerEmail || "",
+              }));
+              trackPixelEvent("Purchase", {
+                value: (data.amountTotal ?? 0) / 100,
+                currency: (data.currency ?? "eur").toUpperCase(),
+              });
+              setStep("done");
+            } else {
+              setPaymentError("failed");
+            }
+          },
+        )
         .catch(() => setPaymentError("verify-error"))
         .finally(() => setIsVerifying(false));
     } else if (stripeStatus === "cancel") {

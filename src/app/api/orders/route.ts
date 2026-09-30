@@ -213,6 +213,8 @@ export async function GET(request: Request) {
       paid: session.payment_status === "paid",
       customerEmail: session.customer_details?.email ?? session.customer_email ?? null,
       customerName: session.customer_details?.name ?? null,
+      amountTotal: session.amount_total,
+      currency: session.currency,
     });
   } catch (err) {
     return NextResponse.json(

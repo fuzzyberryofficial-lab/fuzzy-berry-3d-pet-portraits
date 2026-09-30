@@ -179,7 +179,7 @@ export default function CheckoutFlow() {
   const canContinueStyle = !!(collectionBase && typeBase && size);
   const shipValid = !!(ship.name && ship.email && ship.address && ship.city && ship.postal && ship.country);
   const hasPhoto = photos.some((p) => p !== null);
-  const canPay = !!(collectionBase && typeBase && size && shipValid && hasPhoto);
+  const canPay = !!(collectionBase && typeBase && size && shipValid);
 
   const selectedType = typeBase ? { label: t.types[typeBase.key] } : null;
   const selectedFrameColor = { label: t.frameColors[frameColor] };
@@ -516,7 +516,7 @@ export default function CheckoutFlow() {
             </div>
             {!hasPhoto && (
               <p className={styles.promoNote} style={{ marginBottom: 20 }}>
-                {t.photoRequiredNote}
+                {t.photoOptionalNote}
               </p>
             )}
             <div className={styles.field} style={{ marginBottom: 28 }}>
@@ -535,7 +535,6 @@ export default function CheckoutFlow() {
               <button
                 type="button"
                 className={`${styles.fbBtn} ${styles.fbBtnPrimary}`}
-                disabled={!hasPhoto}
                 onClick={() => setStep("shipping")}
               >
                 {t.continueShipping} →

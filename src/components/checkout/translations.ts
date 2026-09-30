@@ -24,7 +24,7 @@ export interface Translation {
   uploadPh2: string;
   uploadPh3: string;
   photoTipsNote: string;
-  photoRequiredNote: string;
+  photoOptionalNote: string;
   notesLabel: string;
   back: string;
   continueShipping: string;
@@ -91,7 +91,7 @@ export const TR: Record<Lang, Translation> = {
     uploadPh2: "Optional second photo",
     uploadPh3: "Optional third photo",
     photoTipsNote: "📸 Tip for the best result: use natural side lighting and have your pet look straight at the camera, so we can capture their eyes and fur detail clearly.",
-    photoRequiredNote: "* Please upload at least one photo so we can start your portrait.",
+    photoOptionalNote: "* No photo handy? No problem — you can email it to us after ordering and we'll start once it arrives.",
     notesLabel: "Notes for our artist",
     back: "Back",
     continueShipping: "Continue to Shipping",
@@ -165,7 +165,7 @@ export const TR: Record<Lang, Translation> = {
     uploadPh2: "Optionales zweites Foto",
     uploadPh3: "Optionales drittes Foto",
     photoTipsNote: "📸 Tipp für das beste Ergebnis: natürliches Seitenlicht und Ihr Haustier blickt direkt in die Kamera — so können wir Augen und Fell am besten einfangen.",
-    photoRequiredNote: "* Bitte laden Sie mindestens ein Foto hoch, damit wir mit Ihrem Porträt beginnen können.",
+    photoOptionalNote: "* Gerade kein Foto zur Hand? Kein Problem — senden Sie es uns einfach nach der Bestellung per E-Mail, wir starten, sobald es da ist.",
     notesLabel: "Notizen für unseren Künstler",
     back: "Zurück",
     continueShipping: "Weiter zum Versand",

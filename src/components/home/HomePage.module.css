@@ -70,8 +70,8 @@
   position: absolute;
   top: -16px;
   left: -16px;
-  background: var(--sun);
-  color: var(--ink);
+  background: var(--berry);
+  color: #fff;
   padding: 12px 26px;
   transform: rotate(-6deg);
   font-family: var(--font-baloo), sans-serif;
@@ -122,8 +122,8 @@
   .heroStickerFloat {
     top: 14px;
     left: -12px;
-    padding: 10px 26px;
-    font-size: 14px;
+    padding: 10px 22px;
+    font-size: 13px;
   }
 
   /* Show the finished work first, with the headline and button right under it. */

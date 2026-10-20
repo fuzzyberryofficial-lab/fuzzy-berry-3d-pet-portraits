@@ -117,6 +117,15 @@
     margin-bottom: 10px;
   }
 
+  /* Smaller and tucked into the video's empty top corner so it never pokes up
+     under the sticky header. */
+  .heroStickerFloat {
+    top: 12px;
+    left: -10px;
+    padding: 8px 20px;
+    font-size: 12px;
+  }
+
   /* Show the finished work first, with the headline and button right under it. */
   .heroVideoCol {
     order: -1;

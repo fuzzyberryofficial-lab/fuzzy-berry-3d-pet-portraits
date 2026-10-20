@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Fraunces, Poppins } from "next/font/google";
 import Link from "next/link";
 import siteStyles from "../site/site.module.css";
@@ -19,19 +19,6 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 export default function HomePage({ instagramPosts }: { instagramPosts: string[] }) {
   const [lang, setLang] = useLang();
   const heroVideoRef = useRef<HTMLVideoElement>(null);
-  const heroCtaRef = useRef<HTMLAnchorElement>(null);
-  const [showStickyCta, setShowStickyCta] = useState(false);
-
-  useEffect(() => {
-    // The sticky bottom button only appears once the hero button has scrolled
-    // out of view, so there is never more than one start button on screen.
-    const cta = heroCtaRef.current;
-    if (!cta) return;
-    const observer = new IntersectionObserver(([entry]) => setShowStickyCta(!entry.isIntersecting));
-    observer.observe(cta);
-    return () => observer.disconnect();
-  }, []);
-
   useEffect(() => {
     // Belt-and-suspenders autoplay. The muted/autoPlay attributes alone can
     // still miss the browser's autoplay window (React hydration timing, the
@@ -179,16 +166,16 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           <h1 className={styles.heroTitle}>
             {t.heroTitleA} <span style={{ color: "var(--berry)" }}>{t.heroTitleB}</span>
           </h1>
+          <p className={styles.heroPriceLine}>{t.heroPriceLine}</p>
           <p className={styles.heroBody}>{t.heroBody}</p>
           <div className={styles.heroActions}>
             <Link
-              ref={heroCtaRef}
               href="/checkout"
               className={`${siteStyles.btn} ${siteStyles.btnPrimary} ${styles.heroCta}`}
             >
               {t.startPortrait} →
             </Link>
-            <p className={styles.heroPrices}>{t.heroPriceLine}</p>
+            <p className={styles.heroPrices}>{t.heroTimeLine}</p>
           </div>
         </div>
 
@@ -324,13 +311,9 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       )}
 
       <div className={styles.stickyCtaSpacer} />
-      <div
-        className={`${styles.stickyCta} ${showStickyCta ? styles.stickyCtaVisible : ""}`}
-        aria-hidden={!showStickyCta}
-      >
+      <div className={styles.stickyCta}>
         <Link
           href="/checkout"
-          tabIndex={showStickyCta ? 0 : -1}
           className={`${siteStyles.btn} ${siteStyles.btnPrimary} ${styles.stickyCtaBtn}`}
         >
           {t.startPortrait} →

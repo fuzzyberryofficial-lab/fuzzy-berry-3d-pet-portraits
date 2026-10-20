@@ -38,19 +38,12 @@
   font-family: var(--font-baloo), sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: var(--berry);
+  color: var(--plum-badge);
 }
 
 .heroCta {
   font-size: 18px;
   padding: 16px 34px;
-}
-
-.heroPrices {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  opacity: 0.85;
 }
 
 .stickyCta,
@@ -120,12 +113,8 @@
   }
 
   .heroPriceLine {
-    font-size: 19px;
+    font-size: 17px;
     margin-bottom: 10px;
-  }
-
-  .heroPrices {
-    text-align: left;
   }
 
   /* Show the finished work first, with the headline and button right under it. */

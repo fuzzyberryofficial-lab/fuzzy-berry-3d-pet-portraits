@@ -175,7 +175,6 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             >
               {t.startPortrait} →
             </Link>
-            <p className={styles.heroPrices}>{t.heroTimeLine}</p>
           </div>
         </div>
 

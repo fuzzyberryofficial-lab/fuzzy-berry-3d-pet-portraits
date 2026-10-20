@@ -70,7 +70,7 @@
   position: absolute;
   top: -16px;
   left: -16px;
-  background: var(--berry);
+  background: var(--ink);
   color: #fff;
   padding: 12px 26px;
   transform: rotate(-6deg);
@@ -81,7 +81,7 @@
   text-transform: uppercase;
   white-space: nowrap;
   clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
-  filter: drop-shadow(4px 4px 0 var(--ink));
+  filter: drop-shadow(0 4px 8px rgba(51, 47, 42, 0.25));
 }
 
 @media (max-width: 900px) {

@@ -11,6 +11,7 @@ interface SiteNavProps {
   lang: Lang;
   onLangChange: (lang: Lang) => void;
   current: NavPage;
+  hideCtaOnMobile?: boolean;
 }
 
 const LINKS: { key: NavPage; href: string; label: keyof NavTranslation }[] = [
@@ -22,7 +23,7 @@ const LINKS: { key: NavPage; href: string; label: keyof NavTranslation }[] = [
   { key: "showroom", href: "/showroom", label: "navShowroom" },
 ];
 
-export default function SiteNav({ t, lang, onLangChange, current }: SiteNavProps) {
+export default function SiteNav({ t, lang, onLangChange, current, hideCtaOnMobile }: SiteNavProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -54,7 +55,10 @@ export default function SiteNav({ t, lang, onLangChange, current }: SiteNavProps
         ))}
       </div>
       <LangSwitch lang={lang} onChange={onLangChange} />
-      <Link href="/checkout" className={`${styles.btn} ${styles.btnPrimary}`}>
+      <Link
+        href="/checkout"
+        className={`${styles.btn} ${styles.btnPrimary} ${hideCtaOnMobile ? styles.navCtaHideMobile : ""}`}
+      >
         {t.startPortrait}
       </Link>
       {menuOpen && (

@@ -5,17 +5,29 @@ import type { Lang } from "./navTypes";
 
 const LANG_CHANGE_EVENT = "fb-lang-change";
 
+// An explicit choice (the EN/DE switch) wins; otherwise follow the visitor's
+// primary browser/phone language so German and Austrian visitors land on the
+// German site without having to find the switch.
+export function readPreferredLang(): Lang {
+  try {
+    const stored = window.localStorage.getItem("fb_lang");
+    if (stored === "en" || stored === "de") return stored;
+  } catch {}
+  const primary = (navigator.languages?.[0] ?? navigator.language ?? "").toLowerCase();
+  return primary.startsWith("de") ? "de" : "en";
+}
+
 export function useLang(): [Lang, (lang: Lang) => void] {
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
     // One-time correction after hydration: the server always renders "en"
-    // (localStorage isn't available there), so the stored preference can
-    // only be applied once the client has mounted.
-    const stored = window.localStorage.getItem("fb_lang");
-    if (stored === "en" || stored === "de") {
+    // (localStorage and navigator aren't available there), so the visitor's
+    // preference can only be applied once the client has mounted.
+    const preferred = readPreferredLang();
+    if (preferred !== "en") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLangState(stored);
+      setLangState(preferred);
     }
 
     // Other useLang() instances elsewhere in the tree (e.g. the announcement

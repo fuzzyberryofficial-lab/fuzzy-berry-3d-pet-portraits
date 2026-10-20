@@ -27,9 +27,26 @@
 
 .heroActions {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 12px;
+}
+
+.heroCta {
+  font-size: 18px;
+  padding: 16px 34px;
+}
+
+.heroPrices {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.stickyCta,
+.stickyCtaSpacer {
+  display: none;
 }
 
 .heroVideoCol {
@@ -67,8 +84,8 @@
 @media (max-width: 900px) {
   .heroGrid {
     grid-template-columns: 1fr;
-    padding: 32px 6vw 32px;
-    gap: 28px;
+    padding: 20px 6vw 32px;
+    gap: 24px;
   }
 
   .heroTitle {
@@ -83,11 +100,54 @@
   }
 
   .heroActions {
+    align-items: stretch;
     margin-bottom: 4px;
   }
 
+  .heroCta {
+    justify-content: center;
+  }
+
+  .heroPrices {
+    text-align: center;
+  }
+
+  /* Show the finished work first, with the headline and button right under it. */
+  .heroVideoCol {
+    order: -1;
+  }
+
   .heroVideoLarge {
-    max-width: 320px;
+    max-width: 260px;
+  }
+
+  .stickyCta {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--bg);
+    border-top: 1.5px solid var(--ink);
+    transform: translateY(110%);
+    transition: transform 0.25s ease;
+  }
+
+  .stickyCtaVisible {
+    transform: translateY(0);
+  }
+
+  .stickyCtaBtn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .stickyCtaSpacer {
+    display: block;
+    height: 76px;
   }
 }
 

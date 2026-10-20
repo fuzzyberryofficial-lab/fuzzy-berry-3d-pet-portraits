@@ -241,6 +241,30 @@
   text-decoration: none;
 }
 
+/* The home page has its own hero + sticky bottom CTA on small screens, so
+   the nav button would only add a second, redundant row to the sticky header. */
+@media (max-width: 900px) {
+  .btn.navCtaHideMobile {
+    display: none;
+  }
+}
+
+/* Keep the sticky header to a single row on phones so more of the page shows. */
+@media (max-width: 640px) {
+  .nav {
+    padding: 12px 5vw;
+    gap: 10px;
+  }
+
+  .brand {
+    font-size: 28px;
+  }
+
+  .langSwitch {
+    margin-right: 0;
+  }
+}
+
 /* — buttons — */
 .btn {
   font-family: var(--font-baloo), sans-serif;

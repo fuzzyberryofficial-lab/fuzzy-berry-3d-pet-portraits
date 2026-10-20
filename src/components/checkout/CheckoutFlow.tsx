@@ -10,6 +10,7 @@ import { COLLECTIONS_BASE, FRAME_SWATCHES, PROMO_CODES, type CollectionKey, type
 import { COUNTRIES, getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
+import { readPreferredLang } from "../site/useLang";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
@@ -86,15 +87,12 @@ export default function CheckoutFlow() {
 
   useEffect(() => {
     // One-time correction after hydration: the server always renders "en"
-    // (localStorage isn't available there), so the stored preference can
-    // only be applied once the client has mounted.
-    let stored: string | null = null;
-    try {
-      stored = window.localStorage.getItem("fb_lang");
-    } catch {}
-    if (stored === "en" || stored === "de") {
+    // (localStorage and navigator aren't available there), so the visitor's
+    // preference can only be applied once the client has mounted.
+    const preferred = readPreferredLang();
+    if (preferred !== "en") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLangState(stored);
+      setLangState(preferred);
     }
   }, []);
 

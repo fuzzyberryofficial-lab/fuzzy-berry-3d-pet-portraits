@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Fraunces, Poppins } from "next/font/google";
 import Link from "next/link";
 import siteStyles from "../site/site.module.css";
@@ -19,6 +19,18 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 export default function HomePage({ instagramPosts }: { instagramPosts: string[] }) {
   const [lang, setLang] = useLang();
   const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const heroCtaRef = useRef<HTMLAnchorElement>(null);
+  const [showStickyCta, setShowStickyCta] = useState(false);
+
+  useEffect(() => {
+    // The sticky bottom button only appears once the hero button has scrolled
+    // out of view, so there is never more than one start button on screen.
+    const cta = heroCtaRef.current;
+    if (!cta) return;
+    const observer = new IntersectionObserver(([entry]) => setShowStickyCta(!entry.isIntersecting));
+    observer.observe(cta);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     // Belt-and-suspenders autoplay. The muted/autoPlay attributes alone can
@@ -159,7 +171,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
 
   return (
     <div className={`${siteStyles.page} ${baloo.variable} ${poppins.variable}`}>
-      <SiteNav t={t} lang={lang} onLangChange={setLang} current="home" />
+      <SiteNav t={t} lang={lang} onLangChange={setLang} current="home" hideCtaOnMobile />
 
       <section className={styles.heroGrid}>
         <div className={styles.heroText}>
@@ -169,15 +181,16 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           </h1>
           <p className={styles.heroBody}>{t.heroBody}</p>
           <div className={styles.heroActions}>
-            <Link href="/collection#single-pet" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
-              {t.tagSingle}
-            </Link>
-            <Link href="/collection#multi-pet" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
-              {t.tagMulti}
-            </Link>
-            <Link href="/checkout" className={`${siteStyles.btn} ${siteStyles.btnPrimary}`}>
+            <Link
+              ref={heroCtaRef}
+              href="/checkout"
+              className={`${siteStyles.btn} ${siteStyles.btnPrimary} ${styles.heroCta}`}
+            >
               {t.startPortrait} →
             </Link>
+            <p className={styles.heroPrices}>
+              {t.tagSingle} · {t.tagMulti}
+            </p>
           </div>
         </div>
 
@@ -311,6 +324,20 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           </Reveal>
         </>
       )}
+
+      <div className={styles.stickyCtaSpacer} />
+      <div
+        className={`${styles.stickyCta} ${showStickyCta ? styles.stickyCtaVisible : ""}`}
+        aria-hidden={!showStickyCta}
+      >
+        <Link
+          href="/checkout"
+          tabIndex={showStickyCta ? 0 : -1}
+          className={`${siteStyles.btn} ${siteStyles.btnPrimary} ${styles.stickyCtaBtn}`}
+        >
+          {t.startPortrait} →
+        </Link>
+      </div>
 
       <SiteFooter
         social

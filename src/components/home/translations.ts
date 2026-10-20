@@ -6,8 +6,7 @@ export interface HomeTranslation extends NavTranslation {
   heroTitleB: string;
   heroBody: string;
   heroSticker: string;
-  tagSingle: string;
-  tagMulti: string;
+  heroPriceLine: string;
   styleKicker: string;
   styleTitle: string;
   styleSub: string;
@@ -42,8 +41,7 @@ export const TR: Record<Lang, HomeTranslation> = {
     heroTitleB: "Fine Art",
     heroBody: "Send us one photo — we hand-paint it, layer by layer, onto crystal-clear acrylic and ship it worldwide.",
     heroSticker: "100% Hand-Painted",
-    tagSingle: "Single Pet — from €179",
-    tagMulti: "Multi Pet — from €279",
+    heroPriceLine: "from €179 · about 3 weeks to make",
     styleKicker: "If you love them, we can craft them",
     styleTitle: "Choose Your Style",
     styleSub: "Cats, dogs, and every beloved pet.",
@@ -73,8 +71,7 @@ export const TR: Record<Lang, HomeTranslation> = {
     heroTitleB: "Kunst",
     heroBody: "Schicken Sie uns ein Foto — wir malen es Schicht für Schicht von Hand auf klares Acrylglas und versenden weltweit.",
     heroSticker: "100% handgemalt",
-    tagSingle: "Einzeltier — ab €179",
-    tagMulti: "Mehrere Tiere — ab €279",
+    heroPriceLine: "ab €179 · ca. 3 Wochen Fertigung",
     styleKicker: "Wenn Sie sie lieben, gestalten wir sie",
     styleTitle: "Wählen Sie Ihren Stil",
     styleSub: "Katzen, Hunde und jedes geliebte Haustier.",

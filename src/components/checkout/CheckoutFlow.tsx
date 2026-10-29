@@ -470,7 +470,29 @@ export default function CheckoutFlow() {
                   </div>
                 </div>
 
-                <div className={styles.field}>
+                {addFrame && (
+                  <div className={styles.field} style={{ marginBottom: 24 }}>
+                    <label className={styles.fbFieldLabel}>
+                      {t.frameColorLabel}
+                      <button type="button" className={styles.frameGuideLink} onClick={() => setShowFrameGuide(true)}>
+                        🖼️ {t.frameGuideLink}
+                      </button>
+                    </label>
+                    <div className={styles.frameColorRow}>
+                      {(Object.keys(FRAME_SWATCHES) as FrameColorKey[]).map((k) => (
+                        <button key={k} type="button" className={styles.frameColorBtn} onClick={() => setFrameColor(k)}>
+                          <span
+                            className={styles.frameSwatch}
+                            style={{ background: FRAME_SWATCHES[k], boxShadow: frameColor === k ? "0 0 0 3px var(--berry)" : "none" }}
+                          />
+                          <span className={styles.frameSwatchLabel}>{t.frameColors[k]}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className={styles.field} style={{ marginBottom: 24 }}>
                   <label className={styles.fbFieldLabel} htmlFor="promo-code">
                     {t.promoLabel}
                   </label>
@@ -502,28 +524,6 @@ export default function CheckoutFlow() {
                     <p className={styles.promoNote}>{t.promoInvalidMsg}</p>
                   )}
                 </div>
-
-                {addFrame && (
-                  <div className={styles.field} style={{ marginBottom: 24 }}>
-                    <label className={styles.fbFieldLabel}>
-                      {t.frameColorLabel}
-                      <button type="button" className={styles.frameGuideLink} onClick={() => setShowFrameGuide(true)}>
-                        🖼️ {t.frameGuideLink}
-                      </button>
-                    </label>
-                    <div className={styles.frameColorRow}>
-                      {(Object.keys(FRAME_SWATCHES) as FrameColorKey[]).map((k) => (
-                        <button key={k} type="button" className={styles.frameColorBtn} onClick={() => setFrameColor(k)}>
-                          <span
-                            className={styles.frameSwatch}
-                            style={{ background: FRAME_SWATCHES[k], boxShadow: frameColor === k ? "0 0 0 3px var(--berry)" : "none" }}
-                          />
-                          <span className={styles.frameSwatchLabel}>{t.frameColors[k]}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </>
             )}
 

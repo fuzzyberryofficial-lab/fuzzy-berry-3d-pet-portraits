@@ -10,6 +10,7 @@ import { COLLECTIONS_BASE, FRAME_SWATCHES, PROMO_CODES, type CollectionKey, type
 import { COUNTRIES, getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
+import { promoDiscountCents } from "@/lib/promoMath";
 import { readPreferredLang } from "../site/useLang";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
@@ -64,6 +65,13 @@ export default function CheckoutFlow() {
   const [showFrameGuide, setShowFrameGuide] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [promoFromLink, setPromoFromLink] = useState(false);
+  // Result of checking a code created in the Stripe dashboard (e.g. XMAS10).
+  const [stripePromo, setStripePromo] = useState<{
+    code: string;
+    valid: boolean;
+    percentOff: number | null;
+    amountOff: number | null;
+  } | null>(null);
 
   useEffect(() => {
     if (!showFrameGuide) return;
@@ -84,6 +92,34 @@ export default function CheckoutFlow() {
       setPromoFromLink(true);
     }
   }, []);
+
+  useEffect(() => {
+    // Codes other than our built-in ones are checked against Stripe, after a
+    // short pause so we don't look up every keystroke.
+    const code = promoCode.trim().toUpperCase();
+    if (!code || PROMO_CODES[code]) return;
+    let cancelled = false;
+    const timer = window.setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/promo?code=${encodeURIComponent(code)}`);
+        const data = await res.json();
+        if (!cancelled) {
+          setStripePromo({
+            code,
+            valid: !!data.valid,
+            percentOff: data.percentOff ?? null,
+            amountOff: data.amountOff ?? null,
+          });
+        }
+      } catch {
+        if (!cancelled) setStripePromo({ code, valid: false, percentOff: null, amountOff: null });
+      }
+    }, 400);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [promoCode]);
 
   useEffect(() => {
     // One-time correction after hydration: the server always renders "en"
@@ -188,7 +224,13 @@ export default function CheckoutFlow() {
   const promoConfig = normalizedPromo ? PROMO_CODES[normalizedPromo] : undefined;
   const promoRedeemed = !!(promoConfig?.freeFrame && addFrame);
   const frameCost = addFrame ? (promoRedeemed ? 0 : 20) : 0;
-  const total = portraitPrice + frameCost + shippingCost;
+  const subtotal = portraitPrice + frameCost + shippingCost;
+  const stripePromoResult = stripePromo && stripePromo.code === normalizedPromo ? stripePromo : null;
+  const stripePromoChecking = !!normalizedPromo && !promoConfig && !stripePromoResult;
+  const stripePromoApplied = stripePromoResult?.valid ? stripePromoResult : null;
+  const stripeDiscount = stripePromoApplied ? promoDiscountCents(stripePromoApplied, subtotal * 100) / 100 : 0;
+  const total = Math.round((subtotal - stripeDiscount) * 100) / 100;
+  const formatEur = (n: number) => (Number.isInteger(n) ? `${n}` : n.toFixed(2));
 
   const currentIdx = STEP_ORDER.indexOf(step);
   const canContinueStyle = !!(collectionBase && typeBase && size);
@@ -329,7 +371,7 @@ export default function CheckoutFlow() {
       <div className={styles.main}>
         {step === "style" && (
           <>
-            {promoFromLink && (
+            {promoFromLink && promoConfig?.freeFrame && (
               <div className={`${styles.banner} ${styles.bannerNotice}`} style={{ marginBottom: 20 }}>
                 {t.promoBannerMsg}
               </div>
@@ -449,7 +491,16 @@ export default function CheckoutFlow() {
                       {promoRedeemed ? t.promoAppliedMsg : t.promoNeedsFrameMsg}
                     </p>
                   )}
-                  {normalizedPromo && !promoConfig && <p className={styles.promoNote}>{t.promoInvalidMsg}</p>}
+                  {stripePromoApplied && (
+                    <p className={styles.promoNote} style={{ color: "var(--berry-dark)" }}>
+                      {stripePromoApplied.percentOff
+                        ? t.promoPercentAppliedMsg.replace("{n}", `${stripePromoApplied.percentOff}`)
+                        : t.promoAmountAppliedMsg.replace("{n}", formatEur((stripePromoApplied.amountOff ?? 0) / 100))}
+                    </p>
+                  )}
+                  {normalizedPromo && !promoConfig && !stripePromoChecking && !stripePromoApplied && (
+                    <p className={styles.promoNote}>{t.promoInvalidMsg}</p>
+                  )}
                 </div>
 
                 {addFrame && (
@@ -500,10 +551,18 @@ export default function CheckoutFlow() {
                     <span>−€20</span>
                   </div>
                 )}
+                {stripeDiscount > 0 && (
+                  <div className={styles.summaryLine} style={{ color: "var(--berry-dark)" }}>
+                    <span>
+                      {t.discountLine} ({normalizedPromo})
+                    </span>
+                    <span>−€{formatEur(stripeDiscount)}</span>
+                  </div>
+                )}
                 <div className={styles.summaryDivider} />
                 <div className={styles.summaryTotal}>
                   <span>{t.total}</span>
-                  <span>€{total}</span>
+                  <span>€{formatEur(total)}</span>
                 </div>
               </div>
             )}
@@ -612,7 +671,7 @@ export default function CheckoutFlow() {
                 disabled={!canPay || isRedirecting}
                 onClick={handlePayWithStripe}
               >
-                {isRedirecting ? "…" : `${t.payWithStripe} — €${total}`}
+                {isRedirecting ? "…" : `${t.payWithStripe} — €${formatEur(total)}`}
               </button>
             </div>
           </>
@@ -645,7 +704,7 @@ export default function CheckoutFlow() {
                   disabled={!canPay || isRedirecting || isVerifying}
                   onClick={handlePayWithStripe}
                 >
-                  {isRedirecting ? "…" : `${t.payWithStripe} — €${total}`}
+                  {isRedirecting ? "…" : `${t.payWithStripe} — €${formatEur(total)}`}
                 </button>
               </div>
             </div>
@@ -675,6 +734,14 @@ export default function CheckoutFlow() {
                   <span>−€20</span>
                 </div>
               )}
+              {stripeDiscount > 0 && (
+                <div className={styles.summaryLine} style={{ color: "var(--berry-dark)" }}>
+                  <span>
+                    {t.discountLine} ({normalizedPromo})
+                  </span>
+                  <span>−€{formatEur(stripeDiscount)}</span>
+                </div>
+              )}
               <div className={styles.summaryLine}>
                 <span>{t.shippingLine}</span>
                 <span>€{shippingCost}</span>
@@ -682,7 +749,7 @@ export default function CheckoutFlow() {
               <div className={styles.summaryDivider} />
               <div className={styles.summarySidebarTotal}>
                 <span>{t.total}</span>
-                <span>€{total}</span>
+                <span>€{formatEur(total)}</span>
               </div>
             </div>
           </div>

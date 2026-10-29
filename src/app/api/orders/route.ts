@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
+import { findStripePromo, type StripePromo } from "@/lib/stripePromo";
 import { getSupabaseAdmin, ORDER_PHOTOS_BUCKET } from "@/lib/supabase";
 import { COLLECTIONS_BASE, PROMO_CODES, type CollectionKey } from "@/components/checkout/catalog";
 import { getCountryLabel, getShippingRate, getShippingZone, getShippingZoneLabel } from "@/components/checkout/countries";
@@ -65,6 +66,19 @@ export async function POST(request: Request) {
   const normalizedPromo = (body.promoCode || "").trim().toUpperCase();
   const promoValid = !!(PROMO_CODES[normalizedPromo]?.freeFrame && body.addFrame);
 
+  // Any other code is looked up as a promotion code created in the Stripe
+  // dashboard (e.g. "XMAS10" for 10% off) and applied to the session.
+  let stripePromo: StripePromo | null = null;
+  if (normalizedPromo && !PROMO_CODES[normalizedPromo]) {
+    try {
+      stripePromo = await findStripePromo(normalizedPromo);
+    } catch {
+      stripePromo = null;
+    }
+    // An unknown code is ignored, same as before: the checkout page already
+    // told the customer it isn't valid and showed the full price.
+  }
+
   const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
     {
       price_data: {
@@ -108,32 +122,45 @@ export async function POST(request: Request) {
 
   const origin = new URL(request.url).origin;
 
+  const buildSessionParams = (promo: StripePromo | null): Stripe.Checkout.SessionCreateParams => ({
+    mode: "payment",
+    payment_method_types: ["card", "paypal", "klarna", "eps"],
+    // Codes are entered on our own checkout page, not in Stripe's box:
+    // FRANKFURT is handled above as a free frame, and codes created in the
+    // Stripe dashboard are applied here via `discounts`.
+    ...(promo ? { discounts: [{ promotion_code: promo.id }] } : { allow_promotion_codes: false }),
+    line_items: lineItems,
+    customer_email: body.ship.email,
+    success_url: `${origin}/checkout?stripe=success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${origin}/checkout?stripe=cancel`,
+    metadata: {
+      customerName: body.ship.name,
+      shippingAddress: `${body.ship.address}, ${body.ship.city} ${body.ship.postal}, ${getCountryLabel(body.ship.country)}`,
+      artistNotes: body.artistNotes || "",
+      collection: body.collectionKey,
+      type: body.typeKey,
+      size: size.label,
+      frame: body.addFrame ? body.displayNames.frameColorLabel : "none",
+      promoCode: promoValid ? normalizedPromo : promo ? promo.code : "none",
+    },
+  });
+
   try {
     const stripe = getStripe();
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      payment_method_types: ["card", "paypal", "klarna", "eps"],
-      // Promo codes (e.g. the in-store "FRANKFURT" QR code) are validated and
-      // applied on our own site before we ever create this session — showing
-      // Stripe's own native promo-code box here would just be a second,
-      // confusing field that doesn't do anything for codes we handle
-      // ourselves.
-      allow_promotion_codes: false,
-      line_items: lineItems,
-      customer_email: body.ship.email,
-      success_url: `${origin}/checkout?stripe=success&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/checkout?stripe=cancel`,
-      metadata: {
-        customerName: body.ship.name,
-        shippingAddress: `${body.ship.address}, ${body.ship.city} ${body.ship.postal}, ${getCountryLabel(body.ship.country)}`,
-        artistNotes: body.artistNotes || "",
-        collection: body.collectionKey,
-        type: body.typeKey,
-        size: size.label,
-        frame: body.addFrame ? body.displayNames.frameColorLabel : "none",
-        promoCode: promoValid ? normalizedPromo : "none",
-      },
-    });
+    let appliedStripePromo = stripePromo;
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe.checkout.sessions.create(buildSessionParams(appliedStripePromo));
+    } catch (err) {
+      // Stripe can still refuse a code here (e.g. a minimum order amount or
+      // "first order only" rule). Don't lose the sale over it: start checkout
+      // at full price; Stripe's page shows the customer the real total.
+      if (!appliedStripePromo) throw err;
+      console.error("Stripe refused promotion code, continuing without it:", err);
+      appliedStripePromo = null;
+      session = await stripe.checkout.sessions.create(buildSessionParams(null));
+    }
+    const appliedPromo = promoValid ? normalizedPromo : appliedStripePromo ? appliedStripePromo.code : null;
 
     // Best-effort: record the order + upload photos to our own backend so the
     // owner can browse order history and uploaded pet photos later. None of
@@ -164,9 +191,10 @@ export async function POST(request: Request) {
           shipping_city: body.ship.city,
           shipping_postal: body.ship.postal,
           shipping_country: getCountryLabel(body.ship.country),
-          amount_total: lineItems.reduce((sum, item) => sum + (item.price_data?.unit_amount ?? 0), 0),
+          amount_total:
+            session.amount_total ?? lineItems.reduce((sum, item) => sum + (item.price_data?.unit_amount ?? 0), 0),
           currency: CURRENCY,
-          promo_code: promoValid ? normalizedPromo : null,
+          promo_code: appliedPromo,
           lang: body.lang === "de" ? "de" : "en",
         })
         .select("id")

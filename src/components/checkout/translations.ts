@@ -56,6 +56,8 @@ export interface Translation {
   promoAppliedMsg: string;
   promoNeedsFrameMsg: string;
   promoInvalidMsg: string;
+  promoPercentAppliedMsg: string;
+  promoAmountAppliedMsg: string;
   promoBannerMsg: string;
   orderConfirmed: string;
   thankYou: string;
@@ -123,6 +125,8 @@ export const TR: Record<Lang, Translation> = {
     promoAppliedMsg: "🎉 Free frame applied!",
     promoNeedsFrameMsg: "Select \"Add a frame\" above to redeem this code.",
     promoInvalidMsg: "That code isn't valid.",
+    promoPercentAppliedMsg: "🎉 {n}% off applied!",
+    promoAmountAppliedMsg: "🎉 €{n} off applied!",
     promoBannerMsg: "🎉 Free frame code applied — select \"Add a frame\" below to redeem it.",
     orderConfirmed: "Order Confirmed",
     thankYou: "Thank you,",
@@ -197,6 +201,8 @@ export const TR: Record<Lang, Translation> = {
     promoAppliedMsg: "🎉 Kostenloser Rahmen aktiviert!",
     promoNeedsFrameMsg: "Wählen Sie oben \"Rahmen hinzufügen\", um diesen Code einzulösen.",
     promoInvalidMsg: "Dieser Code ist ungültig.",
+    promoPercentAppliedMsg: "🎉 {n} % Rabatt aktiviert!",
+    promoAmountAppliedMsg: "🎉 €{n} Rabatt aktiviert!",
     promoBannerMsg: "🎉 Code für kostenlosen Rahmen aktiviert — wählen Sie unten \"Rahmen hinzufügen\", um ihn einzulösen.",
     orderConfirmed: "Bestellung bestätigt",
     thankYou: "Danke,",

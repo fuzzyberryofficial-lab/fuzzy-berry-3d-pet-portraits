@@ -146,7 +146,7 @@ export const TR: Record<Lang, Translation> = {
       blackWalnut: "Black Walnut",
       naturalWood: "Natural Wood",
     },
-    steps: { style: "1. Collection", upload: "2. Photos", shipping: "3. Shipping", payment: "4. Payment", done: "Confirmed" },
+    steps: { style: "1. Collection", upload: "2. Photos", shipping: "3. Shipping & Pay", payment: "3. Payment", done: "Confirmed" },
   },
   de: {
     backToSite: "← Zurück zur Seite",
@@ -222,7 +222,7 @@ export const TR: Record<Lang, Translation> = {
       blackWalnut: "Schwarznuss",
       naturalWood: "Naturholz",
     },
-    steps: { style: "1. Kollektion", upload: "2. Fotos", shipping: "3. Versand", payment: "4. Zahlung", done: "Bestätigt" },
+    steps: { style: "1. Kollektion", upload: "2. Fotos", shipping: "3. Versand & Zahlung", payment: "3. Zahlung", done: "Bestätigt" },
   },
 };
 

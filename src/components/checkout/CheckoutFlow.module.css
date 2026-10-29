@@ -382,6 +382,20 @@
   gap: 12px;
 }
 
+/* On phones the "Back" + long "Continue to Checkout — €179" pair is wider
+   than the screen, which pushed the pay button off the right edge. Stack
+   them with the main action first and full width. */
+@media (max-width: 520px) {
+  .actions {
+    flex-direction: column-reverse;
+  }
+  .actions > .fbBtn {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
 /* Upload step */
 .uploadGrid {
   display: grid;

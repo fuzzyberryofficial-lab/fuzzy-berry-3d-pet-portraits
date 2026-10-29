@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./CheckoutFlow.module.css";
+import { compressImage } from "@/lib/compressImage";
 
 interface ImageUploadSlotProps {
   placeholder: string;
@@ -20,8 +21,9 @@ export default function ImageUploadSlot({ placeholder, file, onChange }: ImageUp
     };
   }, [previewUrl]);
 
-  const acceptFile = (f: File | undefined | null) => {
-    if (f && f.type.startsWith("image/")) onChange(f);
+  const acceptFile = async (f: File | undefined | null) => {
+    if (!f || !f.type.startsWith("image/")) return;
+    onChange(await compressImage(f));
   };
 
   return (

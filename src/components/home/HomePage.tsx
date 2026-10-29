@@ -182,6 +182,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           <video
             ref={heroVideoRef}
             src="/video/pet-layers-wider.mp4"
+              poster="/video/pet-layers-poster.jpg"
             className={styles.heroVideoLarge}
             autoPlay
             loop

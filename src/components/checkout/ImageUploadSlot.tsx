@@ -6,11 +6,12 @@ import { compressImage } from "@/lib/compressImage";
 
 interface ImageUploadSlotProps {
   placeholder: string;
+  hint: string;
   file: File | null;
   onChange: (file: File | null) => void;
 }
 
-export default function ImageUploadSlot({ placeholder, file, onChange }: ImageUploadSlotProps) {
+export default function ImageUploadSlot({ placeholder, hint, file, onChange }: ImageUploadSlotProps) {
   const [isOver, setIsOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,7 +82,7 @@ export default function ImageUploadSlot({ placeholder, file, onChange }: ImageUp
             <path d="m21 15-5-5L5 21" />
           </svg>
           <div className={styles.uploadCap}>{placeholder}</div>
-          <div className={styles.uploadSub}>or <u>browse files</u></div>
+          <div className={styles.uploadSub}>{hint}</div>
         </div>
       )}
     </div>

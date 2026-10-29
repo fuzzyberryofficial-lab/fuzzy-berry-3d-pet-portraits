@@ -118,7 +118,8 @@ export function buildAbandonedCartReminderMailto(order: Pick<OrderRow, "lang" | 
   if (!order.email) return null;
   const lang = order.lang === "de" ? "de" : "en";
   const copy = REMINDER_COPY[lang];
-  const firstName = (order.customerName || order.shipping_name).split(" ")[0];
+  // Customers who leave before Stripe's page haven't given a name yet.
+  const firstName = (order.customerName || order.shipping_name).split(" ")[0] || (lang === "de" ? "zusammen" : "there");
   const productLabel = `${order.collection_key} · ${order.type_key} · ${order.size_label}`;
   const subject = copy.subject;
   const body = copy.body(firstName, productLabel);

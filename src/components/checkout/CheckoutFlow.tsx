@@ -8,7 +8,7 @@ import { Fraunces, Poppins } from "next/font/google";
 import styles from "./CheckoutFlow.module.css";
 import ImageUploadSlot from "./ImageUploadSlot";
 import { COLLECTIONS_BASE, FRAME_SWATCHES, PROMO_CODES, type CollectionKey, type FrameColorKey } from "./catalog";
-import { COUNTRIES, getShippingRate } from "./countries";
+import { getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
 import { promoDiscountCents } from "@/lib/promoMath";
@@ -39,13 +39,7 @@ interface CheckoutSnapshot {
 
 const SNAPSHOT_KEY = "fb_checkout_snapshot";
 
-const TOP_COUNTRIES = ["DE", "AT", "CH"];
 
-function localName(names: Intl.DisplayNames | null, code: string): string | undefined {
-  const name = names?.of(code);
-  // Unknown regions come back as the bare code; keep the English label then.
-  return name && name !== code ? name : undefined;
-}
 
 // Best guess of the visitor's country from their time zone, so the shipping
 // form starts with the right country (and shipping cost) already picked.
@@ -241,24 +235,12 @@ export default function CheckoutFlow() {
   // Warm up the connection to Stripe's payment page so it opens faster after "Pay".
   preconnect("https://checkout.stripe.com");
 
-  // Country names in the page language ("Deutschland" on the German page).
-  const countryOptions = useMemo(() => {
-    let names: Intl.DisplayNames | null = null;
-    try {
-      names = new Intl.DisplayNames([lang], { type: "region" });
-    } catch {
-      names = null;
-    }
-    return COUNTRIES.map((c) => ({ code: c.code, label: localName(names, c.code) ?? c.label })).sort((a, b) =>
-      a.label.localeCompare(b.label, lang),
-    );
-  }, [lang]);
 
   const collectionBase = collectionKey ? COLLECTIONS_BASE[collectionKey] : null;
   const typeBase = collectionBase && typeKey ? collectionBase.types[typeKey] : null;
   const size = typeBase ? typeBase.sizes[sizeIndex] : null;
   const portraitPrice = size ? size.price : 0;
-  const shippingCost = ship.country ? getShippingRate(ship.country) : 0;
+  const shippingCost = getShippingRate(ship.country);
 
   const normalizedPromo = promoCode.trim().toUpperCase();
   const promoConfig = normalizedPromo ? PROMO_CODES[normalizedPromo] : undefined;
@@ -274,7 +256,7 @@ export default function CheckoutFlow() {
 
   const currentIdx = STEP_ORDER.indexOf(step);
   const canContinueStyle = !!(collectionBase && typeBase && size);
-  const shipValid = !!(ship.name && ship.email && ship.address && ship.city && ship.postal && ship.country);
+  const shipValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ship.email);
   const hasPhoto = photos.some((p) => p !== null);
   const canPay = !!(collectionBase && typeBase && size && shipValid);
 
@@ -368,11 +350,9 @@ export default function CheckoutFlow() {
 
   const steps = useMemo(
     () =>
-      // Customers pay straight from the shipping step, so the separate
-      // "payment" screen only appears after returning from Stripe (to show a
-      // cancelled / failed notice). Show it as step 3 in that case only, so
-      // the progress bar reads as 3 short steps instead of 4.
-      STEP_ORDER.filter((k) => (step === "payment" ? k !== "shipping" : k !== "payment")).map((k) => {
+      // Name, address and payment all happen on Stripe's page, so the bar
+      // reads "1. Collection · 2. Photos · 3. Payment".
+      STEP_ORDER.filter((k) => k !== "shipping").map((k) => {
         const i = STEP_ORDER.indexOf(k);
         return {
           key: k,
@@ -381,7 +361,7 @@ export default function CheckoutFlow() {
           bg: i === currentIdx ? STEP_COLORS[k] : "var(--surface)",
         };
       }),
-    [t, currentIdx, step],
+    [t, currentIdx],
   );
 
   return (
@@ -664,78 +644,23 @@ export default function CheckoutFlow() {
                 onChange={(e) => setArtistNotes(e.target.value)}
               />
             </div>
+            {/* Only the email is asked here. Name and address are filled in on
+                Stripe's page, where Apple Pay adds them in one tap. */}
+            <div className={styles.field} style={{ marginBottom: 8 }}>
+              <label className={styles.fbFieldLabel}>{t.email}</label>
+              <input
+                className={styles.fbInput}
+                type="email"
+                name="email"
+                autoComplete="email"
+                inputMode="email"
+                value={ship.email}
+                onChange={(e) => updateShip("email", e.target.value.trim())}
+              />
+            </div>
+            <p className={styles.paymentNote}>{t.expressNote}</p>
             <div className={styles.actions}>
               <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("style")}>
-                {t.back}
-              </button>
-              <button
-                type="button"
-                className={`${styles.fbBtn} ${styles.fbBtnPrimary}`}
-                onClick={() => setStep("shipping")}
-              >
-                {t.continueShipping} →
-              </button>
-            </div>
-          </>
-        )}
-
-        {step === "shipping" && (
-          <>
-            <h2 className={styles.h2}>{t.shippingTitle}</h2>
-            <p className={styles.sub}>{t.shippingSub}</p>
-            <div className={styles.rowTwo}>
-              <div className={styles.field}>
-                <label className={styles.fbFieldLabel}>{t.fullName}</label>
-                <input className={styles.fbInput} type="text" name="name" autoComplete="name" value={ship.name} onChange={(e) => updateShip("name", e.target.value)} />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.fbFieldLabel}>{t.email}</label>
-                <input className={styles.fbInput} type="email" name="email" autoComplete="email" value={ship.email} onChange={(e) => updateShip("email", e.target.value)} />
-              </div>
-            </div>
-            <div className={styles.field} style={{ marginBottom: 16 }}>
-              <label className={styles.fbFieldLabel}>{t.address}</label>
-              <input className={styles.fbInput} type="text" name="address" autoComplete="street-address" value={ship.address} onChange={(e) => updateShip("address", e.target.value)} />
-            </div>
-            <div className={styles.rowThree}>
-              <div className={styles.field}>
-                <label className={styles.fbFieldLabel}>{t.city}</label>
-                <input className={styles.fbInput} type="text" name="city" autoComplete="address-level2" value={ship.city} onChange={(e) => updateShip("city", e.target.value)} />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.fbFieldLabel}>{t.postal}</label>
-                <input className={styles.fbInput} type="text" name="postal" autoComplete="postal-code" inputMode="text" value={ship.postal} onChange={(e) => updateShip("postal", e.target.value)} />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.fbFieldLabel}>{t.country}</label>
-                <select
-                  className={styles.fbInput}
-                  name="country"
-                  autoComplete="country"
-                  value={ship.country}
-                  onChange={(e) => updateShip("country", e.target.value)}
-                >
-                  <option value="">{t.selectCountry}</option>
-                  {/* Most customers are in Germany / Austria / Switzerland, so list
-                      those first instead of making them scroll past Afghanistan. */}
-                  <optgroup label="—">
-                    {TOP_COUNTRIES.map((code) => (
-                      <option key={`top-${code}`} value={code}>
-                        {countryOptions.find((c) => c.code === code)?.label ?? code}
-                      </option>
-                    ))}
-                  </optgroup>
-                  {countryOptions.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <p className={styles.paymentNote}>{t.stripeNote}</p>
-            <div className={styles.actions}>
-              <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("upload")}>
                 {t.back}
               </button>
               <button
@@ -768,7 +693,7 @@ export default function CheckoutFlow() {
 
               <p className={styles.paymentNote}>{t.stripeNote}</p>
               <div className={styles.actions}>
-                <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("shipping")}>
+                <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("upload")}>
                   {t.back}
                 </button>
                 <button

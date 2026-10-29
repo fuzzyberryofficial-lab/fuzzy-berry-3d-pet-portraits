@@ -83,7 +83,9 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
           <div>
             <p className={tableStyles.detailLabel}>Shipping address</p>
             <p className={tableStyles.detailValue}>
-              {order.shipping_address}, {order.shipping_city} {order.shipping_postal}, {order.shipping_country}
+              {order.shipping_address
+                ? `${order.shipping_address}, ${order.shipping_city} ${order.shipping_postal}, ${order.shipping_country}`
+                : "Not yet entered (the customer adds it on Stripe's payment page)"}
             </p>
           </div>
           {order.artist_notes && (

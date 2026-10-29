@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { preconnect } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { Fraunces, Poppins } from "next/font/google";
@@ -237,6 +238,8 @@ export default function CheckoutFlow() {
   };
 
   const t = TR[lang];
+  // Warm up the connection to Stripe's payment page so it opens faster after "Pay".
+  preconnect("https://checkout.stripe.com");
 
   // Country names in the page language ("Deutschland" on the German page).
   const countryOptions = useMemo(() => {
@@ -351,7 +354,7 @@ export default function CheckoutFlow() {
       // checkouts (and the orders in our admin) instead of page visits.
       trackPixelEvent("InitiateCheckout", { value: total, currency: "EUR", num_items: 1 });
       // Give the pixel a moment to send before leaving the page.
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 150));
       window.location.href = data.url;
     } catch {
       try {
@@ -741,7 +744,7 @@ export default function CheckoutFlow() {
                 disabled={!canPay || isRedirecting}
                 onClick={handlePayWithStripe}
               >
-                {isRedirecting ? "…" : `${t.payWithStripe} — €${formatEur(total)}`}
+                {isRedirecting ? t.redirectingToPay : `${t.payWithStripe} — €${formatEur(total)}`}
               </button>
             </div>
           </>
@@ -774,7 +777,7 @@ export default function CheckoutFlow() {
                   disabled={!canPay || isRedirecting || isVerifying}
                   onClick={handlePayWithStripe}
                 >
-                  {isRedirecting ? "…" : `${t.payWithStripe} — €${formatEur(total)}`}
+                  {isRedirecting ? t.redirectingToPay : `${t.payWithStripe} — €${formatEur(total)}`}
                 </button>
               </div>
             </div>

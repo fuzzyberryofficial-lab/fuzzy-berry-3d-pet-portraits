@@ -42,6 +42,7 @@ export interface Translation {
   paymentTitle: string;
   stripeNote: string;
   payWithStripe: string;
+  redirectingToPay: string;
   verifyingPayment: string;
   paymentCancelledMsg: string;
   paymentFailedMsg: string;
@@ -112,6 +113,7 @@ export const TR: Record<Lang, Translation> = {
     paymentTitle: "Payment",
     stripeNote: "You'll be redirected to Stripe to complete payment securely.",
     payWithStripe: "Continue to Checkout",
+    redirectingToPay: "Opening secure payment…",
     verifyingPayment: "Verifying your payment…",
     paymentCancelledMsg: "Checkout was cancelled. You can try again whenever you're ready.",
     paymentFailedMsg: "Payment wasn't completed. Please try again.",
@@ -189,6 +191,7 @@ export const TR: Record<Lang, Translation> = {
     paymentTitle: "Zahlung",
     stripeNote: "Sie werden zu Stripe weitergeleitet, um sicher zu bezahlen.",
     payWithStripe: "Weiter zur Kasse",
+    redirectingToPay: "Sichere Zahlung wird geöffnet…",
     verifyingPayment: "Zahlung wird überprüft …",
     paymentCancelledMsg: "Der Bezahlvorgang wurde abgebrochen. Sie können es jederzeit erneut versuchen.",
     paymentFailedMsg: "Die Zahlung wurde nicht abgeschlossen. Bitte versuchen Sie es erneut.",

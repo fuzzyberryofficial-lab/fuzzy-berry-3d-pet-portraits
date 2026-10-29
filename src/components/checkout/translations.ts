@@ -41,7 +41,6 @@ export interface Translation {
   continuePayment: string;
   paymentTitle: string;
   stripeNote: string;
-  expressNote: string;
   payWithStripe: string;
   redirectingToPay: string;
   verifyingPayment: string;
@@ -91,13 +90,13 @@ export const TR: Record<Lang, Translation> = {
     no: "No",
     continueUpload: "Continue to Photo Upload",
     uploadTitle: "Upload Your Pet's Photo",
-    uploadSub: "High-resolution, natural light, eyes and fur clearly visible.",
+    uploadSub: "One clear photo is enough.",
     uploadPh1: "Add your pet's photo",
     uploadPh2: "+ Add another photo (optional)",
     uploadPh3: "+ Add a third photo (optional)",
     uploadHint: "Tap or drag a photo here",
-    photoTipsNote: "📸 Tip for the best result: use natural side lighting and have your pet look straight at the camera, so we can capture their eyes and fur detail clearly.",
-    photoOptionalNote: "* No photo handy? No problem — you can email it to us after ordering and we'll start once it arrives.",
+    photoTipsNote: "🐾 Tip: your favourite pic of your furry friend – sharp, with that cute face clearly visible 💛",
+    photoOptionalNote: "* No photo yet? Email it to us after ordering.",
     notesLabel: "Notes for our artist",
     back: "Back",
     continueShipping: "Continue to Shipping",
@@ -113,7 +112,6 @@ export const TR: Record<Lang, Translation> = {
     continuePayment: "Continue to Payment",
     paymentTitle: "Payment",
     stripeNote: "You'll be redirected to Stripe to complete payment securely.",
-    expressNote: "On the next page you add your shipping address and pay. With Apple Pay it's filled in automatically.",
     payWithStripe: "Continue to Checkout",
     redirectingToPay: "Opening secure payment…",
     verifyingPayment: "Verifying your payment…",
@@ -170,13 +168,13 @@ export const TR: Record<Lang, Translation> = {
     no: "Nein",
     continueUpload: "Weiter zum Foto-Upload",
     uploadTitle: "Laden Sie das Foto Ihres Haustiers hoch",
-    uploadSub: "Hochauflösend, natürliches Licht, Augen und Fell gut erkennbar.",
+    uploadSub: "Ein gutes Foto reicht.",
     uploadPh1: "Foto Ihres Haustiers hinzufügen",
     uploadPh2: "+ Weiteres Foto (optional)",
     uploadPh3: "+ Drittes Foto (optional)",
     uploadHint: "Antippen oder Foto hierher ziehen",
-    photoTipsNote: "📸 Tipp für das beste Ergebnis: natürliches Seitenlicht und Ihr Haustier blickt direkt in die Kamera — so können wir Augen und Fell am besten einfangen.",
-    photoOptionalNote: "* Gerade kein Foto zur Hand? Kein Problem — senden Sie es uns einfach nach der Bestellung per E-Mail, wir starten, sobald es da ist.",
+    photoTipsNote: "🐾 Tipp: Ihr Lieblingsfoto von Ihrem Fellfreund – scharf und mit gut sichtbarem Schnäuzchen 💛",
+    photoOptionalNote: "* Noch kein Foto? Einfach nach der Bestellung per E-Mail senden.",
     notesLabel: "Notizen für unseren Künstler",
     back: "Zurück",
     continueShipping: "Weiter zum Versand",
@@ -192,7 +190,6 @@ export const TR: Record<Lang, Translation> = {
     continuePayment: "Weiter zur Zahlung",
     paymentTitle: "Zahlung",
     stripeNote: "Sie werden zu Stripe weitergeleitet, um sicher zu bezahlen.",
-    expressNote: "Auf der nächsten Seite geben Sie Ihre Lieferadresse ein und bezahlen. Mit Apple Pay wird sie automatisch ausgefüllt.",
     payWithStripe: "Weiter zur Kasse",
     redirectingToPay: "Sichere Zahlung wird geöffnet…",
     verifyingPayment: "Zahlung wird überprüft …",

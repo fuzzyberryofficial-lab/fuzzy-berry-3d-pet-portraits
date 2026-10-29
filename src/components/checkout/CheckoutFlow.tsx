@@ -646,7 +646,7 @@ export default function CheckoutFlow() {
             </div>
             {/* Only the email is asked here. Name and address are filled in on
                 Stripe's page, where Apple Pay adds them in one tap. */}
-            <div className={styles.field} style={{ marginBottom: 8 }}>
+            <div className={styles.field} style={{ marginBottom: 24 }}>
               <label className={styles.fbFieldLabel}>{t.email}</label>
               <input
                 className={styles.fbInput}
@@ -658,7 +658,6 @@ export default function CheckoutFlow() {
                 onChange={(e) => updateShip("email", e.target.value.trim())}
               />
             </div>
-            <p className={styles.paymentNote}>{t.expressNote}</p>
             <div className={styles.actions}>
               <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("style")}>
                 {t.back}

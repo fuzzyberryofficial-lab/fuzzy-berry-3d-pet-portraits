@@ -38,6 +38,20 @@ interface CheckoutSnapshot {
 
 const SNAPSHOT_KEY = "fb_checkout_snapshot";
 
+const TOP_COUNTRIES = ["DE", "AT", "CH"];
+
+// Best guess of the visitor's country from their time zone, so the shipping
+// form starts with the right country (and shipping cost) already picked.
+function guessCountry(): string {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz === "Europe/Vienna") return "AT";
+    if (tz === "Europe/Berlin" || tz === "Europe/Busingen") return "DE";
+    if (tz === "Europe/Zurich") return "CH";
+  } catch {}
+  return "";
+}
+
 const STEP_ORDER: Step[] = ["style", "upload", "shipping", "payment", "done"];
 const STEP_COLORS: Record<Step, string> = {
   style: "var(--sun)",
@@ -90,6 +104,14 @@ export default function CheckoutFlow() {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setPromoCode(promo.toUpperCase());
       setPromoFromLink(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const guess = guessCountry();
+    if (guess) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShip((prev) => (prev.country ? prev : { ...prev, country: guess }));
     }
   }, []);
 
@@ -324,13 +346,20 @@ export default function CheckoutFlow() {
 
   const steps = useMemo(
     () =>
-      STEP_ORDER.map((k, i) => ({
-        key: k,
-        label: t.steps[k],
-        opacity: i <= currentIdx ? 1 : 0.4,
-        bg: i === currentIdx ? STEP_COLORS[k] : "var(--surface)",
-      })),
-    [t, currentIdx],
+      // Customers pay straight from the shipping step, so the separate
+      // "payment" screen only appears after returning from Stripe (to show a
+      // cancelled / failed notice). Show it as step 3 in that case only, so
+      // the progress bar reads as 3 short steps instead of 4.
+      STEP_ORDER.filter((k) => (step === "payment" ? k !== "shipping" : k !== "payment")).map((k) => {
+        const i = STEP_ORDER.indexOf(k);
+        return {
+          key: k,
+          label: t.steps[k],
+          opacity: i <= currentIdx ? 1 : 0.4,
+          bg: i === currentIdx ? STEP_COLORS[k] : "var(--surface)",
+        };
+      }),
+    [t, currentIdx, step],
   );
 
   return (
@@ -626,34 +655,45 @@ export default function CheckoutFlow() {
             <div className={styles.rowTwo}>
               <div className={styles.field}>
                 <label className={styles.fbFieldLabel}>{t.fullName}</label>
-                <input className={styles.fbInput} type="text" value={ship.name} onChange={(e) => updateShip("name", e.target.value)} />
+                <input className={styles.fbInput} type="text" name="name" autoComplete="name" value={ship.name} onChange={(e) => updateShip("name", e.target.value)} />
               </div>
               <div className={styles.field}>
                 <label className={styles.fbFieldLabel}>{t.email}</label>
-                <input className={styles.fbInput} type="email" value={ship.email} onChange={(e) => updateShip("email", e.target.value)} />
+                <input className={styles.fbInput} type="email" name="email" autoComplete="email" value={ship.email} onChange={(e) => updateShip("email", e.target.value)} />
               </div>
             </div>
             <div className={styles.field} style={{ marginBottom: 16 }}>
               <label className={styles.fbFieldLabel}>{t.address}</label>
-              <input className={styles.fbInput} type="text" value={ship.address} onChange={(e) => updateShip("address", e.target.value)} />
+              <input className={styles.fbInput} type="text" name="address" autoComplete="street-address" value={ship.address} onChange={(e) => updateShip("address", e.target.value)} />
             </div>
             <div className={styles.rowThree}>
               <div className={styles.field}>
                 <label className={styles.fbFieldLabel}>{t.city}</label>
-                <input className={styles.fbInput} type="text" value={ship.city} onChange={(e) => updateShip("city", e.target.value)} />
+                <input className={styles.fbInput} type="text" name="city" autoComplete="address-level2" value={ship.city} onChange={(e) => updateShip("city", e.target.value)} />
               </div>
               <div className={styles.field}>
                 <label className={styles.fbFieldLabel}>{t.postal}</label>
-                <input className={styles.fbInput} type="text" value={ship.postal} onChange={(e) => updateShip("postal", e.target.value)} />
+                <input className={styles.fbInput} type="text" name="postal" autoComplete="postal-code" inputMode="text" value={ship.postal} onChange={(e) => updateShip("postal", e.target.value)} />
               </div>
               <div className={styles.field}>
                 <label className={styles.fbFieldLabel}>{t.country}</label>
                 <select
                   className={styles.fbInput}
+                  name="country"
+                  autoComplete="country"
                   value={ship.country}
                   onChange={(e) => updateShip("country", e.target.value)}
                 >
                   <option value="">{t.selectCountry}</option>
+                  {/* Most customers are in Germany / Austria / Switzerland, so list
+                      those first instead of making them scroll past Afghanistan. */}
+                  <optgroup label="—">
+                    {TOP_COUNTRIES.map((code) => (
+                      <option key={`top-${code}`} value={code}>
+                        {COUNTRIES.find((c) => c.code === code)?.label ?? code}
+                      </option>
+                    ))}
+                  </optgroup>
                   {COUNTRIES.map((c) => (
                     <option key={c.code} value={c.code}>
                       {c.label}

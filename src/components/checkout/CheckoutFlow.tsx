@@ -40,6 +40,12 @@ const SNAPSHOT_KEY = "fb_checkout_snapshot";
 
 const TOP_COUNTRIES = ["DE", "AT", "CH"];
 
+function localName(names: Intl.DisplayNames | null, code: string): string | undefined {
+  const name = names?.of(code);
+  // Unknown regions come back as the bare code; keep the English label then.
+  return name && name !== code ? name : undefined;
+}
+
 // Best guess of the visitor's country from their time zone, so the shipping
 // form starts with the right country (and shipping cost) already picked.
 function guessCountry(): string {
@@ -231,6 +237,19 @@ export default function CheckoutFlow() {
   };
 
   const t = TR[lang];
+
+  // Country names in the page language ("Deutschland" on the German page).
+  const countryOptions = useMemo(() => {
+    let names: Intl.DisplayNames | null = null;
+    try {
+      names = new Intl.DisplayNames([lang], { type: "region" });
+    } catch {
+      names = null;
+    }
+    return COUNTRIES.map((c) => ({ code: c.code, label: localName(names, c.code) ?? c.label })).sort((a, b) =>
+      a.label.localeCompare(b.label, lang),
+    );
+  }, [lang]);
 
   const collectionBase = collectionKey ? COLLECTIONS_BASE[collectionKey] : null;
   const typeBase = collectionBase && typeKey ? collectionBase.types[typeKey] : null;
@@ -615,9 +634,18 @@ export default function CheckoutFlow() {
             <p className={styles.sub}>{t.uploadSub}</p>
             <div className={`${styles.banner} ${styles.bannerNotice}`}>{t.photoTipsNote}</div>
             <div className={styles.uploadGrid}>
-              <ImageUploadSlot placeholder={t.uploadPh1} file={photos[0]} onChange={(f) => setPhoto(0, f)} />
-              <ImageUploadSlot placeholder={t.uploadPh2} file={photos[1]} onChange={(f) => setPhoto(1, f)} />
-              <ImageUploadSlot placeholder={t.uploadPh3} file={photos[2]} onChange={(f) => setPhoto(2, f)} />
+              {/* Start with one box; the next one appears once the previous is filled. */}
+              {[t.uploadPh1, t.uploadPh2, t.uploadPh3].map((ph, i) =>
+                i === 0 || photos[i - 1] || photos[i] ? (
+                  <ImageUploadSlot
+                    key={i}
+                    placeholder={ph}
+                    hint={t.uploadHint}
+                    file={photos[i]}
+                    onChange={(f) => setPhoto(i, f)}
+                  />
+                ) : null,
+              )}
             </div>
             {!hasPhoto && (
               <p className={styles.promoNote} style={{ marginBottom: 20 }}>
@@ -690,11 +718,11 @@ export default function CheckoutFlow() {
                   <optgroup label="—">
                     {TOP_COUNTRIES.map((code) => (
                       <option key={`top-${code}`} value={code}>
-                        {COUNTRIES.find((c) => c.code === code)?.label ?? code}
+                        {countryOptions.find((c) => c.code === code)?.label ?? code}
                       </option>
                     ))}
                   </optgroup>
-                  {COUNTRIES.map((c) => (
+                  {countryOptions.map((c) => (
                     <option key={c.code} value={c.code}>
                       {c.label}
                     </option>

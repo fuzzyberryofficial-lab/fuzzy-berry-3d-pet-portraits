@@ -23,6 +23,7 @@ export interface Translation {
   uploadPh1: string;
   uploadPh2: string;
   uploadPh3: string;
+  uploadHint: string;
   photoTipsNote: string;
   photoOptionalNote: string;
   notesLabel: string;
@@ -89,9 +90,10 @@ export const TR: Record<Lang, Translation> = {
     continueUpload: "Continue to Photo Upload",
     uploadTitle: "Upload Your Pet's Photo",
     uploadSub: "High-resolution, natural light, eyes and fur clearly visible.",
-    uploadPh1: "Drop your pet's photo",
-    uploadPh2: "Optional second photo",
-    uploadPh3: "Optional third photo",
+    uploadPh1: "Add your pet's photo",
+    uploadPh2: "+ Add another photo (optional)",
+    uploadPh3: "+ Add a third photo (optional)",
+    uploadHint: "Tap or drag a photo here",
     photoTipsNote: "📸 Tip for the best result: use natural side lighting and have your pet look straight at the camera, so we can capture their eyes and fur detail clearly.",
     photoOptionalNote: "* No photo handy? No problem — you can email it to us after ordering and we'll start once it arrives.",
     notesLabel: "Notes for our artist",
@@ -165,9 +167,10 @@ export const TR: Record<Lang, Translation> = {
     continueUpload: "Weiter zum Foto-Upload",
     uploadTitle: "Laden Sie das Foto Ihres Haustiers hoch",
     uploadSub: "Hochauflösend, natürliches Licht, Augen und Fell gut erkennbar.",
-    uploadPh1: "Foto Ihres Haustiers hierher ziehen",
-    uploadPh2: "Optionales zweites Foto",
-    uploadPh3: "Optionales drittes Foto",
+    uploadPh1: "Foto Ihres Haustiers hinzufügen",
+    uploadPh2: "+ Weiteres Foto (optional)",
+    uploadPh3: "+ Drittes Foto (optional)",
+    uploadHint: "Antippen oder Foto hierher ziehen",
     photoTipsNote: "📸 Tipp für das beste Ergebnis: natürliches Seitenlicht und Ihr Haustier blickt direkt in die Kamera — so können wir Augen und Fell am besten einfangen.",
     photoOptionalNote: "* Gerade kein Foto zur Hand? Kein Problem — senden Sie es uns einfach nach der Bestellung per E-Mail, wir starten, sobald es da ist.",
     notesLabel: "Notizen für unseren Künstler",

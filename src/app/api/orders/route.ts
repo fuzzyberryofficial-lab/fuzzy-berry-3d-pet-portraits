@@ -143,7 +143,9 @@ export async function POST(request: Request) {
 
   const buildSessionParams = (promo: StripePromo | null): Stripe.Checkout.SessionCreateParams => ({
     mode: "payment",
-    payment_method_types: ["card", "paypal", "klarna", "eps"],
+    // No fixed list: Stripe shows the payment methods turned on in the
+    // Dashboard (Settings → Payment methods), so PayPal, Klarna etc. are
+    // switched on and off there. A hard-coded list kept PayPal hidden.
     // Codes are entered on our own checkout page, not in Stripe's box:
     // FRANKFURT is handled above as a free frame, and codes created in the
     // Stripe dashboard are applied here via `discounts`.

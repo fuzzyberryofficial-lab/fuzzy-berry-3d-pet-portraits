@@ -133,10 +133,6 @@ export default function CheckoutFlow() {
   }, []);
 
   useEffect(() => {
-    trackPixelEvent("InitiateCheckout");
-  }, []);
-
-  useEffect(() => {
     // Stripe Checkout is a real browser redirect away from the app and back,
     // so any in-memory selection is gone by the time the customer returns.
     // We stash a snapshot in sessionStorage right before redirecting and
@@ -309,6 +305,12 @@ export default function CheckoutFlow() {
       });
       const data: { url?: string; error?: string } = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error || "start-error");
+      // Only count a checkout once the customer has pressed Pay and Stripe's
+      // payment page is ready, so Meta's "Initiate checkout" matches real
+      // checkouts (and the orders in our admin) instead of page visits.
+      trackPixelEvent("InitiateCheckout", { value: total, currency: "EUR", num_items: 1 });
+      // Give the pixel a moment to send before leaving the page.
+      await new Promise((resolve) => setTimeout(resolve, 300));
       window.location.href = data.url;
     } catch {
       try {

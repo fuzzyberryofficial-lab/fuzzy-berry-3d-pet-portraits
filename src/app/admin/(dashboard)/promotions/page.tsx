@@ -1,4 +1,5 @@
 import { listPromoRedemptions, summarizePromoStats, formatMoney } from "@/lib/adminData";
+import { getPromoDiscounts } from "@/lib/promoDiscounts";
 import KpiCard from "@/components/admin/KpiCard";
 import PromoTable from "@/components/admin/PromoTable";
 import tableStyles from "@/components/admin/AdminTable.module.css";
@@ -47,7 +48,13 @@ export default async function AdminPromotionsPage({ searchParams }: PageProps) {
 
   const totalUses = redemptions.length;
   const paidUses = redemptions.filter((r) => r.status === "paid").length;
-  const discountGiven = paidUses * 2000; // €20 free frame per paid redemption, in cents
+  const discounts = await getPromoDiscounts(redemptions);
+  const discountGiven = Array.from(discounts.values()).reduce((sum, cents) => sum + cents, 0);
+  const discountByCode = new Map<string, number>();
+  for (const r of redemptions) {
+    const cents = discounts.get(r.id);
+    if (cents && r.promo_code) discountByCode.set(r.promo_code, (discountByCode.get(r.promo_code) ?? 0) + cents);
+  }
   const isFiltered = !!(params.code || params.fromYear || params.toYear);
 
   return (
@@ -117,6 +124,7 @@ export default async function AdminPromotionsPage({ searchParams }: PageProps) {
                 <th>Code</th>
                 <th>Total uses</th>
                 <th>Paid uses</th>
+                <th>Discount given (paid)</th>
                 <th>Last used</th>
               </tr>
             </thead>
@@ -126,6 +134,7 @@ export default async function AdminPromotionsPage({ searchParams }: PageProps) {
                   <td>{s.code}</td>
                   <td>{s.totalUses}</td>
                   <td>{s.paidUses}</td>
+                  <td>{formatMoney(discountByCode.get(s.code) ?? 0, "eur")}</td>
                   <td>{s.lastUsedAt ? new Date(s.lastUsedAt).toLocaleString() : "—"}</td>
                 </tr>
               ))}

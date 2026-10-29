@@ -4,9 +4,19 @@ import { getStripe } from "@/lib/stripe";
 import { findStripePromo, type StripePromo } from "@/lib/stripePromo";
 import { getSupabaseAdmin, ORDER_PHOTOS_BUCKET } from "@/lib/supabase";
 import { COLLECTIONS_BASE, PROMO_CODES, type CollectionKey } from "@/components/checkout/catalog";
-import { getCountryLabel, getShippingRate, getShippingZone, getShippingZoneLabel } from "@/components/checkout/countries";
+import { COUNTRIES, getShippingRate, getShippingZone, getShippingZoneLabel } from "@/components/checkout/countries";
 
 const FRAME_PRICE = 20;
+
+type AllowedCountry = Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry;
+// Countries Stripe Checkout can collect a shipping address for (it rejects a
+// few, e.g. sanctioned ones), limited to the ones we ship to.
+const STRIPE_SHIPPING_COUNTRIES = new Set<string>(
+  "AC AD AE AF AG AI AL AM AO AQ AR AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CD CF CG CH CI CK CL CM CN CO CR CV CW CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HN HR HT HU ID IE IL IM IN IO IQ IS IT JE JM JO JP KE KG KH KI KM KN KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MK ML MM MN MO MQ MR MS MT MU MV MW MX MY MZ NA NC NE NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SZ TA TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG US UY UZ VA VC VE VG VN VU WF WS XK YE YT ZA ZM ZW".split(" "),
+);
+const SHIPPING_COUNTRIES = COUNTRIES.map((c) => c.code).filter((code): code is AllowedCountry =>
+  STRIPE_SHIPPING_COUNTRIES.has(code),
+);
 const CURRENCY = "eur";
 
 interface CheckoutRequestBody {
@@ -56,8 +66,11 @@ export async function POST(request: Request) {
   if (!collectionBase || !typeBase || !size) {
     return NextResponse.json({ error: "Invalid portrait selection." }, { status: 400 });
   }
-  if (!body.ship?.name || !body.ship?.email) {
-    return NextResponse.json({ error: "Missing shipping details." }, { status: 400 });
+  // Name and address are collected on Stripe's page (Apple Pay
+  // fill them in); we only need the email up front.
+  const email = (body.ship?.email || "").trim();
+  if (!email) {
+    return NextResponse.json({ error: "Missing email." }, { status: 400 });
   }
 
   // Recompute the promo discount server-side too — never trust the client's
@@ -107,13 +120,19 @@ export async function POST(request: Request) {
     });
   }
 
-  const shippingZone = getShippingZone(body.ship.country);
-  const shippingRate = getShippingRate(body.ship.country);
+  const shippingCountry = body.ship.country || "";
+  const shippingZone = getShippingZone(shippingCountry);
+  const shippingRate = getShippingRate(shippingCountry);
   lineItems.push({
     price_data: {
       currency: CURRENCY,
       product_data: {
-        name: `Shipping (${getShippingZoneLabel(shippingZone)})`,
+        name:
+          shippingRate === 0
+            ? body.lang === "de"
+              ? "Kostenloser Versand"
+              : "Free shipping"
+            : `Shipping (${getShippingZoneLabel(shippingZone)})`,
       },
       unit_amount: shippingRate * 100,
     },
@@ -130,12 +149,11 @@ export async function POST(request: Request) {
     // Stripe dashboard are applied here via `discounts`.
     ...(promo ? { discounts: [{ promotion_code: promo.id }] } : { allow_promotion_codes: false }),
     line_items: lineItems,
-    customer_email: body.ship.email,
+    customer_email: email,
+    shipping_address_collection: { allowed_countries: SHIPPING_COUNTRIES },
     success_url: `${origin}/checkout?stripe=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/checkout?stripe=cancel`,
     metadata: {
-      customerName: body.ship.name,
-      shippingAddress: `${body.ship.address}, ${body.ship.city} ${body.ship.postal}, ${getCountryLabel(body.ship.country)}`,
       artistNotes: body.artistNotes || "",
       collection: body.collectionKey,
       type: body.typeKey,
@@ -170,12 +188,24 @@ export async function POST(request: Request) {
       try {
         const supabase = getSupabaseAdmin();
 
-        const { data: customer, error: customerError } = await supabase
+        // The name comes later from Stripe (see the webhook), so don't
+        // overwrite a returning customer's name with an empty one here.
+        const { data: existing, error: findError } = await supabase
           .from("customers")
-          .upsert({ email: body.ship.email, name: body.ship.name }, { onConflict: "email" })
           .select("id")
-          .single();
-        if (customerError) throw customerError;
+          .eq("email", email)
+          .maybeSingle();
+        if (findError) throw findError;
+        let customer = existing;
+        if (!customer) {
+          const { data: created, error: customerError } = await supabase
+            .from("customers")
+            .insert({ email, name: "" })
+            .select("id")
+            .single();
+          if (customerError) throw customerError;
+          customer = created;
+        }
 
         const { data: order, error: orderError } = await supabase
           .from("orders")
@@ -188,11 +218,12 @@ export async function POST(request: Request) {
             size_label: size.label,
             frame_color: body.addFrame ? body.displayNames.frameColorLabel : null,
             artist_notes: body.artistNotes || null,
-            shipping_name: body.ship.name,
-            shipping_address: body.ship.address,
-            shipping_city: body.ship.city,
-            shipping_postal: body.ship.postal,
-            shipping_country: getCountryLabel(body.ship.country),
+            // Filled in by the Stripe webhook once the customer has paid.
+            shipping_name: "",
+            shipping_address: "",
+            shipping_city: "",
+            shipping_postal: "",
+            shipping_country: "",
             amount_total:
               session.amount_total ?? lineItems.reduce((sum, item) => sum + (item.price_data?.unit_amount ?? 0), 0),
             currency: CURRENCY,

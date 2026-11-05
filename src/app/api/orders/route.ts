@@ -143,6 +143,9 @@ export async function POST(request: Request) {
 
   const buildSessionParams = (promo: StripePromo | null): Stripe.Checkout.SessionCreateParams => ({
     mode: "payment",
+    // Show Stripe's payment page and the receipt email in the language the
+    // customer picked on our site, not their phone's language.
+    locale: body.lang === "de" ? "de" : "en",
     payment_method_types: ["card", "paypal", "klarna", "eps"],
     // Codes are entered on our own checkout page, not in Stripe's box:
     // FRANKFURT is handled above as a free frame, and codes created in the

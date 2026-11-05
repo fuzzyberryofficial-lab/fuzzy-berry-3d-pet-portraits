@@ -16,19 +16,41 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const DESCRIPTION =
+  "Handgemalte 3D-Haustierporträts auf mehreren Acrylschichten, nach Ihrem Foto gemalt. Kostenloser Versand. Hand-painted 3D pet portraits on layered acrylic, made from your photo.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Fuzzy Berry — 3D Pet Portraits",
-  description:
-    "Hand-painted 3D portraits of your pet, made from your photo. Free worldwide shipping.",
+  title: {
+    default: "FuzzyBerry – Handgemalte 3D-Haustierporträts | 3D Pet Portraits",
+    template: "%s – FuzzyBerry",
+  },
+  description: DESCRIPTION,
+  applicationName: "FuzzyBerry",
   openGraph: {
     type: "website",
-    siteName: "Fuzzy Berry",
+    siteName: "FuzzyBerry",
     url: SITE_URL,
-    title: "Fuzzy Berry — 3D Pet Portraits",
-    description:
-      "Hand-painted 3D portraits of your pet, made from your photo. Free worldwide shipping.",
+    locale: "de_DE",
+    alternateLocale: ["en_GB"],
+    title: "FuzzyBerry – Handgemalte 3D-Haustierporträts",
+    description: DESCRIPTION,
   },
+};
+
+// Tells Google the brand name ("FuzzyBerry", also written "Fuzzy Berry"),
+// the website and the official social accounts.
+const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "FuzzyBerry",
+  alternateName: ["Fuzzy Berry", "fuzzyberry.de"],
+  url: SITE_URL,
+  logo: `${SITE_URL}/favicon.ico`,
+  sameAs: [
+    "https://www.instagram.com/fuzzyberry.official/",
+    "https://www.facebook.com/profile.php?id=61584210684045",
+  ],
 };
 
 export default function RootLayout({
@@ -39,6 +61,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD) }}
+        />
         {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">
             {`

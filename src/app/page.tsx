@@ -3,7 +3,8 @@ import HomePage from "@/components/home/HomePage";
 import { getInstagramPosts } from "@/lib/adminData";
 
 export const metadata: Metadata = {
-  title: "Fuzzy Berry — 3D Pet Portraits",
+  title: { absolute: "FuzzyBerry – Handgemalte 3D-Haustierporträts | 3D Pet Portraits" },
+  alternates: { canonical: "/" },
 };
 
 export default async function Page() {

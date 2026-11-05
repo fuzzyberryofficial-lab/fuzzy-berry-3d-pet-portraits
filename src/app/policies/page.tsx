@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import PoliciesPage from "@/components/policies/PoliciesPage";
 
 export const metadata: Metadata = {
-  title: "Policies — Fuzzy Berry",
+  title: "Policies",
+  alternates: { canonical: "/policies" },
 };
 
 export default function Page() {

@@ -108,29 +108,33 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     },
   ];
 
+  // Each pair shares one aspect ratio so the photo and the portrait are the
+  // same size; ratios and focal points keep every face fully in frame.
   const beforeAfter = [
     {
       key: "pom",
+      ratio: "3 / 4",
       before: "/images/before-after/pom-before.jpg",
       after: "/images/before-after/pom-after.webp",
-      beforePos: "50% 35%",
-      afterPos: "50% 62%",
-      afterZoom: 1.15,
+      beforePos: "50% 30%",
+      afterPos: "50% 55%",
       alt: isEn ? "Pomeranian: original photo and hand-painted acrylic portrait" : "Spitz: Originalfoto und handgemaltes Acrylporträt",
     },
     {
       key: "duo",
+      ratio: "6 / 5",
       before: "/images/before-after/duo-before.jpg",
       after: "/images/before-after/duo-after.webp",
       beforePos: "50% 40%",
-      afterPos: "50% 55%",
+      afterPos: "50% 50%",
       alt: isEn ? "Two dogs: original photo and hand-painted acrylic portrait" : "Zwei Hunde: Originalfoto und handgemaltes Acrylporträt",
     },
     {
       key: "golden",
+      ratio: "4 / 5",
       before: "/images/before-after/golden-before.jpg",
       after: "/images/before-after/golden-after.webp",
-      beforePos: "50% 35%",
+      beforePos: "50% 12%",
       afterPos: "50% 50%",
       alt: isEn ? "Golden Retriever: original photo and hand-painted acrylic portrait" : "Golden Retriever: Originalfoto und handgemaltes Acrylporträt",
     },
@@ -232,29 +236,31 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         </p>
         <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.baTitle}</h2>
         <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.baSub}</p>
-        <div className={styles.baGrid}>
+        <div className={styles.baList}>
           {beforeAfter.map((item) => (
-            <figure key={item.key} className={styles.baCard} aria-label={item.alt}>
-              <div className={styles.baAfter}>
-                <SiteImage
-                  src={item.after}
-                  alt={item.alt}
-                  className={styles.baImage}
-                  objectPosition={item.afterPos}
-                  imageStyle={item.afterZoom ? { transform: `scale(${item.afterZoom})` } : undefined}
-                  sizes="(max-width: 900px) 90vw, 30vw"
-                />
-                <span className={styles.baTagPainted}>{t.baPainted}</span>
-              </div>
-              <div className={styles.baBefore}>
+            <figure key={item.key} className={styles.baRow} aria-label={item.alt}>
+              <div className={styles.baTile}>
                 <SiteImage
                   src={item.before}
                   alt=""
                   className={styles.baImage}
+                  style={{ aspectRatio: item.ratio }}
                   objectPosition={item.beforePos}
-                  sizes="(max-width: 900px) 40vw, 12vw"
+                  sizes="(max-width: 900px) 45vw, 340px"
                 />
-                <span className={styles.baTagPhoto}>{t.baPhoto}</span>
+                <figcaption className={styles.baCaption}>{t.baPhoto}</figcaption>
+              </div>
+              <span className={styles.baArrow} aria-hidden="true">→</span>
+              <div className={styles.baTile}>
+                <SiteImage
+                  src={item.after}
+                  alt={item.alt}
+                  className={styles.baImage}
+                  style={{ aspectRatio: item.ratio }}
+                  objectPosition={item.afterPos}
+                  sizes="(max-width: 900px) 45vw, 340px"
+                />
+                <figcaption className={`${styles.baCaption} ${styles.baCaptionPainted}`}>{t.baPainted}</figcaption>
               </div>
             </figure>
           ))}

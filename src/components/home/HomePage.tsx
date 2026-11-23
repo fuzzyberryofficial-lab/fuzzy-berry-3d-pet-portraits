@@ -108,21 +108,19 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     },
   ];
 
-  // Each pair shares one aspect ratio so the photo and the portrait are the
-  // same size; ratios and focal points keep every face fully in frame.
+  // Same 5:4 frame for every portrait and every photo inset; focal points are
+  // tuned per image so each face stays fully visible and centred.
   const beforeAfter = [
     {
       key: "pom",
-      ratio: "3 / 4",
       before: "/images/before-after/pom-before.jpg",
       after: "/images/before-after/pom-after.webp",
-      beforePos: "50% 30%",
-      afterPos: "50% 55%",
+      beforePos: "50% 25%",
+      afterPos: "50% 88%",
       alt: isEn ? "Pomeranian: original photo and hand-painted acrylic portrait" : "Spitz: Originalfoto und handgemaltes Acrylporträt",
     },
     {
       key: "duo",
-      ratio: "6 / 5",
       before: "/images/before-after/duo-before.jpg",
       after: "/images/before-after/duo-after.webp",
       beforePos: "50% 40%",
@@ -131,11 +129,10 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     },
     {
       key: "golden",
-      ratio: "4 / 5",
       before: "/images/before-after/golden-before.jpg",
       after: "/images/before-after/golden-after.webp",
-      beforePos: "50% 12%",
-      afterPos: "50% 50%",
+      beforePos: "50% 0%",
+      afterPos: "50% 10%",
       alt: isEn ? "Golden Retriever: original photo and hand-painted acrylic portrait" : "Golden Retriever: Originalfoto und handgemaltes Acrylporträt",
     },
   ];
@@ -236,31 +233,28 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         </p>
         <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.baTitle}</h2>
         <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.baSub}</p>
-        <div className={styles.baList}>
+        <div className={styles.baGrid}>
           {beforeAfter.map((item) => (
-            <figure key={item.key} className={styles.baRow} aria-label={item.alt}>
-              <div className={styles.baTile}>
-                <SiteImage
-                  src={item.before}
-                  alt=""
-                  className={styles.baImage}
-                  style={{ aspectRatio: item.ratio }}
-                  objectPosition={item.beforePos}
-                  sizes="(max-width: 900px) 45vw, 340px"
-                />
-                <figcaption className={styles.baCaption}>{t.baPhoto}</figcaption>
-              </div>
-              <span className={styles.baArrow} aria-hidden="true">→</span>
-              <div className={styles.baTile}>
+            <figure key={item.key} className={styles.baCard} aria-label={item.alt}>
+              <div className={styles.baAfter}>
                 <SiteImage
                   src={item.after}
                   alt={item.alt}
                   className={styles.baImage}
-                  style={{ aspectRatio: item.ratio }}
                   objectPosition={item.afterPos}
-                  sizes="(max-width: 900px) 45vw, 340px"
+                  sizes="(max-width: 900px) 90vw, 30vw"
                 />
-                <figcaption className={`${styles.baCaption} ${styles.baCaptionPainted}`}>{t.baPainted}</figcaption>
+                <span className={styles.baTagPainted}>{t.baPainted}</span>
+              </div>
+              <div className={styles.baBefore}>
+                <SiteImage
+                  src={item.before}
+                  alt=""
+                  className={`${styles.baImage} ${styles.baImageSmall}`}
+                  objectPosition={item.beforePos}
+                  sizes="(max-width: 900px) 40vw, 14vw"
+                />
+                <span className={styles.baTagPhoto}>{t.baPhoto}</span>
               </div>
             </figure>
           ))}

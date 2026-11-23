@@ -41,6 +41,20 @@
   color: var(--plum-badge);
 }
 
+.giftCardLink {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--berry);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding-left: 6px;
+}
+
+.giftCardLink:hover {
+  color: var(--berry-dark);
+}
+
 .heroCta {
   font-size: 18px;
   padding: 16px 34px;

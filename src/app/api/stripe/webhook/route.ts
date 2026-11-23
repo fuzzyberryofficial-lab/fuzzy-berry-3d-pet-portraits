@@ -3,6 +3,7 @@ import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getCountryLabel } from "@/components/checkout/countries";
+import { ensureGiftCard, isGiftCardSession } from "@/lib/giftCards";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
@@ -25,7 +26,16 @@ export async function POST(request: Request) {
     );
   }
 
-  if (event.type === "checkout.session.completed") {
+  if (event.type === "checkout.session.completed" && isGiftCardSession(event.data.object as Stripe.Checkout.Session)) {
+    // A gift card purchase: create its code now, so it exists even if the
+    // buyer closes the page before the success screen loads.
+    try {
+      await ensureGiftCard(event.data.object as Stripe.Checkout.Session);
+    } catch (err) {
+      console.error("Gift card code creation failed:", err);
+      return NextResponse.json({ error: "Gift card code creation failed." }, { status: 500 });
+    }
+  } else if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     try {
       const supabase = getSupabaseAdmin();

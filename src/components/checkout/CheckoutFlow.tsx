@@ -411,6 +411,9 @@ export default function CheckoutFlow() {
             )}
             <h2 className={styles.h2}>{t.chooseCollection}</h2>
             <p className={styles.sub}>{t.chooseCollectionSub}</p>
+            <Link href="/gift-card" className={styles.giftCardLink}>
+              {t.giftCardLink} →
+            </Link>
 
             <div className={styles.collectionGrid}>
               {COLLECTION_KEYS.map((key) => {

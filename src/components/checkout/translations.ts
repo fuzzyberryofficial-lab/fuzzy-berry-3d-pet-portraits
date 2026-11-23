@@ -7,6 +7,7 @@ export interface Translation {
   backToSite: string;
   chooseCollection: string;
   chooseCollectionSub: string;
+  giftCardLink: string;
   fromLabel: string;
   typeLabel: string;
   sizeLabel: string;
@@ -78,6 +79,7 @@ export const TR: Record<Lang, Translation> = {
     backToSite: "← Back to site",
     chooseCollection: "Choose Your Collection",
     chooseCollectionSub: "Pick a collection, then the portrait type and size.",
+    giftCardLink: "🎁 Want to give it as a gift? Buy a gift card",
     fromLabel: "from",
     typeLabel: "Type",
     sizeLabel: "Size",
@@ -156,6 +158,7 @@ export const TR: Record<Lang, Translation> = {
     backToSite: "← Zurück zur Seite",
     chooseCollection: "Wählen Sie Ihre Kollektion",
     chooseCollectionSub: "Kollektion, dann Porträttyp und Größe wählen.",
+    giftCardLink: "🎁 Lieber verschenken? Zur Geschenkkarte",
     fromLabel: "ab",
     typeLabel: "Typ",
     sizeLabel: "Größe",

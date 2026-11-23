@@ -684,3 +684,13 @@
     font-size: 22px;
   }
 }
+
+.giftCardLink {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--berry);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin: -6px 0 20px;
+}

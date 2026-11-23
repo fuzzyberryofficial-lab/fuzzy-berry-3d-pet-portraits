@@ -175,6 +175,9 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             >
               {t.startPortrait} →
             </Link>
+            <Link href="/gift-card" className={styles.giftCardLink}>
+              {t.giftCardLink} →
+            </Link>
           </div>
         </div>
 
@@ -323,6 +326,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       <SiteFooter
         social
         links={[
+          { href: "/gift-card", label: isEn ? "Gift Cards" : "Geschenkkarten" },
           { href: "/about", label: t.navAbout },
           { href: "/faqs", label: t.navFaqs },
           { href: "/contact", label: t.navContact },

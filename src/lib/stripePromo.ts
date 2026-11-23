@@ -28,6 +28,9 @@ export async function findStripePromo(rawCode: string): Promise<StripePromo | nu
   });
   const promo = list.data[0];
   if (!promo) return null;
+  // Single-use codes (gift cards) stop working once they've been redeemed.
+  if (promo.max_redemptions && promo.times_redeemed >= promo.max_redemptions) return null;
+  if (promo.expires_at && promo.expires_at * 1000 < Date.now()) return null;
 
   const coupon = promo.promotion?.coupon as Stripe.Coupon | string | null;
   if (!coupon || typeof coupon === "string" || !coupon.valid) return null;

@@ -108,6 +108,34 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
     },
   ];
 
+  const beforeAfter = [
+    {
+      key: "pom",
+      before: "/images/before-after/pom-before.jpg",
+      after: "/images/before-after/pom-after.webp",
+      beforePos: "50% 35%",
+      afterPos: "50% 62%",
+      afterZoom: 1.15,
+      alt: isEn ? "Pomeranian: original photo and hand-painted acrylic portrait" : "Spitz: Originalfoto und handgemaltes Acrylporträt",
+    },
+    {
+      key: "duo",
+      before: "/images/before-after/duo-before.jpg",
+      after: "/images/before-after/duo-after.webp",
+      beforePos: "50% 40%",
+      afterPos: "50% 55%",
+      alt: isEn ? "Two dogs: original photo and hand-painted acrylic portrait" : "Zwei Hunde: Originalfoto und handgemaltes Acrylporträt",
+    },
+    {
+      key: "golden",
+      before: "/images/before-after/golden-before.jpg",
+      after: "/images/before-after/golden-after.webp",
+      beforePos: "50% 35%",
+      afterPos: "50% 50%",
+      alt: isEn ? "Golden Retriever: original photo and hand-painted acrylic portrait" : "Golden Retriever: Originalfoto und handgemaltes Acrylporträt",
+    },
+  ];
+
   const boxItems = isEn
     ? [
         {
@@ -193,6 +221,43 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
           />
           <div className={styles.heroStickerFloat}>{t.heroSticker}</div>
+        </div>
+      </section>
+
+      <div className={siteStyles.stripe} />
+
+      <section className={`${styles.section} ${styles.baSection}`}>
+        <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
+          {t.baKicker}
+        </p>
+        <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.baTitle}</h2>
+        <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.baSub}</p>
+        <div className={styles.baGrid}>
+          {beforeAfter.map((item) => (
+            <figure key={item.key} className={styles.baCard} aria-label={item.alt}>
+              <div className={styles.baAfter}>
+                <SiteImage
+                  src={item.after}
+                  alt={item.alt}
+                  className={styles.baImage}
+                  objectPosition={item.afterPos}
+                  imageStyle={item.afterZoom ? { transform: `scale(${item.afterZoom})` } : undefined}
+                  sizes="(max-width: 900px) 90vw, 30vw"
+                />
+                <span className={styles.baTagPainted}>{t.baPainted}</span>
+              </div>
+              <div className={styles.baBefore}>
+                <SiteImage
+                  src={item.before}
+                  alt=""
+                  className={styles.baImage}
+                  objectPosition={item.beforePos}
+                  sizes="(max-width: 900px) 40vw, 12vw"
+                />
+                <span className={styles.baTagPhoto}>{t.baPhoto}</span>
+              </div>
+            </figure>
+          ))}
         </div>
       </section>
 

@@ -295,6 +295,21 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         </section>
       </Reveal>
 
+      <Reveal>
+        <section className={styles.giftSection}>
+          <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
+            {t.giftKicker}
+          </p>
+          <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.giftTitle}</h2>
+          <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.giftSub}</p>
+          <div className={styles.giftActions}>
+            <Link href="/gift-card" className={`${siteStyles.btn} ${siteStyles.btnPrimary}`}>
+              {t.giftCta} →
+            </Link>
+          </div>
+        </section>
+      </Reveal>
+
       {instagramPosts.length > 0 && (
         <>
           <div className={siteStyles.stripe} />
@@ -338,6 +353,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           { href: "/about", label: t.navAbout },
           { href: "/faqs", label: t.navFaqs },
           { href: "/contact", label: t.navContact },
+          { href: "/gift-card", label: t.giftFooter },
           { href: "/policies#privacy", label: t.privacy },
           { href: "/policies#returns", label: t.returns },
         ]}

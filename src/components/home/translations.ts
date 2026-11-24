@@ -21,6 +21,11 @@ export interface HomeTranslation extends NavTranslation {
   boxKicker: string;
   boxTitle: string;
   boxSub: string;
+  giftKicker: string;
+  giftTitle: string;
+  giftSub: string;
+  giftCta: string;
+  giftFooter: string;
   igKicker: string;
   igTitle: string;
   igSub: string;
@@ -61,6 +66,11 @@ export const TR: Record<Lang, HomeTranslation> = {
     boxKicker: "Unboxing",
     boxTitle: "What's Inside Your Box",
     boxSub: "Everything you need to display or gift your artwork right out of the box.",
+    giftKicker: "Christmas gift",
+    giftTitle: "Give a portrait with a gift voucher",
+    giftSub: "Arrives by email, valid for 3 years — it's never too late to give one.",
+    giftCta: "Buy a gift voucher",
+    giftFooter: "Gift vouchers",
     igKicker: "Join the Pack",
     igTitle: "Follow @fuzzyberry.official",
     igSub: "Fresh portraits, behind-the-scenes painting, and happy customers on Instagram.",
@@ -96,6 +106,11 @@ export const TR: Record<Lang, HomeTranslation> = {
     boxKicker: "Auspacken",
     boxTitle: "Das ist in Ihrer Box",
     boxSub: "Alles, was Sie brauchen, um Ihr Kunstwerk direkt aus der Box zu präsentieren oder zu verschenken.",
+    giftKicker: "Weihnachtsgeschenk",
+    giftTitle: "Ein Porträt verschenken — mit dem Geschenkgutschein",
+    giftSub: "Kommt per E-Mail, 3 Jahre gültig — zum Verschenken ist es nie zu spät.",
+    giftCta: "Geschenkgutschein kaufen",
+    giftFooter: "Geschenkgutscheine",
     igKicker: "Werden Sie Teil des Rudels",
     igTitle: "Folgen Sie @fuzzyberry.official",
     igSub: "Neue Porträts, Einblicke ins Malen und glückliche Kunden auf Instagram.",

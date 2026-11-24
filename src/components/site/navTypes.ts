@@ -1,6 +1,6 @@
 export type Lang = "en" | "de";
 
-export type NavPage = "home" | "collection" | "about" | "faqs" | "contact" | "showroom";
+export type NavPage = "home" | "collection" | "about" | "faqs" | "contact" | "showroom" | "gift";
 
 export interface NavTranslation {
   navHome: string;

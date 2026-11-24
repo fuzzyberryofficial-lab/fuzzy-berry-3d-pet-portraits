@@ -17,7 +17,7 @@ export interface RevealVoucher {
   expiresAt: number;
 }
 
-const COLORS = ["#ffafc7", "#ffe9a3", "#4c6fe0", "#cc3a64", "#7fd1b9", "#fef3ea"];
+const COLORS = ["#d62f3f", "#ffd75e", "#2f9e6b", "#ffafc7", "#4c6fe0", "#ffe9a3"];
 
 // A burst of confetti: each piece flies up and out, then falls and fades.
 function makeConfetti(count = 36) {

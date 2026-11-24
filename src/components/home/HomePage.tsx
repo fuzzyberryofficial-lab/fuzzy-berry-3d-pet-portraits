@@ -10,6 +10,7 @@ import SiteFooter from "../site/SiteFooter";
 import Reveal from "../site/Reveal";
 import SiteImage from "../site/SiteImage";
 import InstagramEmbedGrid from "./InstagramEmbedGrid";
+import BeforeAfter from "./BeforeAfter";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
 
@@ -105,35 +106,6 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       accent: "var(--plum)",
       shadowColor: "var(--plum)",
       rotate: 1,
-    },
-  ];
-
-  // Same 5:4 frame for every portrait and every photo inset; focal points are
-  // tuned per image so each face stays fully visible and centred.
-  const beforeAfter = [
-    {
-      key: "pom",
-      before: "/images/before-after/pom-before.jpg",
-      after: "/images/before-after/pom-after.webp",
-      beforePos: "50% 25%",
-      afterPos: "50% 88%",
-      alt: isEn ? "Pomeranian: original photo and hand-painted acrylic portrait" : "Spitz: Originalfoto und handgemaltes Acrylporträt",
-    },
-    {
-      key: "duo",
-      before: "/images/before-after/duo-before.jpg",
-      after: "/images/before-after/duo-after.webp",
-      beforePos: "50% 40%",
-      afterPos: "50% 50%",
-      alt: isEn ? "Two dogs: original photo and hand-painted acrylic portrait" : "Zwei Hunde: Originalfoto und handgemaltes Acrylporträt",
-    },
-    {
-      key: "golden",
-      before: "/images/before-after/golden-before.jpg",
-      after: "/images/before-after/golden-after.webp",
-      beforePos: "50% 0%",
-      afterPos: "50% 10%",
-      alt: isEn ? "Golden Retriever: original photo and hand-painted acrylic portrait" : "Golden Retriever: Originalfoto und handgemaltes Acrylporträt",
     },
   ];
 
@@ -233,32 +205,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         </p>
         <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.baTitle}</h2>
         <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.baSub}</p>
-        <div className={styles.baGrid}>
-          {beforeAfter.map((item) => (
-            <figure key={item.key} className={styles.baCard} aria-label={item.alt}>
-              <div className={styles.baAfter}>
-                <SiteImage
-                  src={item.after}
-                  alt={item.alt}
-                  className={styles.baImage}
-                  objectPosition={item.afterPos}
-                  sizes="(max-width: 900px) 90vw, 30vw"
-                />
-                <span className={styles.baTagPainted}>{t.baPainted}</span>
-              </div>
-              <div className={styles.baBefore}>
-                <SiteImage
-                  src={item.before}
-                  alt=""
-                  className={`${styles.baImage} ${styles.baImageSmall}`}
-                  objectPosition={item.beforePos}
-                  sizes="(max-width: 900px) 40vw, 14vw"
-                />
-                <span className={styles.baTagPhoto}>{t.baPhoto}</span>
-              </div>
-            </figure>
-          ))}
-        </div>
+        <BeforeAfter isEn={isEn} photoLabel={t.baPhoto} paintedLabel={t.baPainted} />
       </section>
 
       <div className={siteStyles.stripe} />

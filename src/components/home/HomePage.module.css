@@ -411,6 +411,11 @@
 }
 
 @media (max-width: 640px) {
+  /* A touch smaller on phones so section titles sit on two even lines, not three. */
+  .sectionTitle {
+    font-size: 32px;
+  }
+
   .igCarousel {
     gap: 8px;
   }

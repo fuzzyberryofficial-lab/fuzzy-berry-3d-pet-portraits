@@ -9,5 +9,6 @@ export interface NavTranslation {
   navFaqs: string;
   navContact: string;
   navShowroom: string;
+  navGift: string;
   startPortrait: string;
 }

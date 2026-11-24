@@ -42,3 +42,18 @@
 .paragraph:last-child {
   margin-bottom: 0;
 }
+
+.hero .longParagraph {
+  text-wrap: pretty;
+}
+
+/* On phones the title would break into four short lines; a smaller size keeps it to two. */
+@media (max-width: 640px) {
+  .title {
+    font-size: 30px;
+  }
+
+  .paragraph {
+    font-size: 16px;
+  }
+}

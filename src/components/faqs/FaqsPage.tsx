@@ -50,6 +50,7 @@ export default function FaqsPage() {
         links={[
           { href: "/about", label: t.navAbout },
           { href: "/contact", label: t.navContact },
+          { href: "/gift-card", label: t.navGift },
           { href: "/policies#privacy", label: t.privacy },
           { href: "/policies#returns", label: t.returns },
         ]}

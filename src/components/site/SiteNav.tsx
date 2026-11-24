@@ -17,6 +17,7 @@ interface SiteNavProps {
 const LINKS: { key: NavPage; href: string; label: keyof NavTranslation }[] = [
   { key: "home", href: "/", label: "navHome" },
   { key: "collection", href: "/collection", label: "navCollection" },
+  { key: "gift", href: "/gift-card", label: "navGift" },
   { key: "about", href: "/about", label: "navAbout" },
   { key: "faqs", href: "/faqs", label: "navFaqs" },
   { key: "contact", href: "/contact", label: "navContact" },

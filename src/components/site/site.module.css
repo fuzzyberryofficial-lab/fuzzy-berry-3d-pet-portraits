@@ -21,6 +21,20 @@
   box-sizing: border-box;
 }
 
+/* No lonely last words: text is balanced across its lines, so a line never ends
+   with one or two words dangling on their own. (Blocks longer than about six
+   lines can't be balanced by the browser and wrap normally.) */
+.page h1,
+.page h2,
+.page h3,
+.page p,
+.page li,
+.page figcaption,
+.page td,
+.page th {
+  text-wrap: balance;
+}
+
 .page a {
   color: inherit;
 }
@@ -103,8 +117,8 @@
 
 .navLinks {
   display: flex;
-  gap: 28px;
-  margin-right: 28px;
+  gap: 22px;
+  margin-right: 16px;
   font-family: var(--font-baloo), sans-serif;
   font-weight: 600;
   font-size: 15px;
@@ -117,6 +131,14 @@
 .navLinks a:hover,
 .navLinkCurrent {
   color: var(--berry);
+}
+
+/* Seven menu links need a little more room than the old six. */
+@media (min-width: 1025px) {
+  .nav {
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
 }
 
 @media (max-width: 1024px) {

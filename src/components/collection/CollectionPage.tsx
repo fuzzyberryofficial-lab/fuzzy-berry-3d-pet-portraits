@@ -150,6 +150,7 @@ export default function CollectionPage() {
           { href: "/about", label: t.navAbout },
           { href: "/faqs", label: t.navFaqs },
           { href: "/contact", label: t.navContact },
+          { href: "/gift-card", label: t.navGift },
           { href: "/policies#privacy", label: t.privacy },
           { href: "/policies#returns", label: t.returns },
         ]}

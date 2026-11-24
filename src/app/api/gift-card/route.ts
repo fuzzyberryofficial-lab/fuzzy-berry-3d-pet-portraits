@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { ensureVoucher, MAX_VOUCHER_EUROS, MIN_VOUCHER_EUROS } from "@/lib/giftVoucher";
+import { deliveryFromMetadata, isEmail, isValidSendOn } from "@/lib/giftDelivery";
 
 // Gift vouchers are sold as a plain one-line Stripe Checkout payment. Nothing is
 // written to our own database. Once the payment is confirmed (by the Stripe
@@ -17,6 +18,9 @@ interface GiftBody {
   recipientName?: unknown;
   senderName?: unknown;
   message?: unknown;
+  recipientEmail?: unknown;
+  // "now" (or empty) or a calendar day, YYYY-MM-DD.
+  sendOn?: unknown;
   lang?: unknown;
 }
 
@@ -44,6 +48,29 @@ export async function POST(request: Request) {
   const recipientName = clean(body.recipientName, 80);
   const senderName = clean(body.senderName, 80);
   const message = clean(body.message, 300);
+
+  // Optional: email the gift to the recipient, right away or on a chosen day.
+  const recipientEmail = clean(body.recipientEmail, 254).toLowerCase();
+  const sendOnRaw = clean(body.sendOn, 10);
+  const wantsDate = sendOnRaw !== "" && sendOnRaw !== "now";
+  if (recipientEmail && !isEmail(recipientEmail)) {
+    return NextResponse.json(
+      { error: lang === "de" ? "Bitte prüfen Sie die E-Mail-Adresse der beschenkten Person." : "Please check the recipient's email address." },
+      { status: 400 },
+    );
+  }
+  if (wantsDate && !recipientEmail) {
+    return NextResponse.json(
+      { error: lang === "de" ? "Für einen Wunschtermin brauchen wir die E-Mail-Adresse der beschenkten Person." : "To pick a day we need the recipient's email address." },
+      { status: 400 },
+    );
+  }
+  if (wantsDate && !isValidSendOn(sendOnRaw)) {
+    return NextResponse.json(
+      { error: lang === "de" ? "Bitte wählen Sie ein Datum ab morgen, höchstens ein Jahr im Voraus." : "Please pick a day from tomorrow, at most a year ahead." },
+      { status: 400 },
+    );
+  }
   const origin = new URL(request.url).origin;
 
   const metadata = {
@@ -53,6 +80,7 @@ export async function POST(request: Request) {
     sender_name: senderName,
     message,
     lang,
+    ...(recipientEmail ? { recipient_email: recipientEmail, send_on: wantsDate ? sendOnRaw : "now" } : {}),
   };
 
   try {
@@ -115,7 +143,7 @@ export async function GET(request: Request) {
       // Paid, but Stripe hiccuped while creating the code: tell the page to retry.
       console.error("Creating gift voucher code failed:", err);
     }
-    return NextResponse.json({ paid: true, amount, voucher });
+    return NextResponse.json({ paid: true, amount, voucher, delivery: deliveryFromMetadata(session.metadata) });
   } catch {
     return NextResponse.json({ paid: false }, { status: 404 });
   }

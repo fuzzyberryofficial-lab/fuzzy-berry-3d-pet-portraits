@@ -49,6 +49,16 @@ export function formatDate(unixSeconds: number, lang: Lang): string {
   }).format(new Date(unixSeconds * 1000));
 }
 
+// "2026-12-24" -> "24. Dezember 2026" / "24 December 2026" (a calendar day, no time zone shifts).
+export function formatYmd(ymd: string, lang: Lang): string {
+  return new Intl.DateTimeFormat(lang === "de" ? "de-DE" : "en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${ymd}T12:00:00Z`));
+}
+
 export function heading(text: string): string {
   return `<h1 style="margin:0 0 12px;font-family:${SERIF};font-size:28px;line-height:1.2;color:${COLORS.ink};font-weight:700;">${text}</h1>`;
 }

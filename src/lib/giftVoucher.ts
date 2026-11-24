@@ -9,7 +9,7 @@ import { getStripe } from "@/lib/stripe";
 // asking for it twice always gives the same code instead of a second voucher.
 
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no I, L, O, 0, 1: easy to read out loud
-export const VOUCHER_VALID_YEARS = 1;
+export const VOUCHER_VALID_YEARS = 3;
 export const MIN_VOUCHER_EUROS = 25;
 export const MAX_VOUCHER_EUROS = 500;
 

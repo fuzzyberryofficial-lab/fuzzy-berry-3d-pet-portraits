@@ -70,7 +70,7 @@ export const TR: Record<Lang, GiftTranslation> = {
     errorGeneric: "Something went wrong. Please try again.",
     bullets: [
       "Your code appears right after payment.",
-      "Valid for 1 year from the date of purchase.",
+      "Valid for 3 years from the date of purchase.",
       "Use it for any portrait: one pet or several, any size.",
     ],
     thanksTitle: "Thank you! Your gift voucher is ready",
@@ -122,7 +122,7 @@ export const TR: Record<Lang, GiftTranslation> = {
     errorGeneric: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     bullets: [
       "Ihr Code erscheint sofort nach der Zahlung.",
-      "1 Jahr gültig ab Kaufdatum.",
+      "3 Jahre gültig ab Kaufdatum.",
       "Gilt für jedes Porträt: ein Tier oder mehrere, jede Größe.",
     ],
     thanksTitle: "Vielen Dank! Ihr Geschenkgutschein ist bereit",

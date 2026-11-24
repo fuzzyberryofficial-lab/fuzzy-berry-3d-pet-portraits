@@ -65,8 +65,8 @@ export async function POST(request: Request) {
               name: lang === "de" ? `Fuzzy Berry Geschenkgutschein ${amount} €` : `Fuzzy Berry gift voucher €${amount}`,
               description:
                 lang === "de"
-                  ? "Den Code sehen Sie direkt nach der Zahlung. 1 Jahr gültig."
-                  : "Your code appears right after payment. Valid for 1 year.",
+                  ? "Den Code sehen Sie direkt nach der Zahlung. 3 Jahre gültig."
+                  : "Your code appears right after payment. Valid for 3 years.",
             },
             unit_amount: amount * 100,
           },

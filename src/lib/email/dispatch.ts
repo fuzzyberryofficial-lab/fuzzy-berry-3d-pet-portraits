@@ -5,10 +5,11 @@ import { COUNTRIES } from "@/components/checkout/countries";
 import type { Voucher } from "@/lib/giftVoucher";
 import { isEmailConfigured, notifyAddress, replyToAddress, sendEmail, SITE_URL } from "./send";
 import { customerOrderEmail, ownerOrderEmail, voucherEmail, type OrderEmailData } from "./templates";
+import { deliveryFromMetadata } from "@/lib/giftDelivery";
 
 // Stripe re-delivers a webhook when it doesn't get a quick answer, and Gmail has no
 // built-in "send once" guard, so each session is stamped once its emails went out.
-async function alreadySent(sessionId: string, key: string): Promise<boolean> {
+export async function alreadySent(sessionId: string, key: string): Promise<boolean> {
   try {
     const fresh = await getStripe().checkout.sessions.retrieve(sessionId);
     return fresh.metadata?.[key] === "1";
@@ -17,7 +18,7 @@ async function alreadySent(sessionId: string, key: string): Promise<boolean> {
   }
 }
 
-async function markSent(sessionId: string, key: string): Promise<void> {
+export async function markSent(sessionId: string, key: string): Promise<void> {
   try {
     await getStripe().checkout.sessions.update(sessionId, { metadata: { [key]: "1" } });
   } catch (err) {
@@ -148,6 +149,7 @@ export async function sendVoucherEmail(session: Stripe.Checkout.Session, voucher
       message: voucher.message,
       expiresAt: voucher.expiresAt,
       giftUrl: `${SITE_URL}/gift-card/gift?id=${encodeURIComponent(session.id)}`,
+      delivery: deliveryFromMetadata(session.metadata) ?? undefined,
     });
     const result = await sendEmail({
       to,

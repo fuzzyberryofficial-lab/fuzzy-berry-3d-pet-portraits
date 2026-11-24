@@ -3,6 +3,7 @@ import {
   esc,
   escMultiline,
   formatDate,
+  formatYmd,
   heading,
   money,
   panel,
@@ -47,6 +48,16 @@ export interface VoucherEmailData {
   message: string;
   // Unix seconds.
   expiresAt: number;
+  giftUrl: string;
+  // Set when the buyer asked us to email the gift to the recipient.
+  delivery?: { to: string; sendOn: string };
+}
+
+export interface GiftRecipientEmailData {
+  lang: Lang;
+  recipientName: string;
+  senderName: string;
+  message: string;
   giftUrl: string;
 }
 
@@ -269,6 +280,9 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
         redeem: "So wird er eingelöst",
         redeemBody: "Im Checkout im Feld „Rabattcode“ eingeben – in einer Bestellung, für jedes Porträt und jede Größe.",
         questions: "Fragen? Antworten Sie einfach auf diese E-Mail.",
+        deliveryNow: (to: string) => `Wir haben das Geschenk soeben an ${esc(to)} geschickt. Sie müssen nichts weiter tun.`,
+        deliveryLater: (to: string, day: string) =>
+          `Wir schicken das Geschenk am ${esc(day)} an ${esc(to)}. Sie müssen nichts weiter tun. Falls die Adresse nicht stimmt, antworten Sie einfach auf diese E-Mail.`,
       }
     : {
         subject: "Your Fuzzy Berry gift voucher",
@@ -286,7 +300,16 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
         redeem: "How to redeem it",
         redeemBody: "Enter it at checkout in the “Promo code” field, in one order, for any portrait and any size.",
         questions: "Questions? Just reply to this email.",
+        deliveryNow: (to: string) => `We've just sent the gift to ${esc(to)}. There's nothing else you need to do.`,
+        deliveryLater: (to: string, day: string) =>
+          `We'll send the gift to ${esc(to)} on ${esc(day)}. There's nothing else you need to do. If the address is wrong, just reply to this email.`,
       };
+
+  const deliveryNote = d.delivery
+    ? d.delivery.sendOn === "now"
+      ? t.deliveryNow(d.delivery.to)
+      : t.deliveryLater(d.delivery.to, formatYmd(d.delivery.sendOn, d.lang))
+    : "";
 
   const codeBox = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 10px;"><tr><td align="center" style="background:#fff8ec;border:2px dashed #332f2a;border-radius:14px;padding:20px 12px;"><div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6f675e;">${esc(t.codeLabel)}</div><div style="font-family:Georgia,serif;font-size:34px;font-weight:700;color:#332f2a;margin:6px 0 2px;">${esc(amount)}</div><div style="font-family:'SF Mono',Menlo,Consolas,monospace;font-size:22px;font-weight:700;letter-spacing:0.06em;color:#b23b2c;">${esc(d.code)}</div><div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;color:#6f675e;margin-top:8px;">${esc(t.valid)}</div></td></tr></table>`;
 
@@ -296,6 +319,7 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
     paragraph(esc(t.intro)),
     codeBox,
     personal ? paragraph(personal, true) : "",
+    deliveryNote ? panel(deliveryNote) : "",
     d.message.trim() ? panel(`${de ? "„" : "“"}${escMultiline(d.message.trim())}${de ? "“" : "”"}`) : "",
     subheading(t.share),
     paragraph(esc(t.shareBody)),
@@ -315,6 +339,7 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
     `${t.codeLabel}: ${d.code}`,
     `${amount} · ${t.valid}`,
     ...(personal ? [plain(personal)] : []),
+    ...(deliveryNote ? ["", plain(deliveryNote)] : []),
     ...(d.message.trim() ? ["", `${de ? "„" : "“"}${d.message.trim()}${de ? "“" : "”"}`] : []),
     "",
     `${t.share}: ${d.giftUrl}`,
@@ -322,6 +347,72 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
     "",
     `${t.redeem}: ${t.redeemBody}`,
     "",
+    `www.fuzzyberry.de · ${SHOP_EMAIL}`,
+  ].join("\n");
+
+  return {
+    subject: t.subject,
+    html: shell({ lang: d.lang, preheader: t.preheader, title: t.subject, body, footer }),
+    text,
+  };
+}
+
+// ─── To the recipient: "someone sent you a gift" (the code stays hidden) ───
+
+export function giftRecipientEmail(d: GiftRecipientEmailData): RenderedEmail {
+  const de = d.lang === "de";
+  const sender = d.senderName.trim();
+  const name = d.recipientName.trim();
+
+  const t = de
+    ? {
+        subject: sender ? `Ein Geschenk für Sie – von ${sender}` : "Ein Geschenk für Sie",
+        preheader: "Öffnen Sie die Box und sehen Sie, was darin steckt.",
+        hello: name ? `Hallo ${esc(firstName(name))},` : "Hallo,",
+        headline: sender ? `${esc(sender)} hat Ihnen etwas geschenkt` : "Jemand hat Ihnen etwas geschenkt",
+        body: "Ein Gutschein für ein handgemaltes 3D-Porträt Ihres Tieres, gemalt von Hand, Schicht für Schicht.",
+        open: "Geschenk öffnen",
+        hint: "Den Code sehen Sie erst, wenn Sie die Box öffnen.",
+        why: `Sie erhalten diese einmalige E-Mail, weil ${sender ? esc(sender) : "jemand"} Ihnen einen Geschenkgutschein von Fuzzy Berry schicken wollte. Ihre Adresse wird nur dafür verwendet.`,
+        questions: "Fragen? Antworten Sie einfach auf diese E-Mail.",
+      }
+    : {
+        subject: sender ? `A gift for you, from ${sender}` : "A gift for you",
+        preheader: "Open the box and see what's inside.",
+        hello: name ? `Hi ${esc(firstName(name))},` : "Hi,",
+        headline: sender ? `${esc(sender)} has given you something` : "Someone has given you something",
+        body: "A voucher for a hand-painted 3D portrait of your pet, painted by hand, layer by layer.",
+        open: "Open the gift",
+        hint: "You'll see the code when you open the box.",
+        why: `You're getting this one-time email because ${sender ? esc(sender) : "someone"} wanted to send you a Fuzzy Berry gift voucher. Your address is only used for this.`,
+        questions: "Questions? Just reply to this email.",
+      };
+
+  const quote = de ? ["„", "“"] : ["“", "”"];
+  const body = [
+    `<div style="text-align:center;font-size:56px;line-height:1;margin:4px 0 10px;">🎁</div>`,
+    paragraph(t.hello),
+    heading(t.headline),
+    paragraph(esc(t.body)),
+    d.message.trim() ? panel(`${quote[0]}${escMultiline(d.message.trim())}${quote[1]}`) : "",
+    `<div style="margin:18px 0 4px;">${button(t.open, d.giftUrl)}</div>`,
+    paragraph(esc(t.hint), true),
+    paragraph(esc(t.questions), true),
+  ].join("\n");
+
+  const footer = `${t.why}<br><a href="${SITE_URL}" style="color:#6f675e;">www.fuzzyberry.de</a> · <a href="mailto:${SHOP_EMAIL}" style="color:#6f675e;">${SHOP_EMAIL}</a>`;
+
+  const text = [
+    plain(t.hello),
+    "",
+    plain(t.headline),
+    t.body,
+    ...(d.message.trim() ? ["", `${quote[0]}${d.message.trim()}${quote[1]}`] : []),
+    "",
+    `${t.open}: ${d.giftUrl}`,
+    t.hint,
+    "",
+    plain(t.why),
     `www.fuzzyberry.de · ${SHOP_EMAIL}`,
   ].join("\n");
 

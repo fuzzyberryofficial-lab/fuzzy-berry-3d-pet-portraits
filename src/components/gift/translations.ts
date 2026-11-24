@@ -12,6 +12,18 @@ export interface GiftTranslation {
   customHint: string;
   recipientLabel: string;
   recipientPlaceholder: string;
+  recipientEmailLabel: string;
+  recipientEmailPlaceholder: string;
+  recipientEmailHint: string;
+  recipientEmailInvalid: string;
+  deliveryLabel: string;
+  deliveryNow: string;
+  deliveryDate: string;
+  deliveryDateHint: string;
+  deliveryDateInvalid: string;
+  deliveryNeedsEmail: string;
+  deliveryNoteNow: string;
+  deliveryNoteLater: string;
   messageLabel: string;
   messagePlaceholder: string;
   senderLabel: string;
@@ -80,6 +92,18 @@ export const TR: Record<Lang, GiftTranslation> = {
     customHint: "Whole euros, €25 – €500.",
     recipientLabel: "Who is it for? (optional)",
     recipientPlaceholder: "Name of the person you're giving it to",
+    recipientEmailLabel: "Recipient's email (optional)",
+    recipientEmailPlaceholder: "name@example.com",
+    recipientEmailHint: "We'll email the gift straight to them. You get the code too.",
+    recipientEmailInvalid: "That doesn't look like an email address.",
+    deliveryLabel: "When should it arrive?",
+    deliveryNow: "Right after payment",
+    deliveryDate: "On a chosen day",
+    deliveryDateHint: "The email goes out on the morning of that day.",
+    deliveryDateInvalid: "Pick a day from tomorrow, up to a year ahead.",
+    deliveryNeedsEmail: "Enter the recipient's email to choose a day.",
+    deliveryNoteNow: "We're sending the gift to {email} now.",
+    deliveryNoteLater: "We'll send the gift to {email} on {date}.",
     messageLabel: "A personal message (optional)",
     messagePlaceholder: "Merry Christmas! …",
     senderLabel: "From (optional)",
@@ -150,6 +174,18 @@ export const TR: Record<Lang, GiftTranslation> = {
     customHint: "Ganze Euro, 25 – 500 €.",
     recipientLabel: "Für wen? (optional)",
     recipientPlaceholder: "Name der beschenkten Person",
+    recipientEmailLabel: "E-Mail der beschenkten Person (optional)",
+    recipientEmailPlaceholder: "name@beispiel.de",
+    recipientEmailHint: "Wir schicken das Geschenk direkt dorthin. Sie erhalten den Code ebenfalls.",
+    recipientEmailInvalid: "Das sieht nicht nach einer E-Mail-Adresse aus.",
+    deliveryLabel: "Wann soll es ankommen?",
+    deliveryNow: "Sofort nach der Zahlung",
+    deliveryDate: "An einem bestimmten Tag",
+    deliveryDateHint: "Die E-Mail geht am Morgen dieses Tages raus.",
+    deliveryDateInvalid: "Wählen Sie ein Datum ab morgen, höchstens ein Jahr im Voraus.",
+    deliveryNeedsEmail: "Für einen Wunschtermin brauchen wir die E-Mail-Adresse.",
+    deliveryNoteNow: "Wir schicken das Geschenk jetzt an {email}.",
+    deliveryNoteLater: "Wir schicken das Geschenk am {date} an {email}.",
     messageLabel: "Persönliche Nachricht (optional)",
     messagePlaceholder: "Frohe Weihnachten! …",
     senderLabel: "Von (optional)",

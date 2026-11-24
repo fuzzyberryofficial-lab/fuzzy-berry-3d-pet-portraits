@@ -4,7 +4,8 @@ import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getCountryLabel } from "@/components/checkout/countries";
 import { ensureVoucher } from "@/lib/giftVoucher";
-import { sendOrderEmails, sendVoucherEmail } from "@/lib/email/dispatch";
+import { alreadySent, markSent, sendOrderEmails, sendVoucherEmail } from "@/lib/email/dispatch";
+import { berlinToday, deliveryFromMetadata, emailGiftToRecipient, saveScheduledGift } from "@/lib/giftDelivery";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
@@ -35,7 +36,25 @@ export async function POST(request: Request) {
     if (session.metadata?.kind === "gift_voucher") {
       try {
         const voucher = await ensureVoucher(session);
-        if (voucher) await sendVoucherEmail(session, voucher);
+        if (voucher) {
+          await sendVoucherEmail(session, voucher);
+
+          // The buyer also gave us the recipient's email: send the gift now, or keep it
+          // for the chosen day (the daily job sends it).
+          const delivery = deliveryFromMetadata(session.metadata);
+          if (delivery) {
+            if (delivery.sendOn === "now") {
+              if (!(await alreadySent(session.id, "fb_gift_recipient_email"))) {
+                const sent = await emailGiftToRecipient(session, voucher);
+                if (sent) await markSent(session.id, "fb_gift_recipient_email");
+                // Couldn't send right now: let the daily job try again this morning.
+                else await saveScheduledGift(session, berlinToday());
+              }
+            } else {
+              await saveScheduledGift(session, delivery.sendOn);
+            }
+          }
+        }
       } catch (err) {
         console.error("Webhook couldn't create gift voucher code:", err);
         return NextResponse.json({ error: "Voucher creation failed." }, { status: 500 });

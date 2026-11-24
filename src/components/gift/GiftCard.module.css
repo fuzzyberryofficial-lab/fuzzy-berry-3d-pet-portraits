@@ -263,3 +263,38 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+.delivery {
+  border: 0;
+  padding: 0;
+  margin: 0 0 22px;
+  min-width: 0;
+}
+
+.delivery legend {
+  padding: 0;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.radio input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--berry);
+  flex: none;
+}
+
+.dateRow {
+  margin: 4px 0 0 28px;
+}
+
+.dateInput {
+  max-width: 220px;
+}

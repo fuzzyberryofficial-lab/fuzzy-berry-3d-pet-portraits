@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { customerOrderEmail, ownerOrderEmail, voucherEmail, type OrderEmailData } from "@/lib/email/templates";
+import {
+  customerOrderEmail,
+  giftRecipientEmail,
+  ownerOrderEmail,
+  voucherEmail,
+  type OrderEmailData,
+} from "@/lib/email/templates";
 
 // Shows the shop's automatic emails with made-up data, so they can be reviewed
 // without placing an order. Only exists on preview/local builds, never on the live site.
@@ -56,17 +62,42 @@ export default function Page() {
     { id: "owner", label: "3 · Shop: new order notification", to: "To: you (ORDER_NOTIFY_EMAIL)", mail: ownerOrderEmail(SAMPLE_DE) },
     {
       id: "voucher-de",
-      label: "4 · Voucher buyer: code by email (German)",
+      label: "4 · Voucher buyer: code by email, gift goes out on a chosen day (German)",
       to: "To: the buyer",
       mail: voucherEmail({
         lang: "de",
         buyerName: "Anna Muster",
         code: "FB-DEMO-00000",
         amountEur: 100,
-        recipientName: "Coco",
+        recipientName: "Lena",
         senderName: "Anna",
         message: "Frohe Weihnachten! 🎄",
         expiresAt: expires,
+        giftUrl: "https://www.fuzzyberry.de/gift-card/gift?id=cs_demo",
+        delivery: { to: "lena@beispiel.de", sendOn: "2026-12-24" },
+      }),
+    },
+    {
+      id: "recipient-de",
+      label: "5 · Recipient: \"a gift for you\" (German, code stays hidden)",
+      to: "To: lena@beispiel.de",
+      mail: giftRecipientEmail({
+        lang: "de",
+        recipientName: "Lena",
+        senderName: "Anna",
+        message: "Frohe Weihnachten! 🎄",
+        giftUrl: "https://www.fuzzyberry.de/gift-card/gift?id=cs_demo",
+      }),
+    },
+    {
+      id: "recipient-en",
+      label: "6 · Recipient: \"a gift for you\" (English)",
+      to: "To: coco-owner@example.com",
+      mail: giftRecipientEmail({
+        lang: "en",
+        recipientName: "Sam",
+        senderName: "Anna",
+        message: "Merry Christmas! 🎄",
         giftUrl: "https://www.fuzzyberry.de/gift-card/gift?id=cs_demo",
       }),
     },

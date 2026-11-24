@@ -10,6 +10,7 @@ import SiteFooter from "../site/SiteFooter";
 import { useLang } from "../site/useLang";
 import { TR as HOME_TR } from "../home/translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
+import { addDays, berlinToday, isEmail, isValidSendOn, MAX_DAYS_AHEAD } from "@/lib/giftDates";
 import GiftReveal, { type RevealVoucher } from "./GiftReveal";
 import { TR, PRESET_AMOUNTS, MIN_AMOUNT, MAX_AMOUNT } from "./translations";
 
@@ -43,6 +44,10 @@ export default function GiftCardPage() {
   const [preset, setPreset] = useState<number | null>(179);
   const [custom, setCustom] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [recipientEmail, setRecipientEmail] = useState("");
+  const [delivery, setDelivery] = useState<"now" | "date">("now");
+  const [sendDate, setSendDate] = useState("");
+  const [sentTo, setSentTo] = useState<{ to: string; sendOn: string } | null>(null);
   const [sender, setSender] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -89,9 +94,10 @@ export default function GiftCardPage() {
     const load = (attempt: number) => {
       fetch(`/api/gift-card?session_id=${encodeURIComponent(sessionId)}`)
         .then((r) => r.json())
-        .then((data: { paid?: boolean; amount?: number | null; voucher?: RevealVoucher | null }) => {
+        .then((data: { paid?: boolean; amount?: number | null; voucher?: RevealVoucher | null; delivery?: { to: string; sendOn: string } | null }) => {
           if (cancelled || !data.paid) return;
           setStatus("success");
+          if (data.delivery) setSentTo(data.delivery);
           if (attempt === 0) {
             let alreadySent = false;
             try {
@@ -150,15 +156,42 @@ export default function GiftCardPage() {
     }
   }
 
+  const emailTrimmed = recipientEmail.trim();
+  const emailInvalid = emailTrimmed !== "" && !isEmail(emailTrimmed);
+  const minDate = addDays(berlinToday(), 1);
+  const maxDate = addDays(berlinToday(), MAX_DAYS_AHEAD);
+
   async function pay() {
     if (!amount || busy) return;
+    if (emailInvalid) {
+      setError(t.recipientEmailInvalid);
+      return;
+    }
+    if (delivery === "date") {
+      if (!emailTrimmed) {
+        setError(t.deliveryNeedsEmail);
+        return;
+      }
+      if (!isValidSendOn(sendDate)) {
+        setError(t.deliveryDateInvalid);
+        return;
+      }
+    }
     setBusy(true);
     setError("");
     try {
       const res = await fetch("/api/gift-card", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, recipientName: recipient, senderName: sender, message, lang }),
+        body: JSON.stringify({
+          amount,
+          recipientName: recipient,
+          senderName: sender,
+          message,
+          lang,
+          recipientEmail: emailTrimmed,
+          sendOn: emailTrimmed ? (delivery === "date" ? sendDate : "now") : "",
+        }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
       if (!res.ok || !data.url) throw new Error(data.error || t.errorGeneric);
@@ -179,6 +212,23 @@ export default function GiftCardPage() {
           <>
             <h1 className={`${styles.title} ${styles.titleWrap}`}>{t.thanksTitle}</h1>
             <p className={styles.sub}>{voucher ? t.thanksBody : t.pendingBody}</p>
+            {sentTo && (
+              <p className={styles.sub}>
+                {(sentTo.sendOn === "now" ? t.deliveryNoteNow : t.deliveryNoteLater)
+                  .replace("{email}", sentTo.to)
+                  .replace(
+                    "{date}",
+                    sentTo.sendOn === "now"
+                      ? ""
+                      : new Intl.DateTimeFormat(lang === "de" ? "de-DE" : "en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                          timeZone: "UTC",
+                        }).format(new Date(`${sentTo.sendOn}T12:00:00Z`)),
+                  )}
+              </p>
+            )}
             {voucher && <GiftReveal voucher={voucher} t={t} lang={lang} shareUrl={shareUrl || undefined} />}
             {voucher && shareUrl && (
               <section className={styles.share}>
@@ -305,6 +355,54 @@ export default function GiftCardPage() {
                 className={siteStyles.input}
               />
             </div>
+
+            <div className={styles.field}>
+              <label htmlFor="gift-recipient-email" className={siteStyles.fieldLabel}>
+                {t.recipientEmailLabel}
+              </label>
+              <input
+                id="gift-recipient-email"
+                type="email"
+                inputMode="email"
+                autoComplete="off"
+                maxLength={254}
+                value={recipientEmail}
+                placeholder={t.recipientEmailPlaceholder}
+                onChange={(e) => setRecipientEmail(e.target.value)}
+                className={siteStyles.input}
+                aria-invalid={emailInvalid}
+              />
+              <p className={`${styles.hint} ${emailInvalid ? styles.hintError : ""}`}>
+                {emailInvalid ? t.recipientEmailInvalid : t.recipientEmailHint}
+              </p>
+            </div>
+
+            <fieldset className={styles.delivery}>
+              <legend className={siteStyles.fieldLabel}>{t.deliveryLabel}</legend>
+              <label className={styles.radio}>
+                <input type="radio" name="gift-delivery" checked={delivery === "now"} onChange={() => setDelivery("now")} />
+                <span>{t.deliveryNow}</span>
+              </label>
+              <label className={styles.radio}>
+                <input type="radio" name="gift-delivery" checked={delivery === "date"} onChange={() => setDelivery("date")} />
+                <span>{t.deliveryDate}</span>
+              </label>
+              {delivery === "date" && (
+                <div className={styles.dateRow}>
+                  <input
+                    id="gift-send-date"
+                    type="date"
+                    min={minDate}
+                    max={maxDate}
+                    value={sendDate}
+                    onChange={(e) => setSendDate(e.target.value)}
+                    className={`${siteStyles.input} ${styles.dateInput}`}
+                    aria-label={t.deliveryDate}
+                  />
+                  <p className={styles.hint}>{t.deliveryDateHint}</p>
+                </div>
+              )}
+            </fieldset>
 
             <div className={styles.field}>
               <label htmlFor="gift-message" className={siteStyles.fieldLabel}>

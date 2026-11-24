@@ -6,6 +6,25 @@ import type { Voucher } from "@/lib/giftVoucher";
 import { isEmailConfigured, notifyAddress, replyToAddress, sendEmail, SITE_URL } from "./send";
 import { customerOrderEmail, ownerOrderEmail, voucherEmail, type OrderEmailData } from "./templates";
 
+// Stripe re-delivers a webhook when it doesn't get a quick answer, and Gmail has no
+// built-in "send once" guard, so each session is stamped once its emails went out.
+async function alreadySent(sessionId: string, key: string): Promise<boolean> {
+  try {
+    const fresh = await getStripe().checkout.sessions.retrieve(sessionId);
+    return fresh.metadata?.[key] === "1";
+  } catch {
+    return false;
+  }
+}
+
+async function markSent(sessionId: string, key: string): Promise<void> {
+  try {
+    await getStripe().checkout.sessions.update(sessionId, { metadata: { [key]: "1" } });
+  } catch (err) {
+    console.error("Couldn't stamp session as emailed:", err instanceof Error ? err.message : err);
+  }
+}
+
 // Called from the Stripe webhook once a payment is confirmed. Email problems are
 // logged and never thrown: a failed email must not make Stripe retry the webhook
 // or hold up marking the order paid.
@@ -24,11 +43,13 @@ function countryName(label: string, lang: "en" | "de"): string {
 
 export async function sendOrderEmails(session: Stripe.Checkout.Session): Promise<void> {
   if (!isEmailConfigured()) {
-    console.log("Order emails skipped: RESEND_API_KEY is not set.");
+    console.log("Order emails skipped: no email account is set up.");
     return;
   }
 
   try {
+    if (await alreadySent(session.id, "fb_order_emails")) return;
+
     const supabase = getSupabaseAdmin();
     const { data: order, error } = await supabase
       .from("orders")
@@ -75,7 +96,7 @@ export async function sendOrderEmails(session: Stripe.Checkout.Session): Promise
       photoCount: photoCount ?? 0,
     };
 
-    const jobs: Promise<unknown>[] = [];
+    const jobs: Promise<{ sent: boolean }>[] = [];
 
     if (customerEmail) {
       const mail = customerOrderEmail(data);
@@ -100,7 +121,8 @@ export async function sendOrderEmails(session: Stripe.Checkout.Session): Promise
       }),
     );
 
-    await Promise.allSettled(jobs);
+    const results = await Promise.all(jobs);
+    if (results.some((r) => (r as { sent: boolean }).sent)) await markSent(session.id, "fb_order_emails");
   } catch (err) {
     console.error("Order emails failed:", err);
   }
@@ -108,13 +130,14 @@ export async function sendOrderEmails(session: Stripe.Checkout.Session): Promise
 
 export async function sendVoucherEmail(session: Stripe.Checkout.Session, voucher: Voucher): Promise<void> {
   if (!isEmailConfigured()) {
-    console.log("Voucher email skipped: RESEND_API_KEY is not set.");
+    console.log("Voucher email skipped: no email account is set up.");
     return;
   }
   const to = session.customer_details?.email ?? session.customer_email ?? "";
   if (!to) return;
 
   try {
+    if (await alreadySent(session.id, "fb_voucher_email")) return;
     const mail = voucherEmail({
       lang: session.metadata?.lang === "de" ? "de" : "en",
       buyerName: session.customer_details?.name ?? "",
@@ -126,12 +149,13 @@ export async function sendVoucherEmail(session: Stripe.Checkout.Session, voucher
       expiresAt: voucher.expiresAt,
       giftUrl: `${SITE_URL}/gift-card/gift?id=${encodeURIComponent(session.id)}`,
     });
-    await sendEmail({
+    const result = await sendEmail({
       to,
       replyTo: replyToAddress(),
       idempotencyKey: `voucher-${session.id}`,
       ...mail,
     });
+    if (result.sent) await markSent(session.id, "fb_voucher_email");
   } catch (err) {
     console.error("Voucher email failed:", err);
   }

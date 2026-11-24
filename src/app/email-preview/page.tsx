@@ -82,6 +82,9 @@ export default function Page() {
         {emails.map((e) => (
           <section key={e.id} id={e.id}>
             <h2 style={{ margin: "0 0 4px", fontSize: 16 }}>{e.label}</h2>
+            <p style={{ margin: "0 0 2px", fontSize: 13, color: "#665f55" }}>
+              From: Fuzzy Berry &lt;fuzzyberry.official@gmail.com&gt;
+            </p>
             <p style={{ margin: "0 0 2px", fontSize: 13, color: "#665f55" }}>{e.to}</p>
             <p style={{ margin: "0 0 8px", fontSize: 13 }}>
               <strong>Subject:</strong> {e.mail.subject}

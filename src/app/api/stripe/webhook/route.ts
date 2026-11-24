@@ -4,6 +4,7 @@ import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getCountryLabel } from "@/components/checkout/countries";
 import { ensureVoucher } from "@/lib/giftVoucher";
+import { sendOrderEmails, sendVoucherEmail } from "@/lib/email/dispatch";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
@@ -33,7 +34,8 @@ export async function POST(request: Request) {
     // it is ready even if they close the page before it loads.
     if (session.metadata?.kind === "gift_voucher") {
       try {
-        await ensureVoucher(session);
+        const voucher = await ensureVoucher(session);
+        if (voucher) await sendVoucherEmail(session, voucher);
       } catch (err) {
         console.error("Webhook couldn't create gift voucher code:", err);
         return NextResponse.json({ error: "Voucher creation failed." }, { status: 500 });
@@ -76,6 +78,9 @@ export async function POST(request: Request) {
     } catch (err) {
       console.error("Webhook order update failed:", err);
     }
+
+    // Confirmation to the customer + new-order notice to the shop. Never throws.
+    await sendOrderEmails(session);
   }
 
   return NextResponse.json({ received: true });

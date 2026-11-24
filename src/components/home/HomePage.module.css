@@ -169,6 +169,10 @@
   padding: 80px 8vw;
 }
 
+.baSection {
+  padding-bottom: 72px;
+}
+
 .sectionCentered {
   text-align: center;
 }

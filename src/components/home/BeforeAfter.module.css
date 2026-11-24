@@ -1,0 +1,162 @@
+.wrap {
+  margin: 0 auto;
+}
+
+.framed {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.framedImg {
+  position: absolute;
+  max-width: none;
+  height: auto;
+}
+
+.slider {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  user-select: none;
+}
+
+.fillImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.top {
+  position: absolute;
+  inset: 0;
+}
+
+.handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1.5px var(--ink);
+  pointer-events: none;
+}
+
+.handle span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  /* horizontal drags move the slider; vertical swipes still scroll the page */
+  touch-action: pan-y;
+}
+
+.labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.label {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+}
+
+.labelPhoto {
+  background: var(--sun);
+}
+
+.labelPainted {
+  background: var(--plum);
+}
+
+.hint {
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.thumbs {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.thumb {
+  width: 88px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  color: inherit;
+  opacity: 0.6;
+}
+
+.thumbOn {
+  opacity: 1;
+}
+
+.thumbImg {
+  border-radius: 12px;
+  border: 2px solid var(--ink);
+}
+
+.thumbOn .thumbImg {
+  outline: 3px solid var(--plum-badge);
+  outline-offset: 2px;
+}
+
+.thumbName {
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.thumb:focus-visible {
+  outline: 3px solid var(--berry);
+  outline-offset: 3px;
+  border-radius: 12px;
+}

@@ -7,6 +7,11 @@ export interface HomeTranslation extends NavTranslation {
   heroBody: string;
   heroSticker: string;
   heroPriceLine: string;
+  baKicker: string;
+  baTitle: string;
+  baSub: string;
+  baPhoto: string;
+  baPainted: string;
   styleKicker: string;
   styleTitle: string;
   styleSub: string;
@@ -42,6 +47,11 @@ export const TR: Record<Lang, HomeTranslation> = {
     heroBody: "Send us one photo — we hand-paint it, layer by layer, onto crystal-clear acrylic and ship it worldwide.",
     heroSticker: "6 Hand-Painted Layers",
     heroPriceLine: "from €179 · about 3 weeks of hand-painting",
+    baKicker: "Real Portraits",
+    baTitle: "From Photo to Hand-Painted Art",
+    baSub: "A photo in, a hand-painted piece out — layer by layer on acrylic.",
+    baPhoto: "The photo",
+    baPainted: "The portrait",
     styleKicker: "If you love them, we can craft them",
     styleTitle: "Choose Your Style",
     styleSub: "Cats, dogs, and every beloved pet.",
@@ -72,6 +82,11 @@ export const TR: Record<Lang, HomeTranslation> = {
     heroBody: "Schicken Sie uns ein Foto — wir malen es Schicht für Schicht von Hand auf klares Acrylglas und versenden weltweit.",
     heroSticker: "6 Schichten · handgemalt",
     heroPriceLine: "ab €179 · ca. 3 Wochen Handmalerei",
+    baKicker: "Echte Porträts",
+    baTitle: "Vom Foto zum handgemalten Kunstwerk",
+    baSub: "Foto rein, Handarbeit raus — Schicht für Schicht auf Acryl gemalt.",
+    baPhoto: "Das Foto",
+    baPainted: "Das Porträt",
     styleKicker: "Wenn Sie sie lieben, gestalten wir sie",
     styleTitle: "Wählen Sie Ihren Stil",
     styleSub: "Katzen, Hunde und jedes geliebte Haustier.",

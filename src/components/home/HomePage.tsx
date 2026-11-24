@@ -10,6 +10,7 @@ import SiteFooter from "../site/SiteFooter";
 import Reveal from "../site/Reveal";
 import SiteImage from "../site/SiteImage";
 import InstagramEmbedGrid from "./InstagramEmbedGrid";
+import BeforeAfter from "./BeforeAfter";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
 
@@ -195,6 +196,17 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           />
           <div className={styles.heroStickerFloat}>{t.heroSticker}</div>
         </div>
+      </section>
+
+      <div className={siteStyles.stripe} />
+
+      <section className={`${styles.section} ${styles.baSection}`}>
+        <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
+          {t.baKicker}
+        </p>
+        <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.baTitle}</h2>
+        <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.baSub}</p>
+        <BeforeAfter isEn={isEn} photoLabel={t.baPhoto} paintedLabel={t.baPainted} />
       </section>
 
       <div className={siteStyles.stripe} />

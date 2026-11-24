@@ -18,6 +18,23 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 
 type Status = "idle" | "success" | "cancel";
 
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand("copy");
+    } catch {}
+    document.body.removeChild(ta);
+  }
+}
+
 export default function GiftCardPage() {
   const [lang, setLang] = useLang();
   const t = TR[lang];
@@ -26,11 +43,22 @@ export default function GiftCardPage() {
   const [preset, setPreset] = useState<number | null>(179);
   const [custom, setCustom] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [sender, setSender] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [voucher, setVoucher] = useState<RevealVoucher | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [qr, setQr] = useState("");
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [canShare, setCanShare] = useState(false);
+
+  // The link the buyer can send on: it opens the gift-box surprise for the recipient.
+  const shareUrl =
+    typeof window !== "undefined" && sessionId
+      ? `${window.location.origin}/gift-card/gift?id=${encodeURIComponent(sessionId)}`
+      : "";
 
   // German writes the euro sign after the number ("50 €"), English before it.
   const money = (n: number) => (lang === "de" ? `${n} €` : `€${n}`);
@@ -52,6 +80,7 @@ export default function GiftCardPage() {
     }
     const sessionId = params.get("session_id");
     if (stripe !== "success" || !sessionId) return;
+    setSessionId(sessionId);
     let cancelled = false;
     let timer: number | undefined;
 
@@ -86,6 +115,41 @@ export default function GiftCardPage() {
     };
   }, []);
 
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCanShare(typeof navigator !== "undefined" && typeof navigator.share === "function");
+  }, []);
+
+  useEffect(() => {
+    if (!shareUrl) return;
+    let alive = true;
+    import("qrcode")
+      .then(({ toDataURL }) =>
+        toDataURL(shareUrl, { margin: 1, width: 320, color: { dark: "#332f2a", light: "#ffffff" } }),
+      )
+      .then((url) => {
+        if (alive) setQr(url);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [shareUrl]);
+
+  async function copyLink() {
+    await copyText(shareUrl);
+    setLinkCopied(true);
+    window.setTimeout(() => setLinkCopied(false), 2000);
+  }
+
+  async function nativeShare() {
+    try {
+      await navigator.share({ title: t.recipientTitle, url: shareUrl });
+    } catch {
+      // Closing the share sheet isn't an error.
+    }
+  }
+
   async function pay() {
     if (!amount || busy) return;
     setBusy(true);
@@ -94,7 +158,7 @@ export default function GiftCardPage() {
       const res = await fetch("/api/gift-card", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, recipientName: recipient, message, lang }),
+        body: JSON.stringify({ amount, recipientName: recipient, senderName: sender, message, lang }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
       if (!res.ok || !data.url) throw new Error(data.error || t.errorGeneric);
@@ -115,7 +179,35 @@ export default function GiftCardPage() {
           <>
             <h1 className={`${styles.title} ${styles.titleWrap}`}>{t.thanksTitle}</h1>
             <p className={styles.sub}>{voucher ? t.thanksBody : t.pendingBody}</p>
-            {voucher && <GiftReveal voucher={voucher} t={t} lang={lang} />}
+            {voucher && <GiftReveal voucher={voucher} t={t} lang={lang} shareUrl={shareUrl || undefined} />}
+            {voucher && shareUrl && (
+              <section className={styles.share}>
+                <h2 className={styles.h2}>{t.shareTitle}</h2>
+                <p className={styles.shareBody}>{t.shareBody}</p>
+                <div className={styles.linkRow}>
+                  <input
+                    id="gift-link"
+                    readOnly
+                    value={shareUrl}
+                    onFocus={(e) => e.currentTarget.select()}
+                    aria-label={t.copyLink}
+                    className={`${siteStyles.input} ${styles.linkInput}`}
+                  />
+                  <button type="button" className={`${siteStyles.btn} ${siteStyles.btnPrimary}`} onClick={copyLink}>
+                    {linkCopied ? t.linkCopied : t.copyLink}
+                  </button>
+                  {canShare && (
+                    <button type="button" className={`${siteStyles.btn} ${siteStyles.btnOutline}`} onClick={nativeShare}>
+                      {t.shareNative}
+                    </button>
+                  )}
+                </div>
+                {qr && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={qr} alt={t.qrAlt} width={160} height={160} className={styles.qr} />
+                )}
+              </section>
+            )}
             <div className={styles.backRow}>
               <Link href="/" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
                 {t.backHome}
@@ -195,6 +287,21 @@ export default function GiftCardPage() {
                 value={recipient}
                 placeholder={t.recipientPlaceholder}
                 onChange={(e) => setRecipient(e.target.value)}
+                className={siteStyles.input}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label htmlFor="gift-sender" className={siteStyles.fieldLabel}>
+                {t.senderLabel}
+              </label>
+              <input
+                id="gift-sender"
+                type="text"
+                maxLength={80}
+                value={sender}
+                placeholder={t.senderPlaceholder}
+                onChange={(e) => setSender(e.target.value)}
                 className={siteStyles.input}
               />
             </div>

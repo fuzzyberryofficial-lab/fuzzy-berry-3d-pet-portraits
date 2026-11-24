@@ -11,6 +11,7 @@ export interface RevealVoucher {
   code: string;
   amountEur: number;
   recipientName: string;
+  senderName: string;
   message: string;
   // Unix seconds.
   expiresAt: number;
@@ -37,7 +38,21 @@ function makeConfetti(count = 36) {
   });
 }
 
-export default function GiftReveal({ voucher, t, lang }: { voucher: RevealVoucher; t: GiftTranslation; lang: Lang }) {
+export default function GiftReveal({
+  voucher,
+  t,
+  lang,
+  mode = "buyer",
+  shareUrl,
+}: {
+  voucher: RevealVoucher;
+  t: GiftTranslation;
+  lang: Lang;
+  // "buyer": just paid, can save the picture. "recipient": opened a gift link.
+  mode?: "buyer" | "recipient";
+  // The gift link; when set, the saved picture carries its QR code.
+  shareUrl?: string;
+}) {
   const stageRef = useRef<HTMLDivElement>(null);
   // Visitors who ask for less motion get the opened card straight away.
   const [reduceMotion] = useState(
@@ -56,6 +71,7 @@ export default function GiftReveal({ voucher, t, lang }: { voucher: RevealVouche
       })
     : "";
   const forLine = voucher.recipientName ? t.forLabel.replace("{name}", voucher.recipientName) : "";
+  const fromLine = voucher.senderName ? t.fromLabel.replace("{name}", voucher.senderName) : "";
   const validLine = validDate ? t.validUntil.replace("{date}", validDate) : "";
 
   async function copyCode() {
@@ -115,9 +131,10 @@ export default function GiftReveal({ voucher, t, lang }: { voucher: RevealVouche
     ctx.font = `800 160px ${display}`;
     ctx.fillText(money, W / 2, 350);
 
-    if (forLine) {
+    const toFrom = [forLine, fromLine].filter(Boolean).join("   ·   ");
+    if (toFrom) {
       ctx.font = `600 36px ${body}`;
-      ctx.fillText(forLine, W / 2, 415);
+      ctx.fillText(toFrom, W / 2, 415);
     }
 
     const boxX = W / 2 - 330;
@@ -138,6 +155,31 @@ export default function GiftReveal({ voucher, t, lang }: { voucher: RevealVouche
     ctx.font = `500 26px ${body}`;
     if (validLine) ctx.fillText(validLine, W / 2, 604);
     ctx.fillText("www.fuzzyberry.de", W / 2, 642);
+
+    // The gift link as a QR code, so a printed card opens the gift-box surprise.
+    if (shareUrl) {
+      try {
+        const { toDataURL } = await import("qrcode");
+        const dataUrl = await toDataURL(shareUrl, { margin: 1, width: 340, color: { dark: "#332f2a", light: "#ffffff" } });
+        const img = new Image();
+        await new Promise<void>((resolve, reject) => {
+          img.onload = () => resolve();
+          img.onerror = () => reject(new Error("QR image failed"));
+          img.src = dataUrl;
+        });
+        const size = 170;
+        const qx = W - 70 - size;
+        const qy = H - 70 - size - 24;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(qx - 10, qy - 10, size + 20, size + 20);
+        ctx.drawImage(img, qx, qy, size, size);
+        ctx.fillStyle = "#332f2a";
+        ctx.font = `600 20px ${body}`;
+        ctx.fillText(t.scanToOpen, qx + size / 2, qy + size + 34);
+      } catch {
+        // A picture without the QR code is still a valid voucher.
+      }
+    }
 
     canvas.toBlob((blob) => {
       if (!blob) return;
@@ -212,6 +254,7 @@ export default function GiftReveal({ voucher, t, lang }: { voucher: RevealVouche
 
       <div className={styles.after} aria-hidden={!open}>
         {forLine && <p className={styles.forLine}>{forLine}</p>}
+        {fromLine && <p className={styles.fromLine}>{fromLine}</p>}
         {voucher.message && <p className={styles.message}>“{voucher.message}”</p>}
         {validLine && <p className={styles.valid}>{validLine}</p>}
 
@@ -219,18 +262,20 @@ export default function GiftReveal({ voucher, t, lang }: { voucher: RevealVouche
           <button type="button" className={`${siteStyles.btn} ${siteStyles.btnPrimary}`} onClick={copyCode} tabIndex={open ? 0 : -1}>
             {copied ? t.copied : t.copy}
           </button>
-          <button type="button" className={`${siteStyles.btn} ${siteStyles.btnOutline}`} onClick={savePicture} tabIndex={open ? 0 : -1}>
-            {t.savePicture}
-          </button>
+          {mode === "buyer" && (
+            <button type="button" className={`${siteStyles.btn} ${siteStyles.btnOutline}`} onClick={savePicture} tabIndex={open ? 0 : -1}>
+              {t.savePicture}
+            </button>
+          )}
           <Link
             href={`/checkout?promo=${encodeURIComponent(voucher.code)}`}
             className={`${siteStyles.btn} ${siteStyles.btnOutline}`}
             tabIndex={open ? 0 : -1}
           >
-            {t.redeemNow} →
+            {mode === "buyer" ? t.redeemNow : t.orderNow} →
           </Link>
         </div>
-        <p className={styles.keepSafe}>{t.keepSafe}</p>
+        <p className={styles.keepSafe}>{mode === "buyer" ? t.keepSafe : t.recipientNote}</p>
       </div>
     </div>
   );

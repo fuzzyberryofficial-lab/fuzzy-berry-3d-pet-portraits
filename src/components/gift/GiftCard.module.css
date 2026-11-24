@@ -20,6 +20,52 @@
   text-wrap: balance;
 }
 
+.share {
+  margin-top: 36px;
+  padding: 24px 20px;
+  background: var(--mint);
+  border: 1.5px solid var(--ink);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.share .h2 {
+  margin: 0;
+}
+
+.shareBody {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 15px;
+  opacity: 0.85;
+}
+
+.linkRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.linkInput {
+  flex: 1 1 240px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.qr {
+  margin-top: 4px;
+  padding: 6px;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+}
+
 .backRow {
   display: flex;
   justify-content: center;

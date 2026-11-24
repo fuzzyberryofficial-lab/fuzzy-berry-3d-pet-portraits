@@ -17,6 +17,7 @@ export interface Voucher {
   code: string;
   amountEur: number;
   recipientName: string;
+  senderName: string;
   message: string;
   // Unix seconds.
   expiresAt: number;
@@ -91,6 +92,7 @@ export async function ensureVoucher(session: Stripe.Checkout.Session): Promise<V
     code: promo.code,
     amountEur: amount,
     recipientName: session.metadata.recipient_name ?? "",
+    senderName: session.metadata.sender_name ?? "",
     message: session.metadata.message ?? "",
     expiresAt: promo.expires_at ?? 0,
   };

@@ -335,6 +335,14 @@
   font-size: 22px;
 }
 
+.fromLine {
+  margin: -4px 0 0;
+  font-family: var(--font-baloo), sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--plum-badge);
+}
+
 .message {
   margin: 0;
   max-width: 34ch;

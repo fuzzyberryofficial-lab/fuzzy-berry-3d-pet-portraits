@@ -14,6 +14,8 @@ export interface GiftTranslation {
   recipientPlaceholder: string;
   messageLabel: string;
   messagePlaceholder: string;
+  senderLabel: string;
+  senderPlaceholder: string;
   pay: string;
   paying: string;
   errorGeneric: string;
@@ -31,6 +33,21 @@ export interface GiftTranslation {
   redeemNow: string;
   keepSafe: string;
   pendingBody: string;
+  shareTitle: string;
+  shareBody: string;
+  copyLink: string;
+  linkCopied: string;
+  shareNative: string;
+  qrAlt: string;
+  scanToOpen: string;
+  fromLabel: string;
+  recipientTitle: string;
+  recipientBody: string;
+  recipientNote: string;
+  orderNow: string;
+  linkInvalid: string;
+  loading: string;
+  demoBanner: string;
   cancelled: string;
   backHome: string;
   privacy: string;
@@ -65,6 +82,8 @@ export const TR: Record<Lang, GiftTranslation> = {
     recipientPlaceholder: "Name of the person you're giving it to",
     messageLabel: "A personal message (optional)",
     messagePlaceholder: "Merry Christmas! …",
+    senderLabel: "From (optional)",
+    senderPlaceholder: "Your name, so they know who it's from",
     pay: "Buy voucher",
     paying: "Taking you to payment…",
     errorGeneric: "Something went wrong. Please try again.",
@@ -89,6 +108,22 @@ export const TR: Record<Lang, GiftTranslation> = {
       "Redeem it at checkout in the “Promo code” field, in one order. Bookmark this page or save the picture so you can always find your code again.",
     pendingBody:
       "Your payment went through and we're creating your code. It will appear here in a moment. If it doesn't, please write to us on the contact page.",
+    shareTitle: "Give it as a gift",
+    shareBody: "Send this link, or print the picture with its QR code. Whoever opens it gets the gift-box surprise.",
+    copyLink: "Copy gift link",
+    linkCopied: "Link copied!",
+    shareNative: "Share…",
+    qrAlt: "QR code for the gift link",
+    scanToOpen: "Scan to open",
+    fromLabel: "From {name}",
+    recipientTitle: "A gift for you!",
+    recipientBody: "Open the box to see what's inside.",
+    recipientNote:
+      "Redeem the code at checkout in the “Promo code” field, in one order. Keep this page or save the code.",
+    orderNow: "Order your portrait",
+    linkInvalid: "This gift link isn't valid. Please check that you copied the whole link.",
+    loading: "Loading your gift…",
+    demoBanner: "Demo: this is a sample so you can see how the gift opens. The code is not real.",
     cancelled: "Payment was cancelled. Nothing was charged.",
     backHome: "Back to the shop",
     privacy: "Privacy Policy",
@@ -117,6 +152,8 @@ export const TR: Record<Lang, GiftTranslation> = {
     recipientPlaceholder: "Name der beschenkten Person",
     messageLabel: "Persönliche Nachricht (optional)",
     messagePlaceholder: "Frohe Weihnachten! …",
+    senderLabel: "Von (optional)",
+    senderPlaceholder: "Ihr Name, damit man weiß, von wem es ist",
     pay: "Gutschein kaufen",
     paying: "Weiter zur Zahlung…",
     errorGeneric: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
@@ -141,6 +178,23 @@ export const TR: Record<Lang, GiftTranslation> = {
       "Einlösbar im Checkout im Feld „Rabattcode“ – in einer Bestellung. Speichern Sie diese Seite als Lesezeichen oder sichern Sie das Bild, damit Sie den Code jederzeit wiederfinden.",
     pendingBody:
       "Ihre Zahlung ist eingegangen und wir erstellen gerade Ihren Code. Er erscheint gleich hier. Falls nicht, schreiben Sie uns bitte über die Kontaktseite.",
+    shareTitle: "Verschenken",
+    shareBody:
+      "Schicken Sie diesen Link oder drucken Sie das Bild mit dem QR-Code aus. Wer ihn öffnet, erlebt die Überraschung mit der Geschenkbox.",
+    copyLink: "Geschenk-Link kopieren",
+    linkCopied: "Link kopiert!",
+    shareNative: "Teilen …",
+    qrAlt: "QR-Code zum Geschenk-Link",
+    scanToOpen: "Zum Öffnen scannen",
+    fromLabel: "Von {name}",
+    recipientTitle: "Ein Geschenk für Sie!",
+    recipientBody: "Öffnen Sie die Box und sehen Sie, was darin steckt.",
+    recipientNote:
+      "Lösen Sie den Code im Checkout im Feld „Rabattcode“ ein – in einer Bestellung. Speichern Sie diese Seite oder notieren Sie sich den Code.",
+    orderNow: "Porträt bestellen",
+    linkInvalid: "Dieser Geschenk-Link ist ungültig. Bitte prüfen Sie, ob Sie den ganzen Link kopiert haben.",
+    loading: "Ihr Geschenk wird geladen …",
+    demoBanner: "Demo: Dies ist ein Beispiel, damit Sie sehen, wie sich das Geschenk öffnet. Der Code ist nicht echt.",
     cancelled: "Die Zahlung wurde abgebrochen. Es wurde nichts abgebucht.",
     backHome: "Zurück zum Shop",
     privacy: "Datenschutz",

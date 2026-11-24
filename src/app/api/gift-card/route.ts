@@ -15,6 +15,7 @@ const MAX_EUROS = MAX_VOUCHER_EUROS;
 interface GiftBody {
   amount?: unknown;
   recipientName?: unknown;
+  senderName?: unknown;
   message?: unknown;
   lang?: unknown;
 }
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
 
   const lang = body.lang === "de" ? "de" : "en";
   const recipientName = clean(body.recipientName, 80);
+  const senderName = clean(body.senderName, 80);
   const message = clean(body.message, 300);
   const origin = new URL(request.url).origin;
 
@@ -48,6 +50,7 @@ export async function POST(request: Request) {
     kind: "gift_voucher",
     amount_eur: String(amount),
     recipient_name: recipientName,
+    sender_name: senderName,
     message,
     lang,
   };
@@ -77,7 +80,7 @@ export async function POST(request: Request) {
       cancel_url: `${origin}/gift-card?stripe=cancel`,
       metadata,
       payment_intent_data: {
-        description: `Gift voucher €${amount}${recipientName ? ` for ${recipientName}` : ""}`,
+        description: `Gift voucher €${amount}${recipientName ? ` for ${recipientName}` : ""}${senderName ? ` from ${senderName}` : ""}`,
         metadata,
       },
     } satisfies Stripe.Checkout.SessionCreateParams);

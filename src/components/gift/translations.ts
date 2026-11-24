@@ -69,9 +69,8 @@ export const TR: Record<Lang, GiftTranslation> = {
     paying: "Taking you to payment…",
     errorGeneric: "Something went wrong. Please try again.",
     bullets: [
-      "Your voucher code appears on screen right after payment, with no waiting.",
-      "Valid for 3 years from the date of purchase.",
-      "Redeemed at checkout in the promo code field, in one order.",
+      "Your code appears right after payment.",
+      "Valid for 1 year from the date of purchase.",
       "Use it for any portrait: one pet or several, any size.",
     ],
     thanksTitle: "Thank you! Your gift voucher is ready",
@@ -122,9 +121,8 @@ export const TR: Record<Lang, GiftTranslation> = {
     paying: "Weiter zur Zahlung…",
     errorGeneric: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     bullets: [
-      "Den Gutschein-Code sehen Sie direkt nach der Zahlung auf dem Bildschirm, ganz ohne Wartezeit.",
-      "3 Jahre gültig ab Kaufdatum.",
-      "Wird im Checkout im Feld „Rabattcode“ eingelöst – in einer Bestellung.",
+      "Ihr Code erscheint sofort nach der Zahlung.",
+      "1 Jahr gültig ab Kaufdatum.",
       "Gilt für jedes Porträt: ein Tier oder mehrere, jede Größe.",
     ],
     thanksTitle: "Vielen Dank! Ihr Geschenkgutschein ist bereit",

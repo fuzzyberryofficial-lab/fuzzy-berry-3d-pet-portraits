@@ -157,6 +157,12 @@
   opacity: 0.85;
 }
 
+/* The first point always stays on a single line, shrinking a little on narrow phones. */
+.bullets li:first-child {
+  white-space: nowrap;
+  font-size: clamp(12px, 3.7vw, 15px);
+}
+
 .notice {
   background: var(--sun);
   border: 1.5px solid var(--ink);

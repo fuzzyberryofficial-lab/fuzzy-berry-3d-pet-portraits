@@ -3,6 +3,7 @@ import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getCountryLabel } from "@/components/checkout/countries";
+import { ensureVoucher } from "@/lib/giftVoucher";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
@@ -27,6 +28,19 @@ export async function POST(request: Request) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
+
+    // Gift vouchers have no order row: just make sure the buyer's code exists, so
+    // it is ready even if they close the page before it loads.
+    if (session.metadata?.kind === "gift_voucher") {
+      try {
+        await ensureVoucher(session);
+      } catch (err) {
+        console.error("Webhook couldn't create gift voucher code:", err);
+        return NextResponse.json({ error: "Voucher creation failed." }, { status: 500 });
+      }
+      return NextResponse.json({ received: true });
+    }
+
     try {
       const supabase = getSupabaseAdmin();
       // The customer enters (or Apple Pay fillss in) name and

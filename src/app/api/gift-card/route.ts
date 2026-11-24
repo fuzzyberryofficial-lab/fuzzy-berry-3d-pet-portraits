@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
+import { ensureVoucher, MAX_VOUCHER_EUROS, MIN_VOUCHER_EUROS } from "@/lib/giftVoucher";
 
 // Gift vouchers are sold as a plain one-line Stripe Checkout payment. Nothing is
-// written to our own database: the owner sees each sale in the Stripe dashboard
-// (payments are tagged kind=gift_voucher) and then creates a single-use Stripe
-// promotion code of the same value for the buyer. Customers redeem that code in
-// the normal checkout promo field.
+// written to our own database. Once the payment is confirmed (by the Stripe
+// webhook or by the thank-you page asking for it) a single-use promotion code of
+// the same value is created and shown to the buyer straight away (see
+// lib/giftVoucher.ts). Customers redeem it in the normal checkout promo field.
 
-const MIN_EUROS = 25;
-const MAX_EUROS = 500;
+const MIN_EUROS = MIN_VOUCHER_EUROS;
+const MAX_EUROS = MAX_VOUCHER_EUROS;
 
 interface GiftBody {
   amount?: unknown;
@@ -64,8 +65,8 @@ export async function POST(request: Request) {
               name: lang === "de" ? `Fuzzy Berry Geschenkgutschein ${amount} €` : `Fuzzy Berry gift voucher €${amount}`,
               description:
                 lang === "de"
-                  ? "Wird per E-Mail zugesendet. 3 Jahre gültig."
-                  : "Sent by email. Valid for 3 years.",
+                  ? "Den Code sehen Sie direkt nach der Zahlung. 3 Jahre gültig."
+                  : "Your code appears right after payment. Valid for 3 years.",
             },
             unit_amount: amount * 100,
           },
@@ -91,8 +92,8 @@ export async function POST(request: Request) {
   }
 }
 
-// Used by the thank-you page: confirms a real, paid gift-voucher session before
-// we show the confirmation or fire the Purchase pixel event.
+// Used by the thank-you page: confirms a real, paid gift-voucher session, makes
+// sure its voucher code exists, and returns it so the buyer sees it immediately.
 export async function GET(request: Request) {
   const sessionId = new URL(request.url).searchParams.get("session_id") ?? "";
   if (!sessionId.startsWith("cs_")) {
@@ -101,10 +102,17 @@ export async function GET(request: Request) {
   try {
     const session = await getStripe().checkout.sessions.retrieve(sessionId);
     const paid = session.payment_status === "paid" && session.metadata?.kind === "gift_voucher";
-    return NextResponse.json({
-      paid,
-      amount: paid ? Number(session.metadata?.amount_eur) || null : null,
-    });
+    if (!paid) return NextResponse.json({ paid: false });
+
+    const amount = Number(session.metadata?.amount_eur) || null;
+    let voucher = null;
+    try {
+      voucher = await ensureVoucher(session);
+    } catch (err) {
+      // Paid, but Stripe hiccuped while creating the code: tell the page to retry.
+      console.error("Creating gift voucher code failed:", err);
+    }
+    return NextResponse.json({ paid: true, amount, voucher });
   } catch {
     return NextResponse.json({ paid: false }, { status: 404 });
   }

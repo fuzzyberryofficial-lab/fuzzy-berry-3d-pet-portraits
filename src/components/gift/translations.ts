@@ -20,7 +20,17 @@ export interface GiftTranslation {
   bullets: string[];
   thanksTitle: string;
   thanksBody: string;
-  thanksAmount: string;
+  openHint: string;
+  openAria: string;
+  cardTitle: string;
+  forLabel: string;
+  validUntil: string;
+  copy: string;
+  copied: string;
+  savePicture: string;
+  redeemNow: string;
+  keepSafe: string;
+  pendingBody: string;
   cancelled: string;
   backHome: string;
   privacy: string;
@@ -35,7 +45,7 @@ export const TR: Record<Lang, GiftTranslation> = {
   en: {
     kicker: "Christmas gift",
     title: "Give a Fuzzy Berry portrait",
-    sub: "A gift voucher for a hand-painted 3D pet portrait. It arrives by email, so it's never too late to give one.",
+    sub: "A gift voucher for a hand-painted 3D pet portrait. It is ready the moment you pay, so it's never too late to give one.",
     amountLabel: "Choose an amount",
     presetNote: {
       50: "A little something",
@@ -59,15 +69,27 @@ export const TR: Record<Lang, GiftTranslation> = {
     paying: "Taking you to payment…",
     errorGeneric: "Something went wrong. Please try again.",
     bullets: [
-      "We email you the voucher code within 24 hours of payment.",
+      "Your voucher code appears on screen right after payment, with no waiting.",
       "Valid for 3 years from the date of purchase.",
       "Redeemed at checkout in the promo code field, in one order.",
       "Use it for any portrait: one pet or several, any size.",
     ],
-    thanksTitle: "Thank you — your voucher is on its way",
+    thanksTitle: "Thank you! Your gift voucher is ready",
     thanksBody:
-      "We've received your payment. Your voucher code will arrive by email within 24 hours. Questions? Write to us on the contact page.",
-    thanksAmount: "Voucher value",
+      "Open the box to see your voucher code. You can save it as a picture to send to the person you're giving it to.",
+    openHint: "Tap the gift to open it",
+    openAria: "Open your gift voucher",
+    cardTitle: "Gift voucher",
+    forLabel: "For {name}",
+    validUntil: "Valid until {date}",
+    copy: "Copy code",
+    copied: "Copied!",
+    savePicture: "Save as picture",
+    redeemNow: "Redeem now",
+    keepSafe:
+      "Redeem it at checkout in the “Promo code” field, in one order. Bookmark this page or save the picture so you can always find your code again.",
+    pendingBody:
+      "Your payment went through and we're creating your code. It will appear here in a moment. If it doesn't, please write to us on the contact page.",
     cancelled: "Payment was cancelled. Nothing was charged.",
     backHome: "Back to the shop",
     privacy: "Privacy Policy",
@@ -76,7 +98,7 @@ export const TR: Record<Lang, GiftTranslation> = {
   de: {
     kicker: "Weihnachtsgeschenk",
     title: "Verschenken Sie ein Porträt",
-    sub: "Ein Geschenkgutschein für ein handgemaltes 3D-Haustierporträt. Er kommt per E-Mail, es ist also nie zu spät zum Verschenken.",
+    sub: "Ein Geschenkgutschein für ein handgemaltes 3D-Haustierporträt. Er ist sofort nach der Zahlung bereit, es ist also nie zu spät zum Verschenken.",
     amountLabel: "Betrag wählen",
     presetNote: {
       50: "Eine kleine Freude",
@@ -100,15 +122,27 @@ export const TR: Record<Lang, GiftTranslation> = {
     paying: "Weiter zur Zahlung…",
     errorGeneric: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     bullets: [
-      "Den Gutschein-Code senden wir Ihnen innerhalb von 24 Stunden nach der Zahlung per E-Mail.",
+      "Den Gutschein-Code sehen Sie direkt nach der Zahlung auf dem Bildschirm, ganz ohne Wartezeit.",
       "3 Jahre gültig ab Kaufdatum.",
       "Wird im Checkout im Feld „Rabattcode“ eingelöst – in einer Bestellung.",
       "Gilt für jedes Porträt: ein Tier oder mehrere, jede Größe.",
     ],
-    thanksTitle: "Vielen Dank – Ihr Gutschein ist unterwegs",
+    thanksTitle: "Vielen Dank! Ihr Geschenkgutschein ist bereit",
     thanksBody:
-      "Ihre Zahlung ist bei uns eingegangen. Den Gutschein-Code erhalten Sie innerhalb von 24 Stunden per E-Mail. Fragen? Schreiben Sie uns über die Kontaktseite.",
-    thanksAmount: "Gutscheinwert",
+      "Öffnen Sie die Box, um Ihren Gutschein-Code zu sehen. Sie können ihn als Bild speichern und der beschenkten Person schicken.",
+    openHint: "Zum Öffnen auf das Geschenk tippen",
+    openAria: "Geschenkgutschein öffnen",
+    cardTitle: "Geschenkgutschein",
+    forLabel: "Für {name}",
+    validUntil: "Gültig bis {date}",
+    copy: "Code kopieren",
+    copied: "Kopiert!",
+    savePicture: "Als Bild speichern",
+    redeemNow: "Jetzt einlösen",
+    keepSafe:
+      "Einlösbar im Checkout im Feld „Rabattcode“ – in einer Bestellung. Speichern Sie diese Seite als Lesezeichen oder sichern Sie das Bild, damit Sie den Code jederzeit wiederfinden.",
+    pendingBody:
+      "Ihre Zahlung ist eingegangen und wir erstellen gerade Ihren Code. Er erscheint gleich hier. Falls nicht, schreiben Sie uns bitte über die Kontaktseite.",
     cancelled: "Die Zahlung wurde abgebrochen. Es wurde nichts abgebucht.",
     backHome: "Zurück zum Shop",
     privacy: "Datenschutz",

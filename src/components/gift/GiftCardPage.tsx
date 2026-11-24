@@ -10,6 +10,7 @@ import SiteFooter from "../site/SiteFooter";
 import { useLang } from "../site/useLang";
 import { TR as HOME_TR } from "../home/translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
+import GiftReveal, { type RevealVoucher } from "./GiftReveal";
 import { TR, PRESET_AMOUNTS, MIN_AMOUNT, MAX_AMOUNT } from "./translations";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
@@ -29,7 +30,7 @@ export default function GiftCardPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
-  const [paidAmount, setPaidAmount] = useState<number | null>(null);
+  const [voucher, setVoucher] = useState<RevealVoucher | null>(null);
 
   // German writes the euro sign after the number ("50 €"), English before it.
   const money = (n: number) => (lang === "de" ? `${n} €` : `€${n}`);
@@ -51,20 +52,38 @@ export default function GiftCardPage() {
     }
     const sessionId = params.get("session_id");
     if (stripe !== "success" || !sessionId) return;
-    fetch(`/api/gift-card?session_id=${encodeURIComponent(sessionId)}`)
-      .then((r) => r.json())
-      .then((data: { paid?: boolean; amount?: number | null }) => {
-        if (!data.paid) return;
-        setStatus("success");
-        setPaidAmount(data.amount ?? null);
-        let alreadySent = false;
-        try {
-          alreadySent = window.sessionStorage.getItem(`fb_gift_${sessionId}`) === "1";
-          window.sessionStorage.setItem(`fb_gift_${sessionId}`, "1");
-        } catch {}
-        if (!alreadySent && data.amount) trackPixelEvent("Purchase", { value: data.amount, currency: "EUR" });
-      })
-      .catch(() => {});
+    let cancelled = false;
+    let timer: number | undefined;
+
+    // The code is created the moment the payment is confirmed. If Stripe is a
+    // beat slow, ask again a few times instead of leaving the buyer waiting.
+    const load = (attempt: number) => {
+      fetch(`/api/gift-card?session_id=${encodeURIComponent(sessionId)}`)
+        .then((r) => r.json())
+        .then((data: { paid?: boolean; amount?: number | null; voucher?: RevealVoucher | null }) => {
+          if (cancelled || !data.paid) return;
+          setStatus("success");
+          if (attempt === 0) {
+            let alreadySent = false;
+            try {
+              alreadySent = window.sessionStorage.getItem(`fb_gift_${sessionId}`) === "1";
+              window.sessionStorage.setItem(`fb_gift_${sessionId}`, "1");
+            } catch {}
+            if (!alreadySent && data.amount) trackPixelEvent("Purchase", { value: data.amount, currency: "EUR" });
+          }
+          if (data.voucher) setVoucher(data.voucher);
+          else if (attempt < 8) timer = window.setTimeout(() => load(attempt + 1), 2500);
+        })
+        .catch(() => {
+          if (!cancelled && attempt < 8) timer = window.setTimeout(() => load(attempt + 1), 2500);
+        });
+    };
+    load(0);
+
+    return () => {
+      cancelled = true;
+      if (timer) window.clearTimeout(timer);
+    };
   }, []);
 
   async function pay() {
@@ -92,22 +111,22 @@ export default function GiftCardPage() {
 
       <main className={styles.main} lang={lang}>
         <p className={siteStyles.kicker}>{t.kicker}</p>
-        <h1 className={styles.title}>{t.title}</h1>
-        <p className={styles.sub}>{t.sub}</p>
-
-        {status === "success" && (
-          <div className={styles.notice} role="status">
-            <h2 className={styles.noticeTitle}>{t.thanksTitle}</h2>
-            <p>{t.thanksBody}</p>
-            {paidAmount && (
-              <p className={styles.noticeAmount}>
-                {t.thanksAmount}: {money(paidAmount)}
-              </p>
-            )}
-            <Link href="/" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
-              {t.backHome}
-            </Link>
-          </div>
+        {status === "success" ? (
+          <>
+            <h1 className={`${styles.title} ${styles.titleWrap}`}>{t.thanksTitle}</h1>
+            <p className={styles.sub}>{voucher ? t.thanksBody : t.pendingBody}</p>
+            {voucher && <GiftReveal voucher={voucher} t={t} lang={lang} />}
+            <div className={styles.backRow}>
+              <Link href="/" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
+                {t.backHome}
+              </Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <h1 className={styles.title}>{t.title}</h1>
+            <p className={styles.sub}>{t.sub}</p>
+          </>
         )}
         {status === "cancel" && (
           <div className={`${styles.notice} ${styles.noticeMuted}`} role="status">

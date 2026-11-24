@@ -39,7 +39,7 @@ export const TR: Record<Lang, GiftTranslation> = {
     amountLabel: "Choose an amount",
     presetNote: {
       50: "A little something",
-      100: "Over half a portrait",
+      100: "A lovely gift",
       179: "Single · 20×20 cm",
       199: "Single · 25×25 cm",
       209: "Single · 30×30 cm",
@@ -75,12 +75,12 @@ export const TR: Record<Lang, GiftTranslation> = {
   },
   de: {
     kicker: "Weihnachtsgeschenk",
-    title: "Verschenken Sie ein Fuzzy-Berry-Porträt",
+    title: "Verschenken Sie ein Porträt",
     sub: "Ein Geschenkgutschein für ein handgemaltes 3D-Haustierporträt. Er kommt per E-Mail, es ist also nie zu spät zum Verschenken.",
     amountLabel: "Betrag wählen",
     presetNote: {
       50: "Eine kleine Freude",
-      100: "Über ein halbes Porträt",
+      100: "Ein schönes Geschenk",
       179: "Einzeltier · 20×20 cm",
       199: "Einzeltier · 25×25 cm",
       209: "Einzeltier · 30×30 cm",

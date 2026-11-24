@@ -29,7 +29,7 @@ export const TR: Record<Lang, FaqsTranslation> = {
     navFaqs: "FAQs",
     navContact: "Kontakt",
     navShowroom: "Showroom",
-    startPortrait: "Porträt starten",
+    startPortrait: "Porträt bestellen",
     kicker: "Noch Fragen?",
     title: "FAQs",
     privacy: "Datenschutz",
@@ -185,8 +185,8 @@ export const FAQ_DE: FaqGroup[] = [
     title: "Kunstwerk & Prozess",
     items: [
       {
-        q: "Wie läuft der individuelle Porträtprozess ab?",
-        summary: "Wir bestätigen alles mit Ihnen, bevor wir malen.",
+        q: "Wie läuft die Anfertigung eines individuellen Porträts ab?",
+        summary: "Wir stimmen alles mit Ihnen ab, bevor das Malen beginnt.",
         bullets: [],
         process: [
           {
@@ -195,18 +195,18 @@ export const FAQ_DE: FaqGroup[] = [
             icon: "order",
           },
           {
-            title: "Wir bestätigen mit Ihnen",
-            caption: "Wir melden uns, um Foto und Position Ihres Haustiers zu bestätigen.",
+            title: "Wir stimmen uns mit Ihnen ab",
+            caption: "Wir melden uns, um Foto und Pose Ihres Tieres mit Ihnen abzustimmen.",
             icon: "confirm",
           },
           {
             title: "Schicht für Schicht handgemalt",
-            caption: "Nach der Freigabe beginnt das Malen! Jedes individuelle Porträt braucht etwa 3 Wochen, damit jede Acrylschicht Zeit zum Trocknen und Aushärten hat — für feine 3D-Details.",
+            caption: "Nach Ihrer Freigabe geht es los! Jedes Porträt braucht etwa 3 Wochen, denn jede Acrylschicht muss in Ruhe trocknen und aushärten – das sorgt für feine 3D-Details.",
             icon: "paint",
           },
           {
             title: "Fertig & unterwegs",
-            caption: "Wir senden Ihnen ein Foto des fertigen Werks und verschicken es sofort.",
+            caption: "Sie erhalten ein Foto des fertigen Kunstwerks, danach verschicken wir es sofort.",
             icon: "ship",
           },
           {
@@ -217,29 +217,29 @@ export const FAQ_DE: FaqGroup[] = [
         ],
       },
       {
-        q: "Wie wähle ich das beste Foto für mein individuelles Porträt aus?",
-        summary: "Helle, klare Nahaufnahmen wirken am besten!",
+        q: "Welches Foto eignet sich am besten für mein Porträt?",
+        summary: "Helle, scharfe Nahaufnahmen funktionieren am besten!",
         bullets: [
-          "Natürliches Licht & scharfer Fokus: Klare Details bei Augen und Fell.",
-          "Augenhöhe: Fängt den echten Ausdruck und die 3D-Tiefe ein.",
-          "Unsicher? Senden Sie uns 2–3 Favoriten — wir helfen bei der Auswahl!",
+          "Natürliches Licht und scharfer Fokus: Augen und Fell sind klar erkennbar.",
+          "Auf Augenhöhe fotografiert: So werden der echte Ausdruck und die 3D-Tiefe am besten eingefangen.",
+          "Unsicher? Schicken Sie uns 2–3 Favoriten – wir helfen Ihnen bei der Auswahl!",
         ],
       },
       {
         q: "Was macht die Acrylporträts von Fuzzy Berry einzigartig?",
-        summary: "100 % handgemalt in mehrschichtigem Acryl — für echte 3D-Tiefe.",
+        summary: "100 % handgemalt in mehreren Acrylschichten – für echte 3D-Tiefe.",
         bullets: [
-          "Echte handgemalte Kunst: Kein Druck — jede einzelne Schicht wird von Hand auf klares Acryl gemalt",
+          "Echte Handarbeit: Kein Druck – jede einzelne Schicht wird von Hand auf klares Acryl gemalt",
           "Leuchtender 3D-Effekt: Licht durchdringt die Schichten und lässt Augen und Fell lebendig wirken",
-          "Modernes Andenken: Ein elegantes, zeitloses Kunstwerk für jeden Raum",
+          "Modernes Erinnerungsstück: Ein elegantes, zeitloses Kunstwerk, das jeden Raum aufwertet",
         ],
       },
       {
         q: "Können Sie ein Porträt eines verstorbenen Haustiers anfertigen?",
-        summary: "Ja, selbstverständlich — mit besonderer Sorgfalt, um ihre Erinnerung zu ehren.",
+        summary: "Ja, sehr gerne – mit besonderer Sorgfalt, um die Erinnerung an Ihr Tier zu ehren.",
         bullets: [
-          "Sagen Sie es uns einfach bei der Bestellung oder beim Einsenden Ihrer Fotos",
-          "Es liegt uns besonders am Herzen, ihren Charakter einzufangen und ein bedeutungsvolles Andenken für Sie zu schaffen",
+          "Geben Sie uns einfach bei der Bestellung oder beim Senden Ihrer Fotos Bescheid",
+          "Es liegt uns besonders am Herzen, das Wesen Ihres Tieres einzufangen und ein bedeutungsvolles Andenken für Sie zu schaffen",
         ],
       },
     ],
@@ -252,16 +252,16 @@ export const FAQ_DE: FaqGroup[] = [
         summary: "Ein komplettes, geschenkfertiges Paket.",
         bullets: [
           "Ihr individuelles 3D-Acryl-Tierporträt",
-          "Ein kostenloser Display-Ständer",
-          "Dankeskarte und Schutzverpackung",
+          "Ein kostenloser Aufsteller",
+          "Eine Dankeskarte und eine geschenkfertige Schutzverpackung",
         ],
       },
       {
-        q: "Versenden Sie international, und was kostet das?",
+        q: "Versenden Sie auch ins Ausland, und was kostet das?",
         summary: "Ja, wir versenden weltweit.",
         bullets: [
-          "Kosten werden beim Checkout angezeigt, je nach Ziel",
-          "Sicher verpackt für jeden Versandweg",
+          "Die Versandkosten werden im Checkout je nach Zielland angezeigt",
+          "Sicher verpackt, damit es überall heil ankommt",
         ],
       },
     ],
@@ -270,19 +270,19 @@ export const FAQ_DE: FaqGroup[] = [
     title: "Bestellungen & Änderungen",
     items: [
       {
-        q: "Was, wenn ich meine Bestellung nach der Aufgabe stornieren möchte?",
+        q: "Kann ich meine Bestellung nachträglich stornieren?",
         summary: "Stornierungen sind vor Malbeginn möglich.",
         bullets: [
-          "Vor dem Malen: Sie können stornieren und erhalten eine volle Rückerstattung, bevor die finalen Details bestätigt werden",
-          "Nach Malbeginn: Da jedes Porträt individuell angefertigt wird, ist eine Rückerstattung nach Beginn des Handmalens nicht mehr möglich",
+          "Vor dem Malen: Sie erhalten eine volle Rückerstattung, solange wir die finalen Details noch nicht gemeinsam bestätigt haben",
+          "Sobald das Malen begonnen hat: Da jedes Porträt eine Einzelanfertigung ist, ist danach keine Rückerstattung mehr möglich",
         ],
       },
       {
         q: "Kann ich meine Bestellung beschleunigen lassen?",
-        summary: "Express-Versand bieten wir standardmäßig nicht an, aber wir tun immer unser Bestes!",
+        summary: "Eine Expressanfertigung bieten wir nicht standardmäßig an, aber wir versuchen immer zu helfen!",
         bullets: [
-          "Handgemalte Präzision: Jede Schicht braucht ihre eigene Trocken- und Aushärtezeit",
-          "Brauchen Sie es bis zu einem bestimmten Datum? Schreiben Sie uns vor der Bestellung — wenn es unser Zeitplan zulässt, tun wir unser Möglichstes",
+          "Präzise Handarbeit braucht Zeit: Jede Schicht muss einzeln trocknen und aushärten",
+          "Brauchen Sie es bis zu einem bestimmten Termin? Schreiben Sie uns vor der Bestellung – wenn es unser Zeitplan erlaubt, tun wir unser Möglichstes",
         ],
       },
     ],
@@ -291,20 +291,20 @@ export const FAQ_DE: FaqGroup[] = [
     title: "Geschenke & Pflege",
     items: [
       {
-        q: "Ist ein Fuzzy-Berry-Porträt ein gutes Geschenk? Können Sie direkt an eine andere Adresse versenden?",
-        summary: "Ja — es ist eines unserer beliebtesten Geschenke, und wir versenden gerne direkt an sie!",
+        q: "Eignet sich ein Fuzzy-Berry-Porträt als Geschenk? Können Sie direkt an die beschenkte Person liefern?",
+        summary: "Ja – es ist eines unserer beliebtesten Geschenke, und wir liefern gerne direkt an die beschenkte Person!",
         bullets: [
-          "Direktversand: Geben Sie einfach die Adresse der beschenkten Person beim Checkout an",
-          "Besondere Wünsche? Teilen Sie es uns in den Bestellhinweisen mit oder schreiben Sie uns — wir schauen gerne, was wir für Sie tun können!",
+          "Direktversand: Geben Sie im Checkout einfach die Adresse der beschenkten Person an",
+          "Besondere Wünsche? Schreiben Sie sie in die Bestellhinweise oder senden Sie uns eine Nachricht – wir schauen gern, was möglich ist!",
         ],
       },
       {
         q: "Wie reinige und pflege ich mein Acrylporträt?",
-        summary: "Die Pflege ist einfach! Nur ein paar sanfte Schritte, damit es weiter strahlt:",
+        summary: "Die Pflege ist ganz einfach – mit ein paar sanften Handgriffen strahlt es lange:",
         bullets: [
           "Sanft abstauben: Vorsichtig mit einem trockenen, fusselfreien Mikrofasertuch abwischen",
-          "Chemikalien vermeiden: Keine scharfen Reiniger, Alkohol oder Glasreiniger auf dem klaren Acryl",
-          "Achtsam aufstellen: Vor direkter, intensiver Sonneneinstrahlung schützen, um das Kunstwerk dauerhaft zu bewahren",
+          "Keine Chemie: Verwenden Sie keine scharfen Reiniger, keinen Alkohol und keinen Glasreiniger auf dem klaren Acryl",
+          "Richtig aufstellen: Vor direkter, intensiver Sonne schützen, damit das Kunstwerk lange schön bleibt",
         ],
       },
     ],

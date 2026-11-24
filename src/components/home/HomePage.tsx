@@ -85,7 +85,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       key: "single",
       kicker: isEn ? "Single Pet" : "Einzeltier",
       title: isEn ? "Single Pet" : "Einzeltier",
-      body: isEn ? "One companion, in focus." : "Ein Begleiter, im Fokus.",
+      body: isEn ? "One companion, in focus." : "Ein Begleiter ganz im Mittelpunkt.",
       cta: isEn ? "View collection" : "Zur Kollektion",
       href: "/collection#single-pet",
       alt: isEn ? "Single pet portrait example" : "Beispiel eines Einzeltier-Porträts",
@@ -98,7 +98,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       key: "multi",
       kicker: isEn ? "Multi Pet" : "Mehrere Tiere",
       title: isEn ? "Multi Pet" : "Mehrere Tiere",
-      body: isEn ? "Your whole crew together." : "Ihre ganze Truppe zusammen.",
+      body: isEn ? "Your whole crew together." : "Ihre ganze Bande – gemeinsam auf einem Bild.",
       cta: isEn ? "View collection" : "Zur Kollektion",
       href: "/collection#multi-pet",
       alt: isEn ? "Multi pet portrait example" : "Beispiel eines Mehrtier-Porträts",
@@ -137,21 +137,21 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         {
           n: "1",
           title: "Individuelles 3D-Acrylporträt",
-          text: "Handgemalt in 6 einzelnen Schichten für lebendige Tiefe und Detailtreue.",
+          text: "In 6 einzelnen Schichten von Hand gemalt – für lebendige Tiefe und viele Details.",
           color: "var(--plum)",
           numColor: "#fff",
         },
         {
           n: "2",
-          title: "Hochwertiger Display-Ständer",
-          text: "Ein Holz- oder Acryl-Ständer, sofort einsatzbereit zur Präsentation.",
+          title: "Hochwertiger Aufsteller",
+          text: "Ein Ständer aus Holz oder Acryl – Ihr Porträt ist sofort ausgestellt.",
           color: "var(--plum-badge)",
           numColor: "#fff",
         },
         {
           n: "3",
           title: "Dankeskarte & Geschenkverpackung",
-          text: "Herzliche Fuzzy-Berry-Karte, sorgfältig in geschenkfertiger Verpackung.",
+          text: "Eine persönliche Karte von Fuzzy Berry, sicher und geschenkfertig verpackt.",
           color: "var(--berry)",
           numColor: "#fff",
         },
@@ -192,7 +192,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             webkit-playsinline="true"
             preload="auto"
             disableRemotePlayback
-            aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
+            aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, auf Acrylglas zum Leben erweckt"}
           />
           <div className={styles.heroStickerFloat}>{t.heroSticker}</div>
         </div>

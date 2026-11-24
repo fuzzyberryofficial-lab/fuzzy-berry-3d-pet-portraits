@@ -61,7 +61,7 @@ export async function POST(request: Request) {
           price_data: {
             currency: "eur",
             product_data: {
-              name: lang === "de" ? `Fuzzy Berry Geschenkgutschein €${amount}` : `Fuzzy Berry gift voucher €${amount}`,
+              name: lang === "de" ? `Fuzzy Berry Geschenkgutschein ${amount} €` : `Fuzzy Berry gift voucher €${amount}`,
               description:
                 lang === "de"
                   ? "Wird per E-Mail zugesendet. 3 Jahre gültig."

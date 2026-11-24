@@ -31,6 +31,9 @@ export default function GiftCardPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [paidAmount, setPaidAmount] = useState<number | null>(null);
 
+  // German writes the euro sign after the number ("50 €"), English before it.
+  const money = (n: number) => (lang === "de" ? `${n} €` : `€${n}`);
+
   const customNumber = custom.trim() === "" ? null : Number(custom);
   const customValid =
     customNumber !== null && Number.isInteger(customNumber) && customNumber >= MIN_AMOUNT && customNumber <= MAX_AMOUNT;
@@ -98,7 +101,7 @@ export default function GiftCardPage() {
             <p>{t.thanksBody}</p>
             {paidAmount && (
               <p className={styles.noticeAmount}>
-                {t.thanksAmount}: €{paidAmount}
+                {t.thanksAmount}: {money(paidAmount)}
               </p>
             )}
             <Link href="/" className={`${siteStyles.btn} ${siteStyles.btnOutline}`}>
@@ -129,7 +132,7 @@ export default function GiftCardPage() {
                       setCustom("");
                     }}
                   >
-                    <span className={styles.chipAmount}>€{value}</span>
+                    <span className={styles.chipAmount}>{money(value)}</span>
                     <span className={styles.chipNote}>{t.presetNote[value] ?? t.towardsNote}</span>
                   </button>
                 );
@@ -203,7 +206,7 @@ export default function GiftCardPage() {
               disabled={!amount || busy}
               onClick={pay}
             >
-              {busy ? t.paying : amount ? `${t.pay} · €${amount} →` : `${t.pay} →`}
+              {busy ? t.paying : amount ? `${t.pay} · ${money(amount)} →` : `${t.pay} →`}
             </button>
 
             <ul className={styles.bullets}>

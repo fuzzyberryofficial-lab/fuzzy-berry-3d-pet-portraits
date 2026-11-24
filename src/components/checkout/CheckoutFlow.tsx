@@ -13,6 +13,7 @@ import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
 import { promoDiscountCents } from "@/lib/promoMath";
 import { readPreferredLang } from "../site/useLang";
+import FitHeadings from "../site/FitHeadings";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
@@ -366,6 +367,7 @@ export default function CheckoutFlow() {
 
   return (
     <div className={`${styles.page} ${baloo.variable} ${poppins.variable}`}>
+      <FitHeadings />
       <nav className={styles.nav}>
         <Link href="/" className={styles.brand}>
           <span className={styles.brandFuzzy}>Fuzzy</span> <span className={styles.brandBerry}>Berry</span>

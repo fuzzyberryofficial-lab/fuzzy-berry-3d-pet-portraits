@@ -1,17 +1,28 @@
 .main {
   max-width: 720px;
   margin: 0 auto;
-  padding: 48px 6vw 72px;
+  padding: 48px min(6vw, 48px) 72px;
 }
 
 /* One line on every screen: the size scales with the width instead of wrapping. */
 .title {
   font-family: var(--font-baloo), sans-serif;
   font-weight: 800;
-  font-size: clamp(18px, 6vw, 44px);
+  font-size: clamp(18px, 6vw, 42px);
   line-height: 1.1;
   white-space: nowrap;
   margin: 0 0 14px;
+}
+
+/* The site-wide balanced-wrapping rule (.page h1 …) is more specific than .title and
+   would switch wrapping back on, so these say "never wrap" again with enough weight. */
+.main h1.title,
+.main .bullets li:first-child {
+  text-wrap: nowrap;
+}
+
+.main h1.titleWrap {
+  text-wrap: balance;
 }
 
 .titleWrap {

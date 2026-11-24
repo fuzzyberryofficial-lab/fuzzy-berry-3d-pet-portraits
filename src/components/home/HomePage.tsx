@@ -164,7 +164,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       <section className={styles.heroGrid}>
         <div className={styles.heroText}>
           <p className={siteStyles.kicker}>{t.heroKicker}</p>
-          <h1 className={styles.heroTitle}>
+          <h1 className={styles.heroTitle} data-nofit>
             {t.heroTitleA} <span style={{ color: "var(--berry)" }}>{t.heroTitleB}</span>
           </h1>
           <p className={styles.heroPriceLine}>{t.heroPriceLine}</p>

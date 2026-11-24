@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styles from "./site.module.css";
 import LangSwitch from "./LangSwitch";
+import FitHeadings from "./FitHeadings";
 import type { Lang, NavPage, NavTranslation } from "./navTypes";
 
 interface SiteNavProps {
@@ -29,6 +30,7 @@ export default function SiteNav({ t, lang, onLangChange, current, hideCtaOnMobil
 
   return (
     <nav className={styles.nav}>
+      <FitHeadings />
       <Link href="/" className={styles.brand}>
         <span className={styles.brandFuzzy}>Fuzzy</span> <span className={styles.brandBerry}>Berry</span>
       </Link>

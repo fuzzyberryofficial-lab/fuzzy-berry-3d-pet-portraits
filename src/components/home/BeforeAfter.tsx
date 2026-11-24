@@ -10,7 +10,19 @@ import styles from "./BeforeAfter.module.css";
 // the drag-to-compare line read as one continuous picture.
 type Framed = { src: string; w: number; h: number; crop: [number, number, number] };
 
-const PETS: { key: string; en: string; de: string; ratio: number; before: Framed; after: Framed }[] = [
+// Thumbnails are all the same landscape size; `thumbCrop` re-frames a tall
+// portrait for that shape without touching the big frame.
+const THUMB_RATIO = 1.25;
+
+const PETS: {
+  key: string;
+  en: string;
+  de: string;
+  ratio: number;
+  before: Framed;
+  after: Framed;
+  thumbCrop?: [number, number, number];
+}[] = [
   {
     key: "pom",
     en: "Pomeranian",
@@ -26,6 +38,7 @@ const PETS: { key: string; en: string; de: string; ratio: number; before: Framed
     ratio: 0.8,
     before: { src: "/images/before-after/golden-before.jpg", w: 1080, h: 1440, crop: [130, 90, 1000] },
     after: { src: "/images/before-after/golden-after.webp", w: 896, h: 1003, crop: [48, 0, 802] },
+    thumbCrop: [60, 60, 780],
   },
   {
     key: "duo",
@@ -141,7 +154,13 @@ export default function BeforeAfter({
             }}
             aria-pressed={n === i}
           >
-            <FramedImage img={p.after} ratio={p.ratio} alt="" className={styles.thumbImg} sizes="90px" />
+            <FramedImage
+              img={p.thumbCrop ? { ...p.after, crop: p.thumbCrop } : p.after}
+              ratio={THUMB_RATIO}
+              alt=""
+              className={styles.thumbImg}
+              sizes="90px"
+            />
             <span className={styles.thumbName}>{isEn ? p.en : p.de}</span>
           </button>
         ))}

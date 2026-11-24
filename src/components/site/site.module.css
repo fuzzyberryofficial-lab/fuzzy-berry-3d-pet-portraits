@@ -21,6 +21,20 @@
   box-sizing: border-box;
 }
 
+/* No lonely last words: text is balanced across its lines, so a line never ends
+   with one or two words dangling on their own. (Blocks longer than about six
+   lines can't be balanced by the browser and wrap normally.) */
+.page h1,
+.page h2,
+.page h3,
+.page p,
+.page li,
+.page figcaption,
+.page td,
+.page th {
+  text-wrap: balance;
+}
+
 .page a {
   color: inherit;
 }
@@ -103,8 +117,8 @@
 
 .navLinks {
   display: flex;
-  gap: 28px;
-  margin-right: 28px;
+  gap: 22px;
+  margin-right: 16px;
   font-family: var(--font-baloo), sans-serif;
   font-weight: 600;
   font-size: 15px;
@@ -119,7 +133,39 @@
   color: var(--berry);
 }
 
-@media (max-width: 1024px) {
+/* Seven menu links need a little more room than the old six. */
+@media (min-width: 1200px) {
+  .nav {
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+}
+
+/* Laptop widths (the menu turns into the hamburger below 1200px): tighten spacing so the whole menu stays on one row. */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .nav {
+    gap: 14px;
+    padding-left: 3vw;
+    padding-right: 3vw;
+  }
+
+  .navLinks {
+    gap: 15px;
+    margin-right: 8px;
+    font-size: 14px;
+  }
+
+  .langSwitch {
+    margin-right: 8px;
+  }
+
+  .nav > .btn {
+    padding: 12px 18px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 1199px) {
   .navLinks {
     display: none !important;
   }
@@ -163,7 +209,7 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .menuToggle {
     display: inline-flex;
   }
@@ -173,7 +219,7 @@
   display: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .mobileMenu {
     display: flex;
     flex-direction: column;

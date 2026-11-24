@@ -173,6 +173,18 @@
   padding-bottom: 72px;
 }
 
+.giftSection {
+  padding: 64px 8vw;
+  background: var(--sun);
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+}
+
+.giftActions {
+  display: flex;
+  justify-content: center;
+}
+
 .sectionCentered {
   text-align: center;
 }
@@ -399,6 +411,11 @@
 }
 
 @media (max-width: 640px) {
+  /* A touch smaller on phones so section titles sit on two even lines, not three. */
+  .sectionTitle {
+    font-size: 32px;
+  }
+
   .igCarousel {
     gap: 8px;
   }

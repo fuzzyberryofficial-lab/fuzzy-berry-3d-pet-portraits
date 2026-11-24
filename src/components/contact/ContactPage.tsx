@@ -99,6 +99,7 @@ export default function ContactPage() {
 
       <SiteFooter
         links={[
+          { href: "/gift-card", label: t.navGift },
           { href: "/policies#privacy", label: t.privacy },
           { href: "/policies#returns", label: t.returns },
         ]}

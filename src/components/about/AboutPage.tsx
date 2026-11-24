@@ -25,11 +25,13 @@ export default function AboutPage() {
         <div lang={lang}>
           <p className={siteStyles.kicker}>{t.kicker}</p>
           <h1 className={styles.title}>{t.title}</h1>
-          <p className={styles.paragraph}>{t.p1}</p>
-          <p className={styles.paragraph}>{t.p2}</p>
-          <p className={styles.paragraph}>{t.p3}</p>
-          <p className={styles.paragraph}>{t.p4}</p>
-          <p className={styles.paragraph}>{t.p5}</p>
+          {[t.p1, t.p2, t.p3, t.p4, t.p5].map((text, i) => (
+            // Long paragraphs are too many lines for the browser to balance, so they
+            // get "pretty" wrapping instead (no single word left on the last line).
+            <p key={i} className={`${styles.paragraph} ${text.length > 230 ? styles.longParagraph : ""}`}>
+              {text}
+            </p>
+          ))}
         </div>
       </section>
 
@@ -37,6 +39,7 @@ export default function AboutPage() {
         links={[
           { href: "/faqs", label: t.navFaqs },
           { href: "/contact", label: t.navContact },
+          { href: "/gift-card", label: t.navGift },
           { href: "/policies#privacy", label: t.privacy },
           { href: "/policies#returns", label: t.returns },
         ]}

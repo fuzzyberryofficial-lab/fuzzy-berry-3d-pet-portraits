@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styles from "./site.module.css";
 import LangSwitch from "./LangSwitch";
+import FitHeadings from "./FitHeadings";
 import type { Lang, NavPage, NavTranslation } from "./navTypes";
 
 interface SiteNavProps {
@@ -17,6 +18,7 @@ interface SiteNavProps {
 const LINKS: { key: NavPage; href: string; label: keyof NavTranslation }[] = [
   { key: "home", href: "/", label: "navHome" },
   { key: "collection", href: "/collection", label: "navCollection" },
+  { key: "gift", href: "/gift-card", label: "navGift" },
   { key: "about", href: "/about", label: "navAbout" },
   { key: "faqs", href: "/faqs", label: "navFaqs" },
   { key: "contact", href: "/contact", label: "navContact" },
@@ -28,6 +30,7 @@ export default function SiteNav({ t, lang, onLangChange, current, hideCtaOnMobil
 
   return (
     <nav className={styles.nav}>
+      <FitHeadings />
       <Link href="/" className={styles.brand}>
         <span className={styles.brandFuzzy}>Fuzzy</span> <span className={styles.brandBerry}>Berry</span>
       </Link>

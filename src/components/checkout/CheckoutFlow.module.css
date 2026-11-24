@@ -23,6 +23,18 @@
   box-sizing: border-box;
 }
 
+/* No lonely last words (same rule as the rest of the site). */
+.page h1,
+.page h2,
+.page h3,
+.page p,
+.page li,
+.page figcaption,
+.page td,
+.page th {
+  text-wrap: balance;
+}
+
 @keyframes fbFade {
   from {
     opacity: 0;

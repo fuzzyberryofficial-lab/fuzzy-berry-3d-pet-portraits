@@ -21,6 +21,11 @@ export interface HomeTranslation extends NavTranslation {
   boxKicker: string;
   boxTitle: string;
   boxSub: string;
+  giftKicker: string;
+  giftTitle: string;
+  giftSub: string;
+  giftCta: string;
+  giftFooter: string;
   igKicker: string;
   igTitle: string;
   igSub: string;
@@ -40,6 +45,7 @@ export const TR: Record<Lang, HomeTranslation> = {
     navFaqs: "FAQs",
     navContact: "Contact us",
     navShowroom: "Visit Us",
+    navGift: "Gift Voucher",
     startPortrait: "Start Your Portrait",
     heroKicker: "Modern Art for Pet Lovers",
     heroTitleA: "Turn Your Best Friend into",
@@ -61,6 +67,11 @@ export const TR: Record<Lang, HomeTranslation> = {
     boxKicker: "Unboxing",
     boxTitle: "What's Inside Your Box",
     boxSub: "Everything you need to display or gift your artwork right out of the box.",
+    giftKicker: "Christmas gift",
+    giftTitle: "Give a Fuzzy Berry portrait",
+    giftSub: "Ready the moment you pay, valid for 3 years — it's never too late to give one.",
+    giftCta: "Buy a gift voucher",
+    giftFooter: "Gift vouchers",
     igKicker: "Join the Pack",
     igTitle: "Follow @fuzzyberry.official",
     igSub: "Fresh portraits, behind-the-scenes painting, and happy customers on Instagram.",
@@ -75,27 +86,33 @@ export const TR: Record<Lang, HomeTranslation> = {
     navFaqs: "FAQs",
     navContact: "Kontakt",
     navShowroom: "Showroom",
-    startPortrait: "Porträt starten",
+    navGift: "Gutschein",
+    startPortrait: "Porträt bestellen",
     heroKicker: "Moderne Kunst für Tierliebhaber",
-    heroTitleA: "Verwandeln Sie Ihren besten Freund in",
-    heroTitleB: "Kunst",
-    heroBody: "Schicken Sie uns ein Foto — wir malen es Schicht für Schicht von Hand auf klares Acrylglas und versenden weltweit.",
+    heroTitleA: "Machen Sie Ihren besten Freund zum",
+    heroTitleB: "Kunstwerk",
+    heroBody: "Schicken Sie uns ein Foto – wir malen es in Handarbeit Schicht für Schicht auf klares Acrylglas und verschicken es weltweit.",
     heroSticker: "6 Schichten · handgemalt",
-    heroPriceLine: "ab €179 · ca. 3 Wochen Handmalerei",
+    heroPriceLine: "ab 179 € · ca. 3 Wochen Handmalerei",
     baKicker: "Echte Porträts",
-    baTitle: "Vom Foto zum handgemalten Kunstwerk",
-    baSub: "Foto rein, Handarbeit raus — Schicht für Schicht auf Acryl gemalt.",
+    baTitle: "Vom Foto zum Kunstwerk",
+    baSub: "Foto rein, Handarbeit raus – Schicht für Schicht auf Acryl gemalt.",
     baPhoto: "Das Foto",
     baPainted: "Das Porträt",
-    styleKicker: "Wenn Sie sie lieben, gestalten wir sie",
+    styleKicker: "Sie lieben Ihr Tier – wir malen es",
     styleTitle: "Wählen Sie Ihren Stil",
-    styleSub: "Katzen, Hunde und jedes geliebte Haustier.",
-    craftKicker: "Die Magie entsteht",
+    styleSub: "Katzen, Hunde und alle anderen Lieblinge.",
+    craftKicker: "So entsteht die Magie",
     craftTitle: "Kunst, die man fühlt",
-    craftBody: "Schicht für Schicht handgemalt — jede Fellsträhne, jedes Glitzern lebendig gemacht.",
+    craftBody: "Schicht für Schicht von Hand gemalt – jede Fellsträhne, jedes Funkeln im Auge wird lebendig.",
     boxKicker: "Auspacken",
-    boxTitle: "Das ist in Ihrer Box",
-    boxSub: "Alles, was Sie brauchen, um Ihr Kunstwerk direkt aus der Box zu präsentieren oder zu verschenken.",
+    boxTitle: "Das steckt in Ihrer Box",
+    boxSub: "Alles dabei, um Ihr Kunstwerk sofort aufzustellen oder zu verschenken.",
+    giftKicker: "Weihnachtsgeschenk",
+    giftTitle: "Verschenken Sie ein Porträt",
+    giftSub: "Sofort nach der Zahlung bereit, 3 Jahre gültig – zum Verschenken ist es nie zu spät.",
+    giftCta: "Geschenkgutschein kaufen",
+    giftFooter: "Geschenkgutscheine",
     igKicker: "Werden Sie Teil des Rudels",
     igTitle: "Folgen Sie @fuzzyberry.official",
     igSub: "Neue Porträts, Einblicke ins Malen und glückliche Kunden auf Instagram.",

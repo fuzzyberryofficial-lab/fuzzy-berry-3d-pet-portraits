@@ -85,7 +85,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       key: "single",
       kicker: isEn ? "Single Pet" : "Einzeltier",
       title: isEn ? "Single Pet" : "Einzeltier",
-      body: isEn ? "One companion, in focus." : "Ein Begleiter, im Fokus.",
+      body: isEn ? "One companion, in focus." : "Ein Begleiter ganz im Mittelpunkt.",
       cta: isEn ? "View collection" : "Zur Kollektion",
       href: "/collection#single-pet",
       alt: isEn ? "Single pet portrait example" : "Beispiel eines Einzeltier-Porträts",
@@ -98,7 +98,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       key: "multi",
       kicker: isEn ? "Multi Pet" : "Mehrere Tiere",
       title: isEn ? "Multi Pet" : "Mehrere Tiere",
-      body: isEn ? "Your whole crew together." : "Ihre ganze Truppe zusammen.",
+      body: isEn ? "Your whole crew together." : "Ihre ganze Bande – gemeinsam auf einem Bild.",
       cta: isEn ? "View collection" : "Zur Kollektion",
       href: "/collection#multi-pet",
       alt: isEn ? "Multi pet portrait example" : "Beispiel eines Mehrtier-Porträts",
@@ -137,21 +137,21 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         {
           n: "1",
           title: "Individuelles 3D-Acrylporträt",
-          text: "Handgemalt in 6 einzelnen Schichten für lebendige Tiefe und Detailtreue.",
+          text: "In 6 einzelnen Schichten von Hand gemalt – für lebendige Tiefe und viele Details.",
           color: "var(--plum)",
           numColor: "#fff",
         },
         {
           n: "2",
-          title: "Hochwertiger Display-Ständer",
-          text: "Ein Holz- oder Acryl-Ständer, sofort einsatzbereit zur Präsentation.",
+          title: "Hochwertiger Aufsteller",
+          text: "Ein Ständer aus Holz oder Acryl – Ihr Porträt ist sofort ausgestellt.",
           color: "var(--plum-badge)",
           numColor: "#fff",
         },
         {
           n: "3",
           title: "Dankeskarte & Geschenkverpackung",
-          text: "Herzliche Fuzzy-Berry-Karte, sorgfältig in geschenkfertiger Verpackung.",
+          text: "Eine persönliche Karte von Fuzzy Berry, sicher und geschenkfertig verpackt.",
           color: "var(--berry)",
           numColor: "#fff",
         },
@@ -164,7 +164,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
       <section className={styles.heroGrid}>
         <div className={styles.heroText}>
           <p className={siteStyles.kicker}>{t.heroKicker}</p>
-          <h1 className={styles.heroTitle}>
+          <h1 className={styles.heroTitle} data-nofit>
             {t.heroTitleA} <span style={{ color: "var(--berry)" }}>{t.heroTitleB}</span>
           </h1>
           <p className={styles.heroPriceLine}>{t.heroPriceLine}</p>
@@ -192,7 +192,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             webkit-playsinline="true"
             preload="auto"
             disableRemotePlayback
-            aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, zum Leben erweckt auf Acrylglas"}
+            aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, auf Acrylglas zum Leben erweckt"}
           />
           <div className={styles.heroStickerFloat}>{t.heroSticker}</div>
         </div>
@@ -295,6 +295,21 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         </section>
       </Reveal>
 
+      <Reveal>
+        <section className={styles.giftSection}>
+          <p className={siteStyles.kicker} style={{ textAlign: "center", display: "block" }}>
+            {t.giftKicker}
+          </p>
+          <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.giftTitle}</h2>
+          <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.giftSub}</p>
+          <div className={styles.giftActions}>
+            <Link href="/gift-card" className={`${siteStyles.btn} ${siteStyles.btnPrimary}`}>
+              {t.giftCta} →
+            </Link>
+          </div>
+        </section>
+      </Reveal>
+
       {instagramPosts.length > 0 && (
         <>
           <div className={siteStyles.stripe} />
@@ -338,6 +353,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           { href: "/about", label: t.navAbout },
           { href: "/faqs", label: t.navFaqs },
           { href: "/contact", label: t.navContact },
+          { href: "/gift-card", label: t.giftFooter },
           { href: "/policies#privacy", label: t.privacy },
           { href: "/policies#returns", label: t.returns },
         ]}

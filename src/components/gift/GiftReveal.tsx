@@ -242,9 +242,29 @@ export default function GiftReveal({
           >
             <span className={styles.boxBody} />
             <span className={styles.lid}>
-              <span className={styles.bowLoopL} />
-              <span className={styles.bowLoopR} />
-              <span className={styles.bowKnot} />
+              {/* A big, symmetrical bow: two loops, a knot and two ribbon tails. */}
+              <svg className={styles.bow} viewBox="0 0 160 104" aria-hidden="true" focusable="false">
+                <g stroke="#332f2a" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round">
+                  {/* tails */}
+                  <path d="M77 64 L56 98 L68 95 L73 103 L88 70 Z" fill="#ffd75e" />
+                  <path d="M83 64 L104 98 L92 95 L87 103 L72 70 Z" fill="#ffd75e" />
+                  {/* loops */}
+                  <path
+                    d="M76 62 C60 26 34 6 14 14 C-2 21 4 52 38 62 C52 66 66 65 76 62 Z"
+                    fill="#ffd75e"
+                  />
+                  <path
+                    d="M84 62 C100 26 126 6 146 14 C162 21 156 52 122 62 C108 66 94 65 84 62 Z"
+                    fill="#ffd75e"
+                  />
+                  {/* inner fold of each loop */}
+                  <path d="M68 59 C58 38 42 25 28 28 C18 31 22 47 42 56 C52 60 60 60 68 59 Z" fill="#f2b93b" strokeWidth="2" />
+                  <path d="M92 59 C102 38 118 25 132 28 C142 31 138 47 118 56 C108 60 100 60 92 59 Z" fill="#f2b93b" strokeWidth="2" />
+                  {/* knot */}
+                  <ellipse cx="80" cy="62" rx="14" ry="13" fill="#ffd75e" />
+                  <path d="M74 58 C77 55 82 55 85 57" fill="none" stroke="#fff3b8" strokeWidth="3" />
+                </g>
+              </svg>
             </span>
           </button>
         </div>

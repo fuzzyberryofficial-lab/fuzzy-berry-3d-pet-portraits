@@ -209,43 +209,16 @@
   pointer-events: none;
 }
 
-.bowLoopL,
-.bowLoopR,
-.bowKnot {
+.bow {
   position: absolute;
+  left: 50%;
+  top: -88px;
+  width: 168px;
+  height: 109px;
+  margin-left: -84px;
   z-index: 1;
-  background: #ffd75e;
-  border: 2px solid var(--ink);
-}
-
-.bowLoopL,
-.bowLoopR {
-  top: -40px;
-  width: 42px;
-  height: 32px;
-  border-radius: 50%;
-}
-
-.bowLoopL {
-  left: 50%;
-  margin-left: -48px;
-  transform: rotate(-24deg);
-}
-
-.bowLoopR {
-  left: 50%;
-  margin-left: 6px;
-  transform: rotate(24deg);
-}
-
-.bowKnot {
-  top: -23px;
-  left: 50%;
-  width: 22px;
-  height: 22px;
-  margin-left: -11px;
-  border-radius: 50%;
-  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
 }
 
 .hint {

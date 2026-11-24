@@ -134,14 +134,38 @@
 }
 
 /* Seven menu links need a little more room than the old six. */
-@media (min-width: 1025px) {
+@media (min-width: 1200px) {
   .nav {
     padding-left: 6vw;
     padding-right: 6vw;
   }
 }
 
-@media (max-width: 1024px) {
+/* Laptop widths (the menu turns into the hamburger below 1200px): tighten spacing so the whole menu stays on one row. */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .nav {
+    gap: 14px;
+    padding-left: 3vw;
+    padding-right: 3vw;
+  }
+
+  .navLinks {
+    gap: 15px;
+    margin-right: 8px;
+    font-size: 14px;
+  }
+
+  .langSwitch {
+    margin-right: 8px;
+  }
+
+  .nav > .btn {
+    padding: 12px 18px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 1199px) {
   .navLinks {
     display: none !important;
   }
@@ -185,7 +209,7 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .menuToggle {
     display: inline-flex;
   }
@@ -195,7 +219,7 @@
   display: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .mobileMenu {
     display: flex;
     flex-direction: column;

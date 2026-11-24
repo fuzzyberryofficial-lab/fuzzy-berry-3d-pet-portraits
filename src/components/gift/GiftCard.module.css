@@ -140,6 +140,8 @@
   font-size: 11.5px;
   line-height: 1.25;
   opacity: 0.75;
+  text-wrap: balance;
+  white-space: pre-line;
 }
 
 .field {

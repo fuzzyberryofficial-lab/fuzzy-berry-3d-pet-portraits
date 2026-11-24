@@ -18,6 +18,7 @@ const PETS: {
   key: string;
   en: string;
   de: string;
+  size: string;
   ratio: number;
   before: Framed;
   after: Framed;
@@ -27,6 +28,7 @@ const PETS: {
     key: "pom",
     en: "Pomeranian",
     de: "Spitz",
+    size: "20×20 cm",
     ratio: 1.25,
     before: { src: "/images/before-after/pom-before.jpg", w: 604, h: 804, crop: [0, 0, 600] },
     after: { src: "/images/before-after/pom-after-straight.webp", w: 912, h: 1164, crop: [82, 400, 760] },
@@ -35,6 +37,7 @@ const PETS: {
     key: "golden",
     en: "Golden Retriever",
     de: "Golden Retriever",
+    size: "30×30 cm",
     ratio: 0.8,
     before: { src: "/images/before-after/golden-before.jpg", w: 1080, h: 1440, crop: [130, 90, 1000] },
     after: { src: "/images/before-after/golden-after.webp", w: 896, h: 1003, crop: [48, 0, 802] },
@@ -44,6 +47,7 @@ const PETS: {
     key: "duo",
     en: "Two dogs",
     de: "Zwei Hunde",
+    size: "20×40 cm",
     ratio: 1.25,
     before: { src: "/images/before-after/duo-before.jpg", w: 1320, h: 1128, crop: [0, 0, 1320] },
     after: { src: "/images/before-after/duo-after-straight.webp", w: 1043, h: 864, crop: [64, 76, 960] },
@@ -153,6 +157,7 @@ export default function BeforeAfter({
               setPos(50);
             }}
             aria-pressed={n === i}
+            aria-label={`${isEn ? p.en : p.de}, ${p.size}`}
           >
             <FramedImage
               img={p.thumbCrop ? { ...p.after, crop: p.thumbCrop } : p.after}
@@ -161,7 +166,7 @@ export default function BeforeAfter({
               className={styles.thumbImg}
               sizes="90px"
             />
-            <span className={styles.thumbName}>{isEn ? p.en : p.de}</span>
+            <span className={styles.thumbName}>{p.size}</span>
           </button>
         ))}
       </div>

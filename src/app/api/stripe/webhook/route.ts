@@ -5,7 +5,13 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 import { getCountryLabel } from "@/components/checkout/countries";
 import { ensureVoucher } from "@/lib/giftVoucher";
 import { alreadySent, markSent, sendOrderEmails, sendVoucherEmail } from "@/lib/email/dispatch";
-import { berlinToday, deliveryFromMetadata, emailGiftToRecipient, saveScheduledGift } from "@/lib/giftDelivery";
+import {
+  berlinToday,
+  deliveryFromMetadata,
+  emailGiftToRecipient,
+  saveScheduledGift,
+  scrubRecipientData,
+} from "@/lib/giftDelivery";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("stripe-signature");
@@ -46,7 +52,10 @@ export async function POST(request: Request) {
             if (delivery.sendOn === "now") {
               if (!(await alreadySent(session.id, "fb_gift_recipient_email"))) {
                 const sent = await emailGiftToRecipient(session, voucher);
-                if (sent) await markSent(session.id, "fb_gift_recipient_email");
+                if (sent) {
+                  await markSent(session.id, "fb_gift_recipient_email");
+                  await scrubRecipientData(session);
+                }
                 // Couldn't send right now: let the daily job try again this morning.
                 else await saveScheduledGift(session, berlinToday());
               }

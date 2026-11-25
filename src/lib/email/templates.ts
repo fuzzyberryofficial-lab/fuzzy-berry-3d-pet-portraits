@@ -433,7 +433,8 @@ export function giftRecipientEmail(d: GiftRecipientEmailData): RenderedEmail {
     paragraph(esc(t.questions), true),
   ].join("\n");
 
-  const footer = `${t.why}<br><a href="${SITE_URL}" style="color:#6f675e;">www.fuzzyberry.de</a> · <a href="mailto:${SHOP_EMAIL}" style="color:#6f675e;">${SHOP_EMAIL}</a>`;
+  const privacyLabel = de ? "Datenschutz" : "Privacy policy";
+  const footer = `${t.why}<br><a href="${SITE_URL}" style="color:#6f675e;">www.fuzzyberry.de</a> · <a href="${SITE_URL}/policies#privacy" style="color:#6f675e;">${privacyLabel}</a> · <a href="mailto:${SHOP_EMAIL}" style="color:#6f675e;">${SHOP_EMAIL}</a>`;
 
   const text = [
     plain(t.hello),
@@ -446,6 +447,7 @@ export function giftRecipientEmail(d: GiftRecipientEmailData): RenderedEmail {
     t.hint,
     "",
     plain(t.why),
+    `${privacyLabel}: ${SITE_URL}/policies#privacy`,
     `www.fuzzyberry.de · ${SHOP_EMAIL}`,
   ].join("\n");
 

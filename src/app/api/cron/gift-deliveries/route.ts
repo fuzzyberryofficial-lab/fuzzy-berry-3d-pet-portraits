@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { ensureVoucher } from "@/lib/giftVoucher";
-import { berlinToday, emailGiftToRecipient } from "@/lib/giftDelivery";
+import { berlinToday, emailGiftToRecipient, scrubRecipientData } from "@/lib/giftDelivery";
 import { alreadySent, markSent } from "@/lib/email/dispatch";
 import { isEmailConfigured } from "@/lib/email/send";
 
@@ -53,7 +53,12 @@ export async function GET(request: Request) {
       if (!ok) throw new Error("The email could not be sent.");
 
       if (!already) await markSent(session.id, "fb_gift_recipient_email");
-      await supabase.from("gift_deliveries").update({ sent_at: new Date().toISOString(), last_error: null }).eq("id", row.id);
+      // Sent: keep the record that it happened, drop the recipient's personal details.
+      await supabase
+        .from("gift_deliveries")
+        .update({ sent_at: new Date().toISOString(), last_error: null, recipient_email: "", recipient_name: "", message: "" })
+        .eq("id", row.id);
+      await scrubRecipientData(session);
       sent++;
     } catch (err) {
       failed++;

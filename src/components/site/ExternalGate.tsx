@@ -11,10 +11,13 @@ import styles from "./consent.module.css";
 export default function ExternalGate({
   kind,
   href,
+  showLink = true,
   children,
 }: {
   kind: "instagram" | "map";
   href: string;
+  // Off when the page already has its own button to the same place.
+  showLink?: boolean;
   children: ReactNode;
 }) {
   const { external } = useConsent();
@@ -33,9 +36,11 @@ export default function ExternalGate({
         >
           {t.gateLoad}
         </button>
-        <a className={styles.btn} href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+        {showLink && (
+          <a className={styles.btn} href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
           {kind === "instagram" ? t.gateOpenInstagram : t.gateOpenMaps}
         </a>
+        )}
       </div>
     </div>
   );

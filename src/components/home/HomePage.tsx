@@ -11,6 +11,7 @@ import Reveal from "../site/Reveal";
 import SiteImage from "../site/SiteImage";
 import InstagramEmbedGrid from "./InstagramEmbedGrid";
 import ExternalGate from "../site/ExternalGate";
+import LazyVideo from "./LazyVideo";
 import BeforeAfter from "./BeforeAfter";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
@@ -183,7 +184,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         <div className={styles.heroVideoCol}>
           <video
             ref={heroVideoRef}
-            src="/video/pet-layers-wider.mp4"
+            src="/video/pet-layers-720.mp4"
               poster="/video/pet-layers-poster.jpg"
             className={styles.heroVideoLarge}
             autoPlay
@@ -216,7 +217,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         <section className={`${styles.section} ${styles.mintSection}`}>
           <div className={styles.splitGrid}>
             <div className={styles.craftMedia}>
-              <video src="/video/Art You Can Feel.MP4" controls autoPlay loop muted playsInline className={styles.craftVideo} />
+              <LazyVideo src="/video/art-you-can-feel-720.mp4" poster="/video/art-you-can-feel-poster.jpg" controls className={styles.craftVideo} />
             </div>
             <div>
               <p className={siteStyles.kicker}>{t.craftKicker}</p>
@@ -245,10 +246,9 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
                 }}
               >
                 <SiteImage src={card.src} alt={card.alt} className={styles.cardImage} style={{ borderWidth: 2.5 }} />
-                <p className={styles.cardKicker} style={{ color: card.accent }}>
-                  {card.kicker}
-                </p>
-                <h3 className={styles.cardTitle}>{card.title}</h3>
+                <h3 className={styles.cardTitle} style={{ marginTop: 16 }}>
+                  {card.title}
+                </h3>
                 <p className={styles.cardBody}>{card.body}</p>
                 <Link href={card.href} className={`${siteStyles.btn} ${siteStyles.btnOutline} ${styles.cardCta}`}>
                   {card.cta} →
@@ -322,7 +322,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
               </p>
               <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.igTitle}</h2>
               <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.igSub}</p>
-              <ExternalGate kind="instagram" href="https://www.instagram.com/fuzzyberry.official/">
+              <ExternalGate kind="instagram" href="https://www.instagram.com/fuzzyberry.official/" showLink={false}>
                 <InstagramEmbedGrid posts={instagramPosts} />
               </ExternalGate>
               <div className={styles.igFollowWrap}>
@@ -340,7 +340,6 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
         </>
       )}
 
-      <div className={styles.stickyCtaSpacer} />
       <div className={styles.stickyCta}>
         <Link
           href="/checkout"
@@ -361,6 +360,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
           { href: "/policies#returns", label: t.returns },
         ]}
       />
+      <div className={styles.stickyCtaSpacer} />
     </div>
   );
 }

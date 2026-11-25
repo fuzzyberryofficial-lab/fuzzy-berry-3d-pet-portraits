@@ -10,6 +10,7 @@ import SiteFooter from "../site/SiteFooter";
 import Reveal from "../site/Reveal";
 import SiteImage from "../site/SiteImage";
 import InstagramEmbedGrid from "./InstagramEmbedGrid";
+import ExternalGate from "../site/ExternalGate";
 import BeforeAfter from "./BeforeAfter";
 import { useLang } from "../site/useLang";
 import { TR } from "./translations";
@@ -321,7 +322,9 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
               </p>
               <h2 className={`${styles.sectionTitle} ${styles.sectionCentered}`}>{t.igTitle}</h2>
               <p className={`${styles.sectionSub} ${styles.sectionCentered}`}>{t.igSub}</p>
-              <InstagramEmbedGrid posts={instagramPosts} />
+              <ExternalGate kind="instagram" href="https://www.instagram.com/fuzzyberry.official/">
+                <InstagramEmbedGrid posts={instagramPosts} />
+              </ExternalGate>
               <div className={styles.igFollowWrap}>
                 <a
                   href="https://www.instagram.com/fuzzyberry.official/"

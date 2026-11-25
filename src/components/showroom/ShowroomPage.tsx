@@ -5,6 +5,7 @@ import siteStyles from "../site/site.module.css";
 import styles from "./ShowroomPage.module.css";
 import SiteNav from "../site/SiteNav";
 import SiteFooter from "../site/SiteFooter";
+import ExternalGate from "../site/ExternalGate";
 import { useLang } from "../site/useLang";
 import { GOOGLE_MAPS_URL, SHOWROOM_ADDRESS, TR } from "./translations";
 
@@ -60,15 +61,17 @@ export default function ShowroomPage() {
           </div>
 
           <div className={styles.mapCol}>
-            <iframe
-              title="Fuzzy Berry Showroom Location Map"
-              src={mapSrc}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            <ExternalGate kind="map" href={GOOGLE_MAPS_URL}>
+              <iframe
+                title="Fuzzy Berry Showroom Location Map"
+                src={mapSrc}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </ExternalGate>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./site.module.css";
 import SocialIcons from "./SocialIcons";
+import CookieSettingsButton from "./CookieSettingsButton";
 
 interface FooterLink {
   href: string;
@@ -22,6 +23,7 @@ export default function SiteFooter({ links, social }: SiteFooterProps) {
             {link.label}
           </Link>
         ))}
+        <CookieSettingsButton />
       </div>
       {social && <SocialIcons className={styles.footerSocial} />}
     </footer>

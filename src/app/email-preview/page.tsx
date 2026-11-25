@@ -78,6 +78,22 @@ export default function Page() {
       }),
     },
     {
+      id: "voucher-nodelivery-de",
+      label: "4b · Voucher buyer: no recipient email, buyer hands the link over (German)",
+      to: "To: the buyer",
+      mail: voucherEmail({
+        lang: "de",
+        buyerName: "Anna Muster",
+        code: "FB-DEMO-00000",
+        amountEur: 100,
+        recipientName: "Lena",
+        senderName: "Anna",
+        message: "Frohe Weihnachten! 🎄",
+        expiresAt: expires,
+        giftUrl: "https://www.fuzzyberry.de/gift-card/gift?id=cs_live_a1B2c3D4e5F6g7H8i9J0",
+      }),
+    },
+    {
       id: "recipient-de",
       label: "5 · Recipient: \"a gift for you\" (German, code stays hidden)",
       to: "To: lena@beispiel.de",

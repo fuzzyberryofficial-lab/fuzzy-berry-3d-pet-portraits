@@ -262,21 +262,29 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
   const de = d.lang === "de";
   const amount = money(d.amountEur * 100, "eur", d.lang);
   const until = formatDate(d.expiresAt, d.lang);
+  const q = de ? ["„", "“"] : ["“", "”"];
 
   const t = de
     ? {
         subject: "Ihr Fuzzy Berry Geschenkgutschein",
-        preheader: `Ihr Gutschein-Code über ${amount} – sicher aufbewahrt.`,
+        preheader: "Der schönste Teil kommt jetzt: das Verschenken.",
         hello: d.buyerName ? `Vielen Dank, ${esc(firstName(d.buyerName))}!` : "Vielen Dank!",
-        intro: "Ihr Geschenkgutschein ist bereit. Bewahren Sie diese E-Mail gut auf: Hier finden Sie Ihren Code jederzeit wieder.",
+        intro: `Ihr Geschenkgutschein über ${esc(amount)} ist bereit. Jetzt kommt der schönste Teil: das Verschenken.`,
+        giftKicker: "Zum Verschenken",
+        giftTitle: "Die Überraschung wartet in einer Geschenkbox",
+        giftBody:
+          "Schicken Sie diesen Link, zum Beispiel per WhatsApp oder Nachricht. Wer ihn öffnet, erlebt, wie sich die Geschenkbox öffnet, und sieht erst dann den Code.",
+        giftButton: "Geschenk ansehen",
+        tip: "Tipp: Teilen Sie den Link, nicht diese E-Mail. Hier steht der Code schon drin, und die Überraschung wäre dahin.",
+        cardLabel: "So steht es auf der Karte",
+        deliveredTitle: "Wir kümmern uns um die Überraschung",
+        deliveredButton: "Geschenk vorab ansehen",
+        deliveredAlt: "Möchten Sie es lieber selbst weitergeben? Dieser Link öffnet dieselbe Geschenkbox:",
+        keepTitle: "Ihr Code zum Aufbewahren",
         codeLabel: "Gutschein-Code",
         valid: `Gültig bis ${until}`,
         forLine: d.recipientName ? `Für ${esc(d.recipientName)}` : "",
         fromLine: d.senderName ? `Von ${esc(d.senderName)}` : "",
-        share: "Verschenken",
-        shareBody:
-          "Schicken Sie der beschenkten Person diesen Link. Beim Öffnen erlebt sie die Überraschung mit der Geschenkbox und sieht den Code.",
-        open: "Geschenk öffnen",
         redeem: "So wird er eingelöst",
         redeemBody: "Im Checkout im Feld „Rabattcode“ eingeben – in einer Bestellung, für jedes Porträt und jede Größe.",
         questions: "Fragen? Antworten Sie einfach auf diese E-Mail.",
@@ -286,17 +294,24 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
       }
     : {
         subject: "Your Fuzzy Berry gift voucher",
-        preheader: `Your ${amount} voucher code, kept safe.`,
+        preheader: "The best part comes now: giving it.",
         hello: d.buyerName ? `Thank you, ${esc(firstName(d.buyerName))}!` : "Thank you!",
-        intro: "Your gift voucher is ready. Keep this email safe: it's where you can always find your code again.",
+        intro: `Your ${esc(amount)} gift voucher is ready. Now comes the best part: giving it.`,
+        giftKicker: "To give as a gift",
+        giftTitle: "The surprise is waiting in a gift box",
+        giftBody:
+          "Send this link, for example by WhatsApp or text. Whoever opens it watches the gift box open, and only then sees the code.",
+        giftButton: "See the gift",
+        tip: "Tip: share the link, not this email. The code is already in here, and the surprise would be gone.",
+        cardLabel: "What the card says",
+        deliveredTitle: "We'll take care of the surprise",
+        deliveredButton: "Preview the gift",
+        deliveredAlt: "Prefer to hand it over yourself? This link opens the same gift box:",
+        keepTitle: "Your code, to keep",
         codeLabel: "Voucher code",
         valid: `Valid until ${until}`,
         forLine: d.recipientName ? `For ${esc(d.recipientName)}` : "",
         fromLine: d.senderName ? `From ${esc(d.senderName)}` : "",
-        share: "Give it as a gift",
-        shareBody:
-          "Send this link to the person you're giving it to. When they open it they get the gift-box surprise and see the code.",
-        open: "Open the gift",
         redeem: "How to redeem it",
         redeemBody: "Enter it at checkout in the “Promo code” field, in one order, for any portrait and any size.",
         questions: "Questions? Just reply to this email.",
@@ -311,19 +326,35 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
       : t.deliveryLater(d.delivery.to, formatYmd(d.delivery.sendOn, d.lang))
     : "";
 
-  const codeBox = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 10px;"><tr><td align="center" style="background:#fff8ec;border:2px dashed #332f2a;border-radius:14px;padding:20px 12px;"><div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6f675e;">${esc(t.codeLabel)}</div><div style="font-family:Georgia,serif;font-size:34px;font-weight:700;color:#332f2a;margin:6px 0 2px;">${esc(amount)}</div><div style="font-family:'SF Mono',Menlo,Consolas,monospace;font-size:22px;font-weight:700;letter-spacing:0.06em;color:#b23b2c;">${esc(d.code)}</div><div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;color:#6f675e;margin-top:8px;">${esc(t.valid)}</div></td></tr></table>`;
-
+  const SANS = "-apple-system,'Segoe UI',Helvetica,Arial,sans-serif";
   const personal = [t.forLine, t.fromLine].filter(Boolean).join(" · ");
+  const message = d.message.trim();
+
+  // What the recipient will see on the card, so the buyer can picture the surprise.
+  const cardPreview =
+    personal || message
+      ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:14px 0 4px;"><tr><td style="background:#ffffff;border:1px solid #e9dfd2;border-radius:12px;padding:12px 14px;text-align:left;font-family:${SANS};font-size:14px;line-height:1.55;color:#332f2a;"><div style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#6f675e;margin-bottom:4px;">${esc(t.cardLabel)}</div>${personal ? `<div style="font-weight:700;">${personal}</div>` : ""}${message ? `<div style="margin-top:4px;">${q[0]}${escMultiline(message)}${q[1]}</div>` : ""}</td></tr></table>`
+      : "";
+
+  const centeredButton = (label: string) =>
+    `<table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:16px auto 6px;"><tr><td style="background:#ffafc7;border:1.5px solid #332f2a;border-radius:999px;"><a href="${esc(d.giftUrl)}" style="display:inline-block;padding:14px 32px;font-family:Georgia,serif;font-size:17px;font-weight:700;color:#332f2a;text-decoration:none;">${esc(label)}</a></td></tr></table>`;
+
+  const linkLine = `<div style="margin:10px 0 0;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px;line-height:1.5;word-break:break-all;"><a href="${esc(d.giftUrl)}" style="color:#3854b8;">${esc(d.giftUrl)}</a></div>`;
+
+  // The headline block: the link to hand over, big and impossible to miss.
+  const giftBlock = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:18px 0 8px;"><tr><td align="center" style="background:#ffe9a3;border:1.5px solid #332f2a;border-radius:16px;padding:24px 20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-family:${SANS};color:#6f675e;">${esc(t.giftKicker)}</div><div style="font-size:46px;line-height:1.1;margin:6px 0 4px;">🎁</div><div style="font-family:Georgia,serif;font-size:22px;line-height:1.3;font-weight:700;color:#332f2a;margin:0 0 8px;">${esc(d.delivery ? t.deliveredTitle : t.giftTitle)}</div><div style="font-family:${SANS};font-size:15px;line-height:1.6;color:#332f2a;">${d.delivery ? deliveryNote : esc(t.giftBody)}</div>${cardPreview}${centeredButton(d.delivery ? t.deliveredButton : t.giftButton)}${d.delivery ? `<div style="font-family:${SANS};font-size:13px;line-height:1.5;color:#6f675e;margin-top:10px;">${esc(t.deliveredAlt)}</div>` : ""}${linkLine}</td></tr></table>`;
+
+  const tipLine = d.delivery ? "" : panel(esc(t.tip));
+
+  const codeBox = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 10px;"><tr><td align="center" style="background:#fff8ec;border:2px dashed #332f2a;border-radius:14px;padding:20px 12px;"><div style="font-family:${SANS};font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#6f675e;">${esc(t.codeLabel)}</div><div style="font-family:Georgia,serif;font-size:34px;font-weight:700;color:#332f2a;margin:6px 0 2px;">${esc(amount)}</div><div style="font-family:'SF Mono',Menlo,Consolas,monospace;font-size:22px;font-weight:700;letter-spacing:0.06em;color:#b23b2c;">${esc(d.code)}</div><div style="font-family:${SANS};font-size:13px;color:#6f675e;margin-top:8px;">${esc(t.valid)}</div></td></tr></table>`;
+
   const body = [
     heading(t.hello),
-    paragraph(esc(t.intro)),
+    paragraph(t.intro),
+    giftBlock,
+    tipLine,
+    subheading(t.keepTitle),
     codeBox,
-    personal ? paragraph(personal, true) : "",
-    deliveryNote ? panel(deliveryNote) : "",
-    d.message.trim() ? panel(`${de ? "„" : "“"}${escMultiline(d.message.trim())}${de ? "“" : "”"}`) : "",
-    subheading(t.share),
-    paragraph(esc(t.shareBody)),
-    button(t.open, d.giftUrl),
     subheading(t.redeem),
     paragraph(esc(t.redeemBody)),
     paragraph(esc(t.questions), true),
@@ -334,16 +365,20 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
   const text = [
     plain(t.hello),
     "",
-    t.intro,
+    plain(t.intro),
     "",
+    t.giftKicker.toUpperCase(),
+    d.delivery ? plain(t.deliveredTitle) : t.giftTitle,
+    d.delivery ? plain(deliveryNote) : t.giftBody,
+    ...(personal ? [plain(personal)] : []),
+    ...(message ? [`${q[0]}${message}${q[1]}`] : []),
+    d.delivery ? t.deliveredAlt : "",
+    d.giftUrl,
+    ...(d.delivery ? [] : ["", t.tip]),
+    "",
+    t.keepTitle.toUpperCase(),
     `${t.codeLabel}: ${d.code}`,
     `${amount} · ${t.valid}`,
-    ...(personal ? [plain(personal)] : []),
-    ...(deliveryNote ? ["", plain(deliveryNote)] : []),
-    ...(d.message.trim() ? ["", `${de ? "„" : "“"}${d.message.trim()}${de ? "“" : "”"}`] : []),
-    "",
-    `${t.share}: ${d.giftUrl}`,
-    t.shareBody,
     "",
     `${t.redeem}: ${t.redeemBody}`,
     "",

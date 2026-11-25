@@ -91,7 +91,7 @@ export const TR: Record<Lang, HomeTranslation> = {
     heroKicker: "Moderne Kunst für Tierliebhaber",
     heroTitleA: "Machen Sie Ihren besten Freund zum",
     heroTitleB: "Kunstwerk",
-    heroBody: "Schicken Sie uns ein Foto – wir malen es in Handarbeit Schicht für Schicht auf klares Acrylglas und verschicken es weltweit.",
+    heroBody: "Schicken Sie uns ein Foto – wir malen es in Handarbeit Schicht für Schicht auf klares Acryl und verschicken es weltweit.",
     heroSticker: "6 Schichten · handgemalt",
     heroPriceLine: "ab 179 € · ca. 3 Wochen Handmalerei",
     baKicker: "Echte Porträts",

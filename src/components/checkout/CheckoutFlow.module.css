@@ -696,3 +696,17 @@
     font-size: 22px;
   }
 }
+
+/* Three short promises right above the pay button, so the refund policy,
+   free shipping and Klarna are visible at the moment people decide. */
+.payAssurances {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--plum-badge, #2436a3);
+}

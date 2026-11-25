@@ -1,0 +1,30 @@
+.box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fff1f5;
+  border: 1.5px solid var(--berry, #b23b2c);
+  color: var(--berry, #b23b2c);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  /* The site balances lines by default, which split this short note
+     into two lines even on wide screens. */
+  text-wrap: pretty;
+}
+
+.voucher strong {
+  white-space: nowrap;
+}
+
+.voucher,
+.voucher:visited {
+  color: var(--berry, #b23b2c);
+}

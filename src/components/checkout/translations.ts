@@ -41,6 +41,7 @@ export interface Translation {
   continuePayment: string;
   paymentTitle: string;
   stripeNote: string;
+  payAssurances: string[];
   payWithStripe: string;
   redirectingToPay: string;
   verifyingPayment: string;
@@ -112,6 +113,7 @@ export const TR: Record<Lang, Translation> = {
     continuePayment: "Continue to Payment",
     paymentTitle: "Payment",
     stripeNote: "You'll be redirected to Stripe to complete payment securely.",
+    payAssurances: ["Full refund until painting begins", "Free shipping", "Pay in instalments with Klarna"],
     payWithStripe: "Continue to Checkout",
     redirectingToPay: "Opening secure payment…",
     verifyingPayment: "Verifying your payment…",
@@ -190,6 +192,7 @@ export const TR: Record<Lang, Translation> = {
     continuePayment: "Weiter zur Zahlung",
     paymentTitle: "Zahlung",
     stripeNote: "Sie werden zu Stripe weitergeleitet, um sicher zu bezahlen.",
+    payAssurances: ["Volle Rückerstattung bis Malbeginn", "Kostenloser Versand", "Ratenzahlung mit Klarna"],
     payWithStripe: "Weiter zur Kasse",
     redirectingToPay: "Sichere Zahlung wird geöffnet…",
     verifyingPayment: "Zahlung wird überprüft …",

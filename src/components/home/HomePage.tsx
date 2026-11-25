@@ -14,6 +14,7 @@ import ExternalGate from "../site/ExternalGate";
 import LazyVideo from "./LazyVideo";
 import BeforeAfter from "./BeforeAfter";
 import { useLang } from "../site/useLang";
+import ChristmasCountdown from "../site/ChristmasCountdown";
 import { TR } from "./translations";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
@@ -170,6 +171,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             {t.heroTitleA} <span style={{ color: "var(--berry)" }}>{t.heroTitleB}</span>
           </h1>
           <p className={styles.heroPriceLine}>{t.heroPriceLine}</p>
+          <ChristmasCountdown lang={lang} />
           <p className={styles.heroBody}>{t.heroBody}</p>
           <div className={styles.heroActions}>
             <Link
@@ -194,7 +196,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
             webkit-playsinline="true"
             preload="auto"
             disableRemotePlayback
-            aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, auf Acrylglas zum Leben erweckt"}
+            aria-label={isEn ? "A pet portrait brought to life on acrylic" : "Ein Tierporträt, auf Acryl zum Leben erweckt"}
           />
           <div className={styles.heroStickerFloat}>{t.heroSticker}</div>
         </div>

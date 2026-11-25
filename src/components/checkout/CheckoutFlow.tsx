@@ -14,6 +14,7 @@ import { trackPixelEvent } from "@/lib/metaPixel";
 import { promoDiscountCents } from "@/lib/promoMath";
 import { readPreferredLang } from "../site/useLang";
 import FitHeadings from "../site/FitHeadings";
+import ChristmasCountdown from "../site/ChristmasCountdown";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
@@ -404,6 +405,7 @@ export default function CheckoutFlow() {
       </div>
 
       <div className={styles.main}>
+        {step !== "done" && <ChristmasCountdown lang={lang} />}
         {step === "style" && (
           <>
             {promoFromLink && promoConfig?.freeFrame && (
@@ -660,6 +662,11 @@ export default function CheckoutFlow() {
                 onChange={(e) => updateShip("email", e.target.value.trim())}
               />
             </div>
+            <ul className={styles.payAssurances}>
+              {t.payAssurances.map((a) => (
+                <li key={a}>✓ {a}</li>
+              ))}
+            </ul>
             <div className={styles.actions}>
               <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("style")}>
                 {t.back}
@@ -693,6 +700,11 @@ export default function CheckoutFlow() {
               )}
 
               <p className={styles.paymentNote}>{t.stripeNote}</p>
+              <ul className={styles.payAssurances}>
+                {t.payAssurances.map((a) => (
+                  <li key={a}>✓ {a}</li>
+                ))}
+              </ul>
               <div className={styles.actions}>
                 <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("upload")}>
                   {t.back}

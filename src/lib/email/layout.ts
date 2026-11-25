@@ -60,7 +60,7 @@ export function formatYmd(ymd: string, lang: Lang): string {
 }
 
 export function heading(text: string): string {
-  return `<h1 style="margin:0 0 12px;font-family:${SERIF};font-size:28px;line-height:1.2;color:${COLORS.ink};font-weight:700;">${text}</h1>`;
+  return `<h1 class="fb-h1" style="margin:0 0 12px;font-family:${SERIF};font-size:28px;line-height:1.2;color:${COLORS.ink};font-weight:700;">${text}</h1>`;
 }
 
 export function subheading(text: string): string {
@@ -68,7 +68,7 @@ export function subheading(text: string): string {
 }
 
 export function paragraph(html: string, muted = false): string {
-  return `<p style="margin:0 0 14px;font-family:${SANS};font-size:15px;line-height:1.6;color:${muted ? COLORS.muted : COLORS.ink};">${html}</p>`;
+  return `<p style="margin:0 0 14px;font-family:${SANS};font-size:15px;line-height:1.6;text-wrap:balance;color:${muted ? COLORS.muted : COLORS.ink};">${html}</p>`;
 }
 
 export function button(label: string, href: string): string {
@@ -87,7 +87,7 @@ export function rows(items: { label: string; value: string; bold?: boolean; mute
 }
 
 export function panel(html: string): string {
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 14px;"><tr><td style="background:${COLORS.panel};border:1px solid ${COLORS.line};border-radius:12px;padding:14px 16px;font-family:${SANS};font-size:14px;line-height:1.6;color:${COLORS.ink};">${html}</td></tr></table>`;
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:6px 0 14px;"><tr><td style="background:${COLORS.panel};border:1px solid ${COLORS.line};border-radius:12px;padding:14px 16px;font-family:${SANS};font-size:14px;line-height:1.6;text-wrap:balance;color:${COLORS.ink};">${html}</td></tr></table>`;
 }
 
 // Numbered "what happens next" steps.
@@ -110,17 +110,27 @@ export function shell(opts: { lang: Lang; preheader: string; title: string; body
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="x-apple-disable-message-reformatting">
 <title>${esc(title)}</title>
+<style>
+@media only screen and (max-width:480px) {
+  .fb-outer { padding: 10px 6px !important; }
+  .fb-inner { padding: 20px 16px 4px !important; }
+  .fb-foot { padding: 8px 16px 20px !important; }
+  .fb-h1 { font-size: 24px !important; }
+  .fb-gift { padding: 20px 12px !important; }
+  .fb-gift-title { font-size: 19px !important; }
+}
+</style>
 </head>
 <body style="margin:0;padding:0;background:${COLORS.page};">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:${COLORS.page};">${esc(preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${COLORS.page};">
-<tr><td align="center" style="padding:24px 12px;">
+<tr><td align="center" class="fb-outer" style="padding:24px 12px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;background:${COLORS.card};border:1.5px solid ${COLORS.ink};border-radius:18px;overflow:hidden;">
 <tr><td align="center" style="background:${COLORS.sun};border-bottom:1.5px solid ${COLORS.ink};padding:20px 24px;font-family:${SERIF};font-size:30px;font-weight:700;line-height:1;"><span style="color:${COLORS.fuzzy};">Fuzzy</span> <span style="color:${COLORS.berryRed};">Berry</span></td></tr>
-<tr><td style="padding:28px 28px 8px;">
+<tr><td class="fb-inner" style="padding:28px 28px 8px;">
 ${body}
 </td></tr>
-<tr><td style="padding:8px 28px 26px;border-top:1px solid ${COLORS.line};font-family:${SANS};font-size:12px;line-height:1.6;color:${COLORS.muted};">
+<tr><td class="fb-foot" style="padding:8px 28px 26px;border-top:1px solid ${COLORS.line};font-family:${SANS};font-size:12px;line-height:1.6;color:${COLORS.muted};">
 ${footer}
 </td></tr>
 </table>

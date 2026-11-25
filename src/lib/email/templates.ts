@@ -119,17 +119,17 @@ export function customerOrderEmail(d: OrderEmailData): RenderedEmail {
         preheader: "Vielen Dank! Hier sind Ihre Bestellung und die nächsten Schritte.",
         hello: first ? `Vielen Dank, ${esc(first)}!` : "Vielen Dank!",
         intro:
-          "Ihre Bestellung ist bei uns eingegangen und bezahlt. Wir freuen uns sehr darauf, Ihr Tier als handgemaltes 3D-Porträt zu verewigen.",
+          "Ihre Bestellung ist bezahlt. Wir freuen uns sehr darauf, Ihr Tier als handgemaltes 3D-Porträt zu verewigen.",
         order: "Ihre Bestellung",
         next: "So geht es weiter",
-        step1: ["Foto abstimmen", "Wir melden uns persönlich bei Ihnen, um das Foto zu besprechen, bevor unser Künstler beginnt."],
-        step2: ["Handmalerei", "Ihr Porträt wird Schicht für Schicht von Hand gemalt. Das dauert 2–3 Wochen."],
-        step3: ["Versand", "Danach verpacken wir es sorgfältig und senden es an Ihre Lieferadresse."],
+        step1: ["Foto abstimmen", "Wir melden uns persönlich bei Ihnen, bevor unser Künstler beginnt."],
+        step2: ["Handmalerei", "Schicht für Schicht von Hand gemalt, etwa 2–3 Wochen."],
+        step3: ["Versand", "Sorgfältig verpackt an Ihre Lieferadresse."],
         deliverTo: "Lieferadresse",
         notes: "Ihre Hinweise an den Künstler",
         noPhoto:
           "Wir haben bisher kein Foto von Ihnen erhalten. Bitte antworten Sie einfach auf diese E-Mail und senden Sie uns ein oder mehrere Fotos.",
-        questions: "Haben Sie Fragen oder möchten Sie etwas ändern? Antworten Sie einfach auf diese E-Mail.",
+        questions: "Fragen oder Änderungswünsche? Einfach antworten.",
         receipt: "Die Zahlungsquittung von Stripe erhalten Sie separat.",
         ref: "Bestellnummer",
       }
@@ -138,17 +138,17 @@ export function customerOrderEmail(d: OrderEmailData): RenderedEmail {
         preheader: "Thank you! Here is your order and what happens next.",
         hello: first ? `Thank you, ${esc(first)}!` : "Thank you!",
         intro:
-          "Your order has been received and paid. We can't wait to turn your pet into a hand-painted 3D portrait.",
+          "Your order is paid. We can't wait to turn your pet into a hand-painted 3D portrait.",
         order: "Your order",
         next: "What happens next",
-        step1: ["Photo check", "We'll reach out to you personally to confirm your photo before our artist begins."],
-        step2: ["Hand-painting", "Your portrait is painted by hand, layer by layer. This takes 2–3 weeks."],
-        step3: ["Shipping", "Then we pack it carefully and send it to your delivery address."],
+        step1: ["Photo check", "We'll reach out personally before our artist begins."],
+        step2: ["Hand-painting", "Painted by hand, layer by layer, about 2–3 weeks."],
+        step3: ["Shipping", "Carefully packed and sent to your delivery address."],
         deliverTo: "Delivery address",
         notes: "Your notes for the artist",
         noPhoto:
           "We haven't received a photo from you yet. Please just reply to this email and send us one or more photos.",
-        questions: "Questions, or something to change? Just reply to this email.",
+        questions: "Questions or changes? Just reply.",
         receipt: "Your payment receipt from Stripe arrives separately.",
         ref: "Order number",
       };
@@ -269,13 +269,12 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
         subject: "Ihr Fuzzy Berry Geschenkgutschein",
         preheader: "Der schönste Teil kommt jetzt: das Verschenken.",
         hello: d.buyerName ? `Vielen Dank, ${esc(firstName(d.buyerName))}!` : "Vielen Dank!",
-        intro: `Ihr Geschenkgutschein über ${esc(amount)} ist bereit. Jetzt kommt der schönste Teil: das Verschenken.`,
+        intro: `Ihr Gutschein über ${esc(amount)} ist bereit.`,
         giftKicker: "Zum Verschenken",
         giftTitle: "Die Überraschung wartet in einer Geschenkbox",
-        giftBody:
-          "Schicken Sie diesen Link, zum Beispiel per WhatsApp oder Nachricht. Wer ihn öffnet, erlebt, wie sich die Geschenkbox öffnet, und sieht erst dann den Code.",
+        giftBody: "Schicken Sie diesen Link, zum Beispiel per WhatsApp. Beim Öffnen erlebt die Person die Geschenkbox.",
         giftButton: "Geschenk ansehen",
-        tip: "Tipp: Teilen Sie den Link, nicht diese E-Mail. Hier steht der Code schon drin, und die Überraschung wäre dahin.",
+        tip: "Tipp: Schicken Sie den Link, nicht diese Nachricht. In ihr steht schon der Code.",
         cardLabel: "So steht es auf der Karte",
         deliveredTitle: "Wir kümmern uns um die Überraschung",
         deliveredButton: "Geschenk vorab ansehen",
@@ -286,23 +285,22 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
         forLine: d.recipientName ? `Für ${esc(d.recipientName)}` : "",
         fromLine: d.senderName ? `Von ${esc(d.senderName)}` : "",
         redeem: "So wird er eingelöst",
-        redeemBody: "Im Checkout im Feld „Rabattcode“ eingeben – in einer Bestellung, für jedes Porträt und jede Größe.",
-        questions: "Fragen? Antworten Sie einfach auf diese E-Mail.",
+        redeemBody: "Im Checkout im Feld „Rabattcode“ eingeben. Gilt für eine Bestellung.",
+        questions: "Fragen? Einfach antworten.",
         deliveryNow: (to: string) => `Wir haben das Geschenk soeben an ${esc(to)} geschickt. Sie müssen nichts weiter tun.`,
         deliveryLater: (to: string, day: string) =>
-          `Wir schicken das Geschenk am ${esc(day)} an ${esc(to)}. Sie müssen nichts weiter tun. Falls die Adresse nicht stimmt, antworten Sie einfach auf diese E-Mail.`,
+          `Wir schicken das Geschenk am ${esc(day)} an ${esc(to)}. Sie müssen nichts weiter tun. Stimmt die Adresse nicht, antworten Sie einfach.`,
       }
     : {
         subject: "Your Fuzzy Berry gift voucher",
         preheader: "The best part comes now: giving it.",
         hello: d.buyerName ? `Thank you, ${esc(firstName(d.buyerName))}!` : "Thank you!",
-        intro: `Your ${esc(amount)} gift voucher is ready. Now comes the best part: giving it.`,
+        intro: `Your ${esc(amount)} voucher is ready.`,
         giftKicker: "To give as a gift",
         giftTitle: "The surprise is waiting in a gift box",
-        giftBody:
-          "Send this link, for example by WhatsApp or text. Whoever opens it watches the gift box open, and only then sees the code.",
+        giftBody: "Send this link, for example by WhatsApp. When they open it, they watch the gift box open.",
         giftButton: "See the gift",
-        tip: "Tip: share the link, not this email. The code is already in here, and the surprise would be gone.",
+        tip: "Tip: send the link, not this email. The code is already in here.",
         cardLabel: "What the card says",
         deliveredTitle: "We'll take care of the surprise",
         deliveredButton: "Preview the gift",
@@ -313,11 +311,11 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
         forLine: d.recipientName ? `For ${esc(d.recipientName)}` : "",
         fromLine: d.senderName ? `From ${esc(d.senderName)}` : "",
         redeem: "How to redeem it",
-        redeemBody: "Enter it at checkout in the “Promo code” field, in one order, for any portrait and any size.",
-        questions: "Questions? Just reply to this email.",
+        redeemBody: "Enter it at checkout in the “Promo code” field. Valid for one order.",
+        questions: "Questions? Just reply.",
         deliveryNow: (to: string) => `We've just sent the gift to ${esc(to)}. There's nothing else you need to do.`,
         deliveryLater: (to: string, day: string) =>
-          `We'll send the gift to ${esc(to)} on ${esc(day)}. There's nothing else you need to do. If the address is wrong, just reply to this email.`,
+          `We'll send the gift to ${esc(to)} on ${esc(day)}. There's nothing else you need to do. If the address is wrong, just reply.`,
       };
 
   const deliveryNote = d.delivery
@@ -342,7 +340,7 @@ export function voucherEmail(d: VoucherEmailData): RenderedEmail {
   const linkLine = `<div style="margin:10px 0 0;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px;line-height:1.5;word-break:break-all;"><a href="${esc(d.giftUrl)}" style="color:#3854b8;">${esc(d.giftUrl)}</a></div>`;
 
   // The headline block: the link to hand over, big and impossible to miss.
-  const giftBlock = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:18px 0 8px;"><tr><td align="center" style="background:#ffe9a3;border:1.5px solid #332f2a;border-radius:16px;padding:24px 20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-family:${SANS};color:#6f675e;">${esc(t.giftKicker)}</div><div style="font-size:46px;line-height:1.1;margin:6px 0 4px;">🎁</div><div style="font-family:Georgia,serif;font-size:22px;line-height:1.3;font-weight:700;color:#332f2a;margin:0 0 8px;">${esc(d.delivery ? t.deliveredTitle : t.giftTitle)}</div><div style="font-family:${SANS};font-size:15px;line-height:1.6;color:#332f2a;">${d.delivery ? deliveryNote : esc(t.giftBody)}</div>${cardPreview}${centeredButton(d.delivery ? t.deliveredButton : t.giftButton)}${d.delivery ? `<div style="font-family:${SANS};font-size:13px;line-height:1.5;color:#6f675e;margin-top:10px;">${esc(t.deliveredAlt)}</div>` : ""}${linkLine}</td></tr></table>`;
+  const giftBlock = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:18px 0 8px;"><tr><td align="center" class="fb-gift" style="background:#ffe9a3;border:1.5px solid #332f2a;border-radius:16px;padding:24px 20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-family:${SANS};color:#6f675e;">${esc(t.giftKicker)}</div><div style="font-size:46px;line-height:1.1;margin:6px 0 4px;">🎁</div><div class="fb-gift-title" style="font-family:Georgia,serif;font-size:22px;line-height:1.3;font-weight:700;color:#332f2a;margin:0 0 8px;">${esc(d.delivery ? t.deliveredTitle : t.giftTitle)}</div><div style="font-family:${SANS};font-size:15px;line-height:1.6;color:#332f2a;">${d.delivery ? deliveryNote : esc(t.giftBody)}</div>${cardPreview}${centeredButton(d.delivery ? t.deliveredButton : t.giftButton)}${d.delivery ? `<div style="font-family:${SANS};font-size:13px;line-height:1.5;color:#6f675e;margin-top:10px;">${esc(t.deliveredAlt)}</div>` : ""}${linkLine}</td></tr></table>`;
 
   const tipLine = d.delivery ? "" : panel(esc(t.tip));
 
@@ -405,22 +403,22 @@ export function giftRecipientEmail(d: GiftRecipientEmailData): RenderedEmail {
         preheader: "Öffnen Sie die Box und sehen Sie, was darin steckt.",
         hello: name ? `Hallo ${esc(firstName(name))},` : "Hallo,",
         headline: sender ? `${esc(sender)} hat Ihnen etwas geschenkt` : "Jemand hat Ihnen etwas geschenkt",
-        body: "Ein Gutschein für ein handgemaltes 3D-Porträt Ihres Tieres, gemalt von Hand, Schicht für Schicht.",
+        body: "Ein Gutschein für ein handgemaltes 3D-Porträt Ihres Tieres.",
         open: "Geschenk öffnen",
-        hint: "Den Code sehen Sie erst, wenn Sie die Box öffnen.",
+        hint: "Den Code sehen Sie, wenn Sie die Box öffnen.",
         why: `Sie erhalten diese einmalige E-Mail, weil ${sender ? esc(sender) : "jemand"} Ihnen einen Geschenkgutschein von Fuzzy Berry schicken wollte. Ihre Adresse wird nur dafür verwendet.`,
-        questions: "Fragen? Antworten Sie einfach auf diese E-Mail.",
+        questions: "Fragen? Einfach antworten.",
       }
     : {
         subject: sender ? `A gift for you, from ${sender}` : "A gift for you",
         preheader: "Open the box and see what's inside.",
         hello: name ? `Hi ${esc(firstName(name))},` : "Hi,",
         headline: sender ? `${esc(sender)} has given you something` : "Someone has given you something",
-        body: "A voucher for a hand-painted 3D portrait of your pet, painted by hand, layer by layer.",
+        body: "A voucher for a hand-painted 3D portrait of your pet.",
         open: "Open the gift",
         hint: "You'll see the code when you open the box.",
         why: `You're getting this one-time email because ${sender ? esc(sender) : "someone"} wanted to send you a Fuzzy Berry gift voucher. Your address is only used for this.`,
-        questions: "Questions? Just reply to this email.",
+        questions: "Questions? Just reply.",
       };
 
   const quote = de ? ["„", "“"] : ["“", "”"];

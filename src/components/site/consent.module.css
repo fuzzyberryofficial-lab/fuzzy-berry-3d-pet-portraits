@@ -1,0 +1,148 @@
+.bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1000;
+  max-width: 640px;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #332f2a;
+  border: 1.5px solid #332f2a;
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 28px rgba(51, 47, 42, 0.22);
+  font-family: var(--font-poppins, system-ui), sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.title {
+  font-family: var(--font-baloo, Georgia), serif;
+  font-weight: 700;
+  font-size: 17px;
+  margin: 0 0 4px;
+}
+
+.text {
+  margin: 0 0 12px;
+  text-wrap: pretty;
+}
+
+.text a {
+  color: #3854b8;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn {
+  flex: 1 1 140px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #332f2a;
+  background: #ffffff;
+  color: #332f2a;
+  font-family: var(--font-baloo, Georgia), serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #fff8ec;
+}
+
+.btn:focus-visible,
+.link:focus-visible,
+.toggle input:focus-visible {
+  outline: 3px solid #4c6fe0;
+  outline-offset: 2px;
+}
+
+/* Declining is as easy as accepting: both buttons look the same size and weight. */
+.btnAccept {
+  background: #ffafc7;
+}
+
+.btnAccept:hover {
+  background: #ff9cbb;
+}
+
+.link {
+  background: none;
+  border: 0;
+  padding: 8px 4px;
+  color: #3854b8;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.panel {
+  margin: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toggle {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid #e9dfd2;
+  border-radius: 12px;
+  background: #fffcf7;
+}
+
+.toggle input {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: #4c6fe0;
+}
+
+.toggleName {
+  font-weight: 600;
+}
+
+.toggleHint {
+  display: block;
+  color: #6f675e;
+  font-size: 13px;
+}
+
+.gate {
+  margin: 0 0 18px;
+  border: 1.5px dashed #332f2a;
+  border-radius: 16px;
+  background: #fffcf7;
+  padding: 20px 18px;
+  text-align: center;
+  font-family: var(--font-poppins, system-ui), sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #332f2a;
+}
+
+.gate p {
+  margin: 0 0 12px;
+  text-wrap: pretty;
+}
+
+.gateActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.gate .btn {
+  flex: 0 1 auto;
+}

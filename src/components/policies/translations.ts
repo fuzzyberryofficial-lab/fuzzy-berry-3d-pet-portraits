@@ -8,6 +8,7 @@ export interface PoliciesTranslation {
   privacy2: string;
   privacy3: string;
   privacy4: string;
+  privacy5: string;
   contactLine: string;
   returnsTitle: string;
   returns1: string;
@@ -27,6 +28,8 @@ export const TR: Record<Lang, PoliciesTranslation> = {
       "Photos are used solely for your commissioned portrait and kept only as long as needed. Payment details are handled by our provider and never stored on our servers.",
     privacy4:
       "If you buy a gift voucher and give us the recipient's email address, we use that address only to email the voucher to them at the time you chose. After it is sent, we delete the address from our database. Legally required payment records held by our payment provider are not affected. Please only give us addresses of people who can expect the gift.",
+    privacy5:
+      "With your consent (cookie banner) we load Instagram posts (Meta Platforms Ireland Ltd.) and a Google map (Google Ireland Ltd.); your data is then sent to them. With “Marketing” we use the Meta Pixel to measure visits and purchases and improve our ads; cookies are set and data such as your IP address, pages viewed and purchases is sent to Meta. You can change your choice at any time via “Cookie settings” at the bottom of every page. For reach measurement we use Vercel Web Analytics without cookies.",
     contactLine: "Questions? Reach us at",
     returnsTitle: "Return Policy",
     returns1:
@@ -44,6 +47,8 @@ export const TR: Record<Lang, PoliciesTranslation> = {
       "Fotos verwenden wir ausschließlich für Ihr Porträt und bewahren sie nur so lange auf, wie es nötig ist. Zahlungsdaten verarbeitet unser Zahlungsdienstleister; sie werden nie auf unseren Servern gespeichert.",
     privacy4:
       "Wenn Sie einen Geschenkgutschein kaufen und uns die E-Mail-Adresse der beschenkten Person nennen, verwenden wir sie ausschließlich, um ihr den Gutschein zum gewählten Zeitpunkt per E-Mail zu schicken. Nach dem Versand löschen wir die Adresse aus unserer Datenbank. Gesetzlich vorgeschriebene Zahlungsunterlagen bei unserem Zahlungsdienstleister bleiben davon unberührt. Bitte nennen Sie uns nur Adressen von Personen, die das Geschenk erwarten dürfen.",
+    privacy5:
+      "Mit Ihrer Einwilligung (Cookie-Banner) laden wir Instagram-Beiträge (Meta Platforms Ireland Ltd.) und eine Google-Karte (Google Ireland Ltd.); dabei werden Ihre Daten an diese Anbieter übermittelt. Mit „Marketing“ nutzen wir das Meta-Pixel, um Besuche und Käufe zu messen und unsere Werbung zu verbessern; dabei werden Cookies gesetzt und Daten wie IP-Adresse, aufgerufene Seiten und Käufe an Meta übertragen. Sie können Ihre Auswahl jederzeit über „Cookie-Einstellungen“ am Seitenende ändern. Zur Reichweitenmessung nutzen wir Vercel Web Analytics ohne Cookies.",
     contactLine: "Fragen? Schreiben Sie uns an",
     returnsTitle: "Rückgaberecht",
     returns1: "Jedes Porträt wird individuell von Hand gemalt. Sobald wir mit dem Malen beginnen, ist keine Rückerstattung mehr möglich.",

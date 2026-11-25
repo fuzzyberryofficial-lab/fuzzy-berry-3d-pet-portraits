@@ -109,3 +109,12 @@
   width: 100%;
   height: 100%;
 }
+
+/* The German label is long: let it wrap on phones instead of pushing the whole card wider than the screen. */
+@media (max-width: 640px) {
+  .directionsBtn {
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+  }
+}

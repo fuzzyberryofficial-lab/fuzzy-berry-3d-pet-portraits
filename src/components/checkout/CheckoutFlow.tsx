@@ -14,6 +14,7 @@ import { trackPixelEvent } from "@/lib/metaPixel";
 import { promoDiscountCents } from "@/lib/promoMath";
 import { readPreferredLang } from "../site/useLang";
 import FitHeadings from "../site/FitHeadings";
+import ChristmasCountdown from "../site/ChristmasCountdown";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins" });
@@ -404,6 +405,7 @@ export default function CheckoutFlow() {
       </div>
 
       <div className={styles.main}>
+        {step !== "done" && <ChristmasCountdown lang={lang} />}
         {step === "style" && (
           <>
             {promoFromLink && promoConfig?.freeFrame && (
@@ -673,6 +675,11 @@ export default function CheckoutFlow() {
                 {isRedirecting ? t.redirectingToPay : `${t.payWithStripe} — €${formatEur(total)}`}
               </button>
             </div>
+            <ul className={styles.payAssurances}>
+              {t.payAssurances.map((a) => (
+                <li key={a}>✓ {a}</li>
+              ))}
+            </ul>
           </>
         )}
 
@@ -706,6 +713,11 @@ export default function CheckoutFlow() {
                   {isRedirecting ? t.redirectingToPay : `${t.payWithStripe} — €${formatEur(total)}`}
                 </button>
               </div>
+              <ul className={styles.payAssurances}>
+                {t.payAssurances.map((a) => (
+                  <li key={a}>✓ {a}</li>
+                ))}
+              </ul>
             </div>
             <div className={styles.summarySidebar}>
               <div className={styles.summaryKicker}>{t.orderSummary}</div>

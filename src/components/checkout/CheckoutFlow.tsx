@@ -662,6 +662,11 @@ export default function CheckoutFlow() {
                 onChange={(e) => updateShip("email", e.target.value.trim())}
               />
             </div>
+            <ul className={styles.payAssurances}>
+              {t.payAssurances.map((a) => (
+                <li key={a}>✓ {a}</li>
+              ))}
+            </ul>
             <div className={styles.actions}>
               <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("style")}>
                 {t.back}
@@ -675,11 +680,6 @@ export default function CheckoutFlow() {
                 {isRedirecting ? t.redirectingToPay : `${t.payWithStripe} — €${formatEur(total)}`}
               </button>
             </div>
-            <ul className={styles.payAssurances}>
-              {t.payAssurances.map((a) => (
-                <li key={a}>✓ {a}</li>
-              ))}
-            </ul>
           </>
         )}
 
@@ -700,6 +700,11 @@ export default function CheckoutFlow() {
               )}
 
               <p className={styles.paymentNote}>{t.stripeNote}</p>
+              <ul className={styles.payAssurances}>
+                {t.payAssurances.map((a) => (
+                  <li key={a}>✓ {a}</li>
+                ))}
+              </ul>
               <div className={styles.actions}>
                 <button type="button" className={`${styles.fbBtn} ${styles.fbBtnOutline}`} onClick={() => setStep("upload")}>
                   {t.back}
@@ -713,11 +718,6 @@ export default function CheckoutFlow() {
                   {isRedirecting ? t.redirectingToPay : `${t.payWithStripe} — €${formatEur(total)}`}
                 </button>
               </div>
-              <ul className={styles.payAssurances}>
-                {t.payAssurances.map((a) => (
-                  <li key={a}>✓ {a}</li>
-                ))}
-              </ul>
             </div>
             <div className={styles.summarySidebar}>
               <div className={styles.summaryKicker}>{t.orderSummary}</div>

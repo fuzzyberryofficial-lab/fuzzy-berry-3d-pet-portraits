@@ -12,7 +12,12 @@
   font-weight: 600;
   line-height: 1.4;
   text-decoration: none;
-  max-width: 520px;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  /* The site balances lines by default, which split this short note
+     into two lines even on wide screens. */
+  text-wrap: pretty;
 }
 
 .voucher strong {

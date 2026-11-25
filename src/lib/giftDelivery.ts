@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import type { Voucher } from "@/lib/giftVoucher";
 import { sendEmail, replyToAddress, isEmailConfigured, SITE_URL } from "@/lib/email/send";
@@ -66,4 +67,19 @@ export async function saveScheduledGift(session: Stripe.Checkout.Session, sendOn
       { onConflict: "stripe_session_id", ignoreDuplicates: true },
     );
   if (error) throw new Error(`Couldn't save scheduled gift: ${error.message}`);
+}
+
+// Once the gift email is out, the recipient's address is no longer needed: remove it
+// from the Stripe payment records (a blank value unsets a metadata key) and keep only
+// the "already sent" mark, so a retried webhook or job can't send it a second time.
+export async function scrubRecipientData(session: Stripe.Checkout.Session): Promise<void> {
+  const blank = { recipient_email: "", recipient_name: "" };
+  try {
+    const stripe = getStripe();
+    await stripe.checkout.sessions.update(session.id, { metadata: blank });
+    const paymentIntent = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id;
+    if (paymentIntent) await stripe.paymentIntents.update(paymentIntent, { metadata: blank });
+  } catch (err) {
+    console.error("Couldn't remove the recipient's address from Stripe:", err instanceof Error ? err.message : err);
+  }
 }

@@ -7,6 +7,7 @@ export interface PoliciesTranslation {
   privacy1: string;
   privacy2: string;
   privacy3: string;
+  privacy4: string;
   contactLine: string;
   returnsTitle: string;
   returns1: string;
@@ -24,6 +25,8 @@ export const TR: Record<Lang, PoliciesTranslation> = {
     privacy2: "We use it only to create and ship your artwork and to reach you about your order. We never sell your data.",
     privacy3:
       "Photos are used solely for your commissioned portrait and kept only as long as needed. Payment details are handled by our provider and never stored on our servers.",
+    privacy4:
+      "If you buy a gift voucher and give us the recipient's email address, we use that address only to email the voucher to them at the time you chose. After it is sent, we delete the address from our database. Legally required payment records held by our payment provider are not affected. Please only give us addresses of people who can expect the gift.",
     contactLine: "Questions? Reach us at",
     returnsTitle: "Return Policy",
     returns1:
@@ -39,6 +42,8 @@ export const TR: Record<Lang, PoliciesTranslation> = {
     privacy2: "Wir verwenden sie ausschließlich, um Ihr Kunstwerk anzufertigen und zu versenden. Ihre Daten verkaufen wir nie.",
     privacy3:
       "Fotos verwenden wir ausschließlich für Ihr Porträt und bewahren sie nur so lange auf, wie es nötig ist. Zahlungsdaten verarbeitet unser Zahlungsdienstleister; sie werden nie auf unseren Servern gespeichert.",
+    privacy4:
+      "Wenn Sie einen Geschenkgutschein kaufen und uns die E-Mail-Adresse der beschenkten Person nennen, verwenden wir sie ausschließlich, um ihr den Gutschein zum gewählten Zeitpunkt per E-Mail zu schicken. Nach dem Versand löschen wir die Adresse aus unserer Datenbank. Gesetzlich vorgeschriebene Zahlungsunterlagen bei unserem Zahlungsdienstleister bleiben davon unberührt. Bitte nennen Sie uns nur Adressen von Personen, die das Geschenk erwarten dürfen.",
     contactLine: "Fragen? Schreiben Sie uns an",
     returnsTitle: "Rückgaberecht",
     returns1: "Jedes Porträt wird individuell von Hand gemalt. Sobald wir mit dem Malen beginnen, ist keine Rückerstattung mehr möglich.",

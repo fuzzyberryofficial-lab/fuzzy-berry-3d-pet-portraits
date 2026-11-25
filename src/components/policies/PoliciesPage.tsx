@@ -36,6 +36,7 @@ export default function PoliciesPage() {
           <p className={styles.paragraph}>{t.privacy1}</p>
           <p className={styles.paragraph}>{t.privacy2}</p>
           <p className={styles.paragraph}>{t.privacy3}</p>
+          <p className={styles.paragraph}>{t.privacy4}</p>
           <p className={styles.paragraph}>
             {t.contactLine}{" "}
             <a href="mailto:fuzzyberry.official@gmail.com" className={styles.link}>

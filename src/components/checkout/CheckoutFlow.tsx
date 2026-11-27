@@ -413,7 +413,7 @@ export default function CheckoutFlow() {
                 {t.promoBannerMsg}
               </div>
             )}
-            <h2 className={styles.h2}>{t.chooseCollection}</h2>
+            <h1 className={styles.h2}>{t.chooseCollection}</h1>
             <p className={styles.sub}>{t.chooseCollectionSub}</p>
 
             <div className={styles.collectionGrid}>

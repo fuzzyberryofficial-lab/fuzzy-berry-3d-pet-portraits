@@ -131,7 +131,7 @@ export const FAQ_EN: FaqGroup[] = [
         q: "Do you ship internationally, and how much does it cost?",
         summary: "Yes, we ship worldwide.",
         bullets: [
-          "Cost is shown at checkout, based on destination",
+          "Shipping is free, wherever you are",
           "Packed securely for safe delivery anywhere",
         ],
       },
@@ -262,7 +262,7 @@ export const FAQ_DE: FaqGroup[] = [
         q: "Versenden Sie auch ins Ausland, und was kostet das?",
         summary: "Ja, wir versenden weltweit.",
         bullets: [
-          "Die Versandkosten werden im Checkout je nach Zielland angezeigt",
+          "Der Versand ist kostenlos, egal wohin",
           "Sicher verpackt, damit es überall heil ankommt",
         ],
       },

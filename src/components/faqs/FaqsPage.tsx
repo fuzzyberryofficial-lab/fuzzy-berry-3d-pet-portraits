@@ -26,7 +26,7 @@ export default function FaqsPage() {
         <h1 className={styles.title}>{t.title}</h1>
         {faqGroups.map((group) => (
           <div key={group.title} className={styles.group}>
-            <h4 className={styles.groupTitle}>{group.title}</h4>
+            <h2 className={styles.groupTitle}>{group.title}</h2>
             {group.items.map((qa) => (
               <details key={qa.q} className={styles.item}>
                 <summary>{qa.q}</summary>

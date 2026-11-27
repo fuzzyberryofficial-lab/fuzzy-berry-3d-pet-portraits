@@ -146,3 +146,49 @@
 .gate .btn {
   flex: 0 1 auto;
 }
+
+/* Phones: a slim bar so the headline, price and order button stay visible
+   behind it. Same two equal buttons, just smaller. */
+@media (max-width: 640px) {
+  .bar {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    border-radius: 14px;
+  }
+
+  .title {
+    font-size: 14px;
+    margin: 0 0 2px;
+  }
+
+  .text {
+    margin: 0 0 8px;
+  }
+
+  .actions {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn {
+    flex: 1 1 0;
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .link {
+    flex: 0 0 auto;
+    font-size: 12.5px;
+    padding: 6px 2px;
+  }
+
+  .panel ~ .actions {
+    flex-wrap: wrap;
+  }
+}

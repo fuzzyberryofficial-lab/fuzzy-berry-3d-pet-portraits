@@ -1,0 +1,53 @@
+.box {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border: 1.5px dashed var(--ink, #332f2a);
+  border-radius: 14px;
+  background: #fffcf7;
+  max-width: 460px;
+}
+
+.text {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink, #332f2a);
+  background: #25d366;
+  color: #0b3d1f;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.wa:hover {
+  background: #1fbf5b;
+}
+
+.mail {
+  font-size: 14px;
+  color: #3854b8;
+  text-decoration: underline;
+}
+
+.wa:focus-visible,
+.mail:focus-visible {
+  outline: 3px solid #4c6fe0;
+  outline-offset: 2px;
+}

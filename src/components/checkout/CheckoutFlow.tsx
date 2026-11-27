@@ -13,6 +13,7 @@ import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
 import { promoDiscountCents } from "@/lib/promoMath";
 import { readPreferredLang } from "../site/useLang";
+import AskFirst from "../site/AskFirst";
 import FitHeadings from "../site/FitHeadings";
 import ChristmasCountdown from "../site/ChristmasCountdown";
 
@@ -612,6 +613,7 @@ export default function CheckoutFlow() {
             >
               {t.continueUpload} →
             </button>
+            <AskFirst lang={lang} />
           </>
         )}
 

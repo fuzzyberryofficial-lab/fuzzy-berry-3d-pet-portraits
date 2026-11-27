@@ -15,6 +15,7 @@ import LazyVideo from "./LazyVideo";
 import BeforeAfter from "./BeforeAfter";
 import { useLang } from "../site/useLang";
 import ChristmasCountdown from "../site/ChristmasCountdown";
+import AskFirst from "../site/AskFirst";
 import { TR } from "./translations";
 
 const baloo = Fraunces({ subsets: ["latin"], weight: ["500", "700", "800"], variable: "--font-baloo" });
@@ -181,6 +182,7 @@ export default function HomePage({ instagramPosts }: { instagramPosts: string[] 
               {t.startPortrait} →
             </Link>
           </div>
+          <AskFirst lang={lang} />
         </div>
 
         <div className={styles.heroVideoCol}>

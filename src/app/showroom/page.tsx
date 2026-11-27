@@ -3,6 +3,8 @@ import ShowroomPage from "@/components/showroom/ShowroomPage";
 
 export const metadata: Metadata = {
   title: "Showroom Frankfurt",
+  description:
+    "FuzzyBerry-Porträts live ansehen: unser Showroom-Regal bei 's Fachl in Frankfurt. Adresse und alle Infos. See our portraits in person.",
   alternates: { canonical: "/showroom" },
 };
 

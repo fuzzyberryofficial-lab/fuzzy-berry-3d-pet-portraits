@@ -49,7 +49,7 @@ export default function PoliciesPage() {
 
         <section id="returns" className={styles.section}>
           <p className={styles.legal}>{t.legal}</p>
-          <h1 className={styles.title}>{t.returnsTitle}</h1>
+          <h2 className={styles.title}>{t.returnsTitle}</h2>
           <p className={styles.paragraph}>{t.returns1}</p>
           <p className={styles.paragraph}>{t.returns2}</p>
           <p className={styles.paragraph}>{t.returns3}</p>

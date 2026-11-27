@@ -120,7 +120,7 @@ export default function BeforeAfter({
             fill
             img={pet.before}
             ratio={pet.ratio}
-            alt=""
+            alt={isEn ? `${petName}: original photo` : `${petName}: Originalfoto`}
             className={styles.fillImg}
             sizes="(max-width: 900px) 92vw, 540px"
           />

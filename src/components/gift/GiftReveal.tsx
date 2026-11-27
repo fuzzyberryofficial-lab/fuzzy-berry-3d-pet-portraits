@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import siteStyles from "../site/site.module.css";
 import styles from "./GiftReveal.module.css";
 import type { GiftTranslation } from "./translations";

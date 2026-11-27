@@ -18,12 +18,12 @@ const geistMono = Geist_Mono({
 });
 
 const DESCRIPTION =
-  "Handgemalte 3D-Haustierporträts auf mehreren Acrylschichten, nach Ihrem Foto gemalt. Ab €179, kostenloser Versand. Hand-painted 3D pet portraits.";
+  "Hand-painted 3D pet portraits on layered clear acrylic, painted from your photo. From €179, free shipping worldwide.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "FuzzyBerry – Handgemalte 3D-Haustierporträts | 3D Pet Portraits",
+    default: "FuzzyBerry – Hand-Painted 3D Pet Portraits on Acrylic",
     template: "%s – FuzzyBerry",
   },
   description: DESCRIPTION,
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "FuzzyBerry",
-    locale: "de_DE",
-    alternateLocale: ["en_GB"],
-    title: "FuzzyBerry – Handgemalte 3D-Haustierporträts",
+    locale: "en_GB",
+    alternateLocale: ["de_DE"],
+    title: "FuzzyBerry – Hand-Painted 3D Pet Portraits",
     description: DESCRIPTION,
     // Preview picture when the site is shared (WhatsApp, Facebook, IG DMs).
     images: [{ url: "/images/home-hero.jpg", alt: "Hand-painted 3D pet portrait on layered acrylic by FuzzyBerry" }],

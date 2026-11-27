@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { langAlternates } from "@/lib/langRoutes";
 import CollectionPage from "@/components/collection/CollectionPage";
 
 export const metadata: Metadata = {
   title: "Collection",
   description:
-    "Einzel- und Mehrtierporträts, handgemalt auf Acryl: 20×20 cm ab €179, zwei Tiere ab €279. Alle Größen und Preise. Single & multi pet portraits.",
-  alternates: { canonical: "/collection" },
+    "Single and multi pet portraits hand-painted on layered acrylic: 20×20 cm from €179, two pets from €279. All sizes, prices and frame options.",
+  alternates: langAlternates("/collection", "en"),
 };
 
 export default function Page() {

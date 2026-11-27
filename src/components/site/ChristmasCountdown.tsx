@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import styles from "./ChristmasCountdown.module.css";
 import type { Lang } from "./navTypes";
 

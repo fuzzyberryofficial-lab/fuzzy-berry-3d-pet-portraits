@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import styles from "./site.module.css";
 import LangSwitch from "./LangSwitch";
 import FitHeadings from "./FitHeadings";

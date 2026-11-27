@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import { Fraunces, Poppins } from "next/font/google";
 import siteStyles from "../site/site.module.css";
 import styles from "./ContactPage.module.css";

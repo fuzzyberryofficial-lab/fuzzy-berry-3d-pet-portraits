@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import { usePathname } from "next/navigation";
 import { OPEN_EVENT, saveConsent, useConsent } from "@/lib/consent";
 import { useLang } from "./useLang";

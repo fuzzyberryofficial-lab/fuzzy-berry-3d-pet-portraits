@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { langAlternates } from "@/lib/langRoutes";
 import FaqsPage from "@/components/faqs/FaqsPage";
 
 export const metadata: Metadata = {
   title: "FAQs",
   description:
-    "Häufige Fragen zu FuzzyBerry: Wie entsteht das 3D-Porträt, welches Foto passt, Lieferzeit, Versand, Geschenke und Pflege. Answers about portraits & shipping.",
-  alternates: { canonical: "/faqs" },
+    "Answers about FuzzyBerry portraits: how the 3D layers are painted, which photo works, delivery time, free shipping, gifting and care.",
+  alternates: langAlternates("/faqs", "en"),
 };
 
 export default function Page() {

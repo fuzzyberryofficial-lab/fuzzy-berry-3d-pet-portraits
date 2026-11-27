@@ -1,7 +1,7 @@
 "use client";
 
 import { Fraunces, Poppins } from "next/font/google";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import siteStyles from "../site/site.module.css";
 import styles from "./PoliciesPage.module.css";
 import LangSwitch from "../site/LangSwitch";

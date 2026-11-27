@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Fraunces, Poppins } from "next/font/google";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import siteStyles from "../site/site.module.css";
 import styles from "./GiftCard.module.css";
 import SiteNav from "../site/SiteNav";

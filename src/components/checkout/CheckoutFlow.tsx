@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { preconnect } from "react-dom";
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import Image from "next/image";
 import { Fraunces, Poppins } from "next/font/google";
 import styles from "./CheckoutFlow.module.css";

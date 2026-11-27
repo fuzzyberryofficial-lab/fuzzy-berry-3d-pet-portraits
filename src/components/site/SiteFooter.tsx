@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site/LocalLink";
 import styles from "./site.module.css";
 import SocialIcons from "./SocialIcons";
 import CookieSettingsButton from "./CookieSettingsButton";

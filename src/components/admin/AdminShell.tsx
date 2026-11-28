@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/customers", label: "Customers" },
   { href: "/admin/promotions", label: "Promotions" },
+  { href: "/admin/funnel", label: "Funnel" },
   { href: "/admin/announcement", label: "Announcement" },
   { href: "/admin/instagram", label: "Instagram" },
 ];

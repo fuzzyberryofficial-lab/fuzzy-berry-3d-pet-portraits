@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import FunnelPageView from "@/components/site/FunnelPageView";
 import AnnouncementBar from "@/components/site/AnnouncementBar";
 import MetaPixel from "@/components/site/MetaPixel";
 import ConsentBanner from "@/components/site/ConsentBanner";
@@ -71,6 +72,7 @@ export default function RootLayout({
         <AnnouncementBar />
         {children}
         <Analytics />
+        <FunnelPageView />
         <ConsentBanner />
       </body>
     </html>

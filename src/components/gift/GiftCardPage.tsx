@@ -10,6 +10,7 @@ import SiteFooter from "../site/SiteFooter";
 import { useLang } from "../site/useLang";
 import { TR as HOME_TR } from "../home/translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
+import { trackStep } from "@/lib/funnel";
 import { addDays, berlinToday, isEmail, isValidSendOn, MAX_DAYS_AHEAD } from "@/lib/giftDates";
 import GiftReveal, { type RevealVoucher } from "./GiftReveal";
 import { TR, PRESET_AMOUNTS, MIN_AMOUNT, MAX_AMOUNT } from "./translations";
@@ -167,6 +168,7 @@ export default function GiftCardPage() {
       setError(t.recipientEmailInvalid);
       return;
     }
+    trackStep("gift_pay_click");
     if (delivery === "date") {
       if (!emailTrimmed) {
         setError(t.deliveryNeedsEmail);

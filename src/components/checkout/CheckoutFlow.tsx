@@ -11,6 +11,7 @@ import { COLLECTIONS_BASE, FRAME_SWATCHES, PROMO_CODES, type CollectionKey, type
 import { getShippingRate } from "./countries";
 import { COLLECTION_KEYS, TR, type Lang, type Step } from "./translations";
 import { trackPixelEvent } from "@/lib/metaPixel";
+import { trackStep } from "@/lib/funnel";
 import { promoDiscountCents } from "@/lib/promoMath";
 import { readPreferredLang } from "../site/useLang";
 import AskFirst from "../site/AskFirst";
@@ -90,6 +91,14 @@ export default function CheckoutFlow() {
     percentOff: number | null;
     amountOff: number | null;
   } | null>(null);
+
+  // Anonymous funnel count for each checkout step reached (see lib/funnel.ts).
+  useEffect(() => {
+    if (step === "style") trackStep("checkout_style");
+    else if (step === "upload") trackStep("checkout_upload");
+    else if (step === "payment") trackStep("checkout_payment");
+    else if (step === "done") trackStep("checkout_done");
+  }, [step]);
 
   useEffect(() => {
     if (!showFrameGuide) return;
@@ -268,20 +277,25 @@ export default function CheckoutFlow() {
   const selectedCollectionTitle = collectionBase ? t[collectionBase.key].title : "";
 
   const selectCollection = (key: CollectionKey) => {
+    trackStep("checkout_pick");
     setCollectionKey(key);
     setTypeKey(null);
     setSizeIndex(0);
   };
   const selectType = (key: string) => {
+    trackStep("checkout_pick");
     setTypeKey(key);
     setSizeIndex(0);
   };
-  const setPhoto = (index: number, file: File | null) =>
+  const setPhoto = (index: number, file: File | null) => {
+    if (file) trackStep("checkout_photo");
     setPhotos((prev) => prev.map((p, i) => (i === index ? file : p)));
+  };
   const updateShip = (field: keyof ShipInfo, value: string) => setShip((prev) => ({ ...prev, [field]: value }));
 
   const handlePayWithStripe = async () => {
     if (!canPay || !collectionKey || !selectedType) return;
+    trackStep("checkout_pay_click");
     setPaymentError(null);
     setPaymentCancelled(false);
     setIsRedirecting(true);
@@ -338,6 +352,7 @@ export default function CheckoutFlow() {
       // payment page is ready, so Meta's "Initiate checkout" matches real
       // checkouts (and the orders in our admin) instead of page visits.
       trackPixelEvent("InitiateCheckout", { value: total, currency: "EUR", num_items: 1 });
+      trackStep("checkout_stripe_open");
       // Give the pixel a moment to send before leaving the page.
       await new Promise((resolve) => setTimeout(resolve, 150));
       window.location.href = data.url;
